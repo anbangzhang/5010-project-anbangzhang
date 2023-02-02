@@ -9,32 +9,32 @@ package world.base;
 public class BaseSpace {
 
   /**
-   * Start of row;
+   * Start of row.
    */
   private int startX;
 
   /**
-   * Start of col;
+   * Start of col.
    */
   private int startY;
 
   /**
-   * End of row;
+   * End of row.
    */
   private int endX;
 
   /**
-   * End of col;
+   * End of col.
    */
   private int endY;
 
   /**
-   * Index order;
+   * Index order.
    */
   private int order;
 
   /**
-   * Space name;
+   * Space name.
    */
   private String name;
 
@@ -66,10 +66,10 @@ public class BaseSpace {
   public BaseSpace(int startX, int startY, int endX, int endY, int order, String name)
       throws IllegalArgumentException {
     if (startX < 0 || startY < 0 || endX < 0 || endY < 0 || endX <= startX || endY <= startY) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("Invalid coordinates.");
     }
     if (order < 0) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("Invalid order.");
     }
     this.startX = startX;
     this.startY = startY;

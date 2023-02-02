@@ -19,9 +19,7 @@ import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import javax.imageio.ImageIO;
-
 import world.Space;
 import world.Target;
 import world.Weapon;
@@ -36,6 +34,11 @@ import world.base.BaseWeapon;
  * @date 2023-01-28 22:51
  */
 public class WorldImpl implements World {
+
+  /**
+   * Scale factor.
+   */
+  private static final int SCALE_FACTOR = 20;
 
   /**
    * The world represent in int.
@@ -63,11 +66,6 @@ public class WorldImpl implements World {
   private Readable in;
 
   /**
-   * Scale factor.
-   */
-  private static final int SCALE_FACTOR = 20;
-
-  /**
    * Construct world with readable source.
    * 
    * @param in input source
@@ -81,12 +79,12 @@ public class WorldImpl implements World {
     /* World info */
     int m = scan.nextInt();
     int n = scan.nextInt();
-    String worldName = scan.nextLine().trim();
+    this.name = scan.nextLine().trim();
 
     /* Target info */
     int health = scan.nextInt();
     String targetName = scan.nextLine().trim();
-    Target target = new Target(health, targetName);
+    this.target = new Target(health, targetName);
 
     /* Spaces info */
     int sizeOfSpace = scan.nextInt();
@@ -111,8 +109,6 @@ public class WorldImpl implements World {
     }
 
     initMatrixAndValidateSpaces(m, n, baseSpaces);
-    this.name = worldName;
-    this.target = target;
     initNeighborMapAndSpaces(m, n, baseSpaces, baseWeapons);
   }
 
@@ -366,7 +362,8 @@ public class WorldImpl implements World {
    */
   @Override
   public void showGraphicalImage(String directory) throws IOException {
-    int m = matrix.length, n = matrix[0].length;
+    int m = matrix.length;
+    int n = matrix[0].length;
     BufferedImage image = new BufferedImage(n * SCALE_FACTOR, m * SCALE_FACTOR,
         BufferedImage.TYPE_BYTE_GRAY);
     Graphics2D graphics = image.createGraphics();
@@ -379,7 +376,8 @@ public class WorldImpl implements World {
 
     Font font = new Font("New Times Rome", Font.PLAIN, 10);
     spaces.forEach(space -> {
-      int[] start = space.getStart(), end = space.getEnd();
+      int[] start = space.getStart();
+      int[] end = space.getEnd();
       graphics.drawRect(start[1] * SCALE_FACTOR, start[0] * SCALE_FACTOR,
           (end[1] - start[1] + 1) * SCALE_FACTOR, (end[0] - start[0] + 1) * SCALE_FACTOR);
       graphics.setFont(font);

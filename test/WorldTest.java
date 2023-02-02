@@ -33,6 +33,9 @@ public class WorldTest {
 
   private World world2;
 
+  /**
+   * Set up the world variables.
+   */
   @Before
   public void setUp() {
     target = new Target(50, "Doctor Lucky");

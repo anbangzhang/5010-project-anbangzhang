@@ -1,13 +1,9 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
 import world.Space;
 import world.Weapon;
 import world.base.BaseSpace;
@@ -20,9 +16,6 @@ import world.base.BaseWeapon;
  * @date 2023-01-29 04:52
  */
 public class SpaceTest {
-
-  @Rule
-  public ExpectedException thrown = ExpectedException.none();
 
   private BaseSpace base;
 
@@ -46,20 +39,41 @@ public class SpaceTest {
 
   @Test
   public void testInitFail() {
-    thrown.expect(IllegalArgumentException.class);
-    base = new BaseSpace(-1, 0, 1, 1, 0, "fail");
-    thrown.expect(IllegalArgumentException.class);
-    base = new BaseSpace(0, -10, 1, 1, 0, "fail");
-    thrown.expect(IllegalArgumentException.class);
-    base = new BaseSpace(0, 0, -1, 1, 0, "fail");
-    thrown.expect(IllegalArgumentException.class);
-    base = new BaseSpace(0, 0, 1, -1, 0, "fail");
-    thrown.expect(IllegalArgumentException.class);
-    base = new BaseSpace(10, 10, 3, 30, 0, "fail");
-    thrown.expect(IllegalArgumentException.class);
-    base = new BaseSpace(10, 10, 15, 1, 0, "fail");
-    thrown.expect(IllegalArgumentException.class);
-    base = new BaseSpace(10, 10, 15, 18, -1, "fail");
+    try {
+      base = new BaseSpace(-1, 0, 1, 1, 0, "fail");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Invalid coordinates.", e.getMessage());
+    }
+    try {
+      base = new BaseSpace(0, -10, 1, 1, 0, "fail");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Invalid coordinates.", e.getMessage());
+    }
+    try {
+      base = new BaseSpace(0, 0, -1, 1, 0, "fail");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Invalid coordinates.", e.getMessage());
+    }
+    try {
+      base = new BaseSpace(0, 0, 1, -1, 0, "fail");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Invalid coordinates.", e.getMessage());
+    }
+    try {
+      base = new BaseSpace(10, 10, 3, 30, 0, "fail");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Invalid coordinates.", e.getMessage());
+    }
+    try {
+      base = new BaseSpace(10, 10, 15, 1, 0, "fail");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Invalid coordinates.", e.getMessage());
+    }
+    try {
+      base = new BaseSpace(10, 10, 15, 18, -1, "fail");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Invalid order.", e.getMessage());
+    }
   }
 
   @Test

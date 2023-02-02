@@ -1,9 +1,6 @@
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
 import world.Weapon;
 import world.base.BaseSpace;
 import world.base.BaseWeapon;
@@ -15,9 +12,6 @@ import world.base.BaseWeapon;
  * @date 2023-01-30 18:44
  */
 public class WeaponTest {
-
-  @Rule
-  public ExpectedException thrown = ExpectedException.none();
 
   private BaseWeapon base;
 
@@ -31,10 +25,16 @@ public class WeaponTest {
 
   @Test
   public void testInitFail() {
-    thrown.expect(IllegalArgumentException.class);
-    base = new BaseWeapon(-5, 10, "baseWeapon");
-    thrown.expect(IllegalArgumentException.class);
-    base = new BaseWeapon(0, -5, "baseWeapon");
+    try {
+      base = new BaseWeapon(-5, 10, "baseWeapon");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Space index or damage is smaller than 0.", e.getMessage());
+    }
+    try {
+      base = new BaseWeapon(0, -5, "baseWeapon");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Space index or damage is smaller than 0.", e.getMessage());
+    }
   }
 
   @Test

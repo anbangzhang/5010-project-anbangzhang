@@ -44,7 +44,7 @@ public class BaseWeapon {
    */
   public BaseWeapon(int space, int damage, String name) throws IllegalArgumentException {
     if (space < 0 || damage < 0) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("Space index or damage is smaller than 0.");
     }
     this.space = space;
     this.damage = damage;

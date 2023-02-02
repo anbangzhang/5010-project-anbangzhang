@@ -1,10 +1,11 @@
 package world;
 
 import java.util.List;
-
 import world.base.BaseSpace;
 
 /**
+ * Space class.
+ * 
  * @author anbang
  * @date 2023-01-28 22:41
  */
