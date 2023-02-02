@@ -77,8 +77,8 @@ public class WorldImpl implements World {
     this.in = in;
     Scanner scan = new Scanner(this.in);
     /* World info */
-    int m = scan.nextInt();
-    int n = scan.nextInt();
+    final int m = scan.nextInt();
+    final int n = scan.nextInt();
     this.name = scan.nextLine().trim();
 
     /* Target info */

@@ -17,6 +17,9 @@ public class WeaponTest {
 
   private Weapon weapon;
 
+  /**
+   * Set up baseWeapon and weapon.
+   */
   @Before
   public void setUp() {
     base = new BaseWeapon(0, 10, "baseWeapon");

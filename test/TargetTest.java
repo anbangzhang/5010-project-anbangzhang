@@ -18,6 +18,9 @@ public class TargetTest {
 
   private Target target;
 
+  /**
+   * Set up target.
+   */
   @Before
   public void setUp() {
     target = new Target(10, "target");

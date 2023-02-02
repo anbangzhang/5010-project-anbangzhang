@@ -21,6 +21,9 @@ public class SpaceTest {
 
   private Space space;
 
+  /**
+   * Set up baseSpace and space.
+   */
   @Before
   public void setUp() {
     List<BaseSpace> baseSpaces = initNeighbors();
