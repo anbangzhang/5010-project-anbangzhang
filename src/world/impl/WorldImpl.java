@@ -61,11 +61,6 @@ public class WorldImpl implements World {
   private List<Space> spaces;
 
   /**
-   * Input stream.
-   */
-  private Readable in;
-
-  /**
    * Construct world with readable source.
    * 
    * @param in input source
@@ -74,8 +69,7 @@ public class WorldImpl implements World {
     if (Objects.isNull(in)) {
       throw new IllegalArgumentException("Invalid input source.");
     }
-    this.in = in;
-    Scanner scan = new Scanner(this.in);
+    Scanner scan = new Scanner(in);
     /* World info */
     final int m = scan.nextInt();
     final int n = scan.nextInt();
