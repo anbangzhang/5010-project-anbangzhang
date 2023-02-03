@@ -405,7 +405,6 @@ public class WorldImpl implements World {
       int localWidth = g.getFontMetrics().stringWidth(str);
       if (localWidth >= rowWidth) {
         g.drawString(str, x, y);
-        int len = text.length();
         text = text.substring(i);
         break;
       }
