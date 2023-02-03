@@ -62,4 +62,10 @@ public class WeaponTest {
   public void testGetBelongTo() {
     Assert.assertEquals("baseSpace", weapon.getBelongTo().getName());
   }
+
+  @Test
+  public void testSetBelongTo() {
+    weapon.setBelongTo(new BaseSpace(0, 0, 4, 4, 1, "newSpace"));
+    Assert.assertEquals("newSpace", weapon.getBelongTo().getName());
+  }
 }
