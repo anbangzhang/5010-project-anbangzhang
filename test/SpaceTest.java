@@ -4,8 +4,8 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import world.Space;
-import world.Weapon;
+import world.model.Space;
+import world.model.Weapon;
 import world.base.BaseSpace;
 import world.base.BaseWeapon;
 

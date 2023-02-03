@@ -27,16 +27,15 @@ public class WorldDriver {
       System.out.println("Please input valid output file directory.");
       return;
     }
-    try {
-      FileReader fileReader = new FileReader(args[0]);
+    try (FileReader fileReader = new FileReader(args[0])) {
       World world = new WorldImpl(fileReader);
       world.showGraphicalImage(args[1]);
       System.out.println(
           String.format("Graphical image of %s has been generated, please check the %s directory.",
               args[0], args[1]));
-    } catch (FileNotFoundException e2) {
+    } catch (FileNotFoundException e1) {
       System.out.println(String.format("File: %s doesn't exist.", args[0]));
-    } catch (IOException e) {
+    } catch (IOException e2) {
       System.out.println(String.format("Graphical image generation at %s failed.", args[1]));
     }
   }

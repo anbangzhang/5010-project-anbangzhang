@@ -1,4 +1,4 @@
-package world;
+package world.model;
 
 import world.base.BaseSpace;
 import world.base.BaseWeapon;

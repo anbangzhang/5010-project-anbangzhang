@@ -1,6 +1,7 @@
-package world;
+package world.model;
 
 import java.util.List;
+
 import world.base.BaseSpace;
 
 /**

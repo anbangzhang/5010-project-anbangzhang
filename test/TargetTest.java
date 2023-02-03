@@ -3,7 +3,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import world.Target;
+import world.model.Target;
 
 /**
  * Test class for Target.
