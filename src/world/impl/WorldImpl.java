@@ -19,7 +19,9 @@ import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import javax.imageio.ImageIO;
+
 import world.Space;
 import world.Target;
 import world.Weapon;
@@ -381,12 +383,42 @@ public class WorldImpl implements World {
       graphics.drawRect(start[1] * SCALE_FACTOR, start[0] * SCALE_FACTOR,
           (end[1] - start[1] + 1) * SCALE_FACTOR, (end[0] - start[0] + 1) * SCALE_FACTOR);
       graphics.setFont(font);
-      graphics.drawString(space.getName(), start[1] * SCALE_FACTOR + 5,
-          start[0] * SCALE_FACTOR + 10);
+      drawString(graphics, space.getName(), start[1] * SCALE_FACTOR + 3,
+          start[0] * SCALE_FACTOR + 10, (end[1] - start[1]) * SCALE_FACTOR + 8);
     });
-    String fileName = String.format("%s%s.png", directory, this.name);
+    String fileName = (directory.endsWith("/")) ? String.format("%s%s.png", directory, this.name)
+        : String.format("%s/%s.png", directory, this.name);
     File outputFile = new File(fileName);
     graphics.dispose();
     ImageIO.write(image, "png", outputFile);
+  }
+
+  /**
+   * Draw string and change a new line automatically
+   * 
+   * @param g        graphics
+   * @param text     text
+   * @param x        x
+   * @param y        y
+   * @param rowWidth row width
+   */
+  private void drawString(Graphics2D g, String text, int x, int y, int rowWidth) {
+    int stringWidth = g.getFontMetrics().stringWidth(text);
+    if (stringWidth <= rowWidth) {
+      g.drawString(text, x, y);
+      return;
+    }
+    for (int i = 1;; i++) {
+      String str = text.substring(0, i);
+      int localWidth = g.getFontMetrics().stringWidth(str);
+      if (localWidth >= rowWidth) {
+        g.drawString(str, x, y);
+        int len = text.length();
+        text = text.substring(i);
+        break;
+      }
+    }
+    int stringHeight = g.getFontMetrics().getHeight();
+    drawString(g, text, x, y + stringHeight, rowWidth);
   }
 }
