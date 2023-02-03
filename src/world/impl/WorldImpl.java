@@ -19,9 +19,7 @@ import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import javax.imageio.ImageIO;
-
 import world.Space;
 import world.Target;
 import world.Weapon;
@@ -394,7 +392,7 @@ public class WorldImpl implements World {
   }
 
   /**
-   * Draw string and change a new line automatically
+   * Draw string and change a new line automatically.
    * 
    * @param g        graphics
    * @param text     text
