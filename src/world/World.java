@@ -1,9 +1,8 @@
 package world;
 
-import world.model.Space;
-
 import java.io.IOException;
 import java.util.List;
+import world.model.Space;
 
 /**
  * The world interface of the game.

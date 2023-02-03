@@ -20,12 +20,12 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
-import world.model.Space;
-import world.model.Target;
-import world.model.Weapon;
 import world.World;
 import world.base.BaseSpace;
 import world.base.BaseWeapon;
+import world.model.Space;
+import world.model.Target;
+import world.model.Weapon;
 
 /**
  * WorldImpl class. Implementation of world interface.

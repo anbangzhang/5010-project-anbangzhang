@@ -8,12 +8,12 @@ import java.util.stream.Collectors;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import world.model.Space;
-import world.model.Target;
 import world.World;
 import world.base.BaseSpace;
 import world.base.BaseWeapon;
 import world.impl.WorldImpl;
+import world.model.Space;
+import world.model.Target;
 
 /**
  * Test class of world.
