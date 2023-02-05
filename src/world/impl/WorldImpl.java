@@ -262,6 +262,16 @@ public class WorldImpl implements World {
   }
 
   /**
+   * Get the whole space name list.
+   *
+   * @return space name list
+   */
+  @Override
+  public List<String> getAllSpaces() {
+    return spaces.stream().map(Space::getName).collect(Collectors.toList());
+  }
+
+  /**
    * Get the neighbors of the given space name. Spaces that share a "wall" are
    * neighbors.
    *
@@ -368,7 +378,7 @@ public class WorldImpl implements World {
     graphics.fillRect(0, 0, n * SCALE_FACTOR, m * SCALE_FACTOR);
     graphics.setColor(Color.BLACK);
 
-    Font font = new Font("New Times Rome", Font.PLAIN, 10);
+    Font font = new Font("Microsoft YaHei", Font.PLAIN, 10);
     spaces.forEach(space -> {
       int[] start = space.getStart();
       int[] end = space.getEnd();

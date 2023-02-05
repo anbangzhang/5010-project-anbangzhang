@@ -13,6 +13,13 @@ import world.model.Space;
 public interface World {
 
   /**
+   * Get the whole space name list.
+   * 
+   * @return space name list
+   */
+  List<String> getAllSpaces();
+
+  /**
    * Get the neighbors of the given space name. Spaces that share a "wall" are
    * neighbors.
    * 

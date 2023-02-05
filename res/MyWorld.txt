@@ -1,4 +1,4 @@
-51 60 Middle Earth
+50 60 Middle Earth
 60 Sauron
 22
 3 1 20 9 Lindon

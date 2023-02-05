@@ -108,6 +108,14 @@ public class WorldTest {
   }
 
   @Test
+  public void testGetAllSpaces() {
+    Assert.assertEquals(baseSpaces.stream().map(BaseSpace::getName).collect(Collectors.toList()),
+        world1.getAllSpaces());
+    Assert.assertEquals(baseSpaces.stream().map(BaseSpace::getName).collect(Collectors.toList()),
+        world2.getAllSpaces());
+  }
+
+  @Test
   public void testGetTargetPosition() {
     /* Get the space that target is in */
     Assert.assertEquals(0, world1.getTargetPosition().getOrder());
@@ -217,6 +225,8 @@ public class WorldTest {
     Assert.assertEquals(new ArrayList<>(), world2.getNeighbors("null"));
     Assert.assertEquals(initNeighborsForDiningHall(), world2.getNeighbors("Dining Hall"));
     Assert.assertEquals(initNeighborsForKitchen(), world2.getNeighbors("Kitchen"));
+    /* 8 is the index of Kitchen */
+    Assert.assertEquals(initNeighborsForKitchen(), world2.getNeighbors(8));
 
   }
 
