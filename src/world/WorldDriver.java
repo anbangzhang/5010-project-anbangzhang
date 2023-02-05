@@ -38,8 +38,9 @@ public class WorldDriver {
       Scanner scan = new Scanner(System.in);
       while (!exit) {
         System.out.println(
-            "Please use the order number below to select the function:\n\t1. getAllSpaces\n\t2. getNeighbors\n\t3. getSpace\n"
-                + "\t4. getTargetPosition\n\t5. moveTarget\n\t6. showGraphicalImage\n\t7. exit\n");
+            "Please use the order number below to select the function:\n\t1. getAllSpaces\n"
+                + "\t2. getNeighbors\n\t3. getSpace\n\t4. getTargetPosition\n\t5. moveTarget\n"
+                + "\t6. showGraphicalImage\n\t7. exit\n");
         row = scan.nextLine().trim();
         if (!row.isEmpty()) {
           num = Integer.parseInt(row);
@@ -61,7 +62,8 @@ public class WorldDriver {
             System.out.println("The space is null.\n");
           } else {
             System.out.println(String.format(
-                "The space is %s, its neighbors: %s, weapons inside this space: %s.\n", space.getName(),
+                "The space is %s, its neighbors: %s, weapons inside this space: %s.\n",
+                space.getName(),
                 space.getNeighbors().stream().map(BaseSpace::getName).collect(Collectors.toList()),
                 space.getWeapons().stream().map(Weapon::getName).collect(Collectors.toList())));
           }
