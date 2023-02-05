@@ -93,7 +93,7 @@ public class WorldDriver {
     } catch (FileNotFoundException e1) {
       System.out.println(String.format("File: %s doesn't exist.", args[0]));
     } catch (IOException e2) {
-      System.out.println(String.format("File:%s close failed.", args[0]));
+      System.out.println(String.format("File: %s closure failed.", args[0]));
     }
   }
 
