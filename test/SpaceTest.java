@@ -120,6 +120,13 @@ public class SpaceTest {
     space.setNeighbors(list);
     Assert.assertEquals(3, space.getNeighbors().size());
     Assert.assertEquals("b3", space.getNeighbors().get(2).getName());
+
+    space.setNeighbors(new ArrayList<>());
+    Assert.assertEquals(0, space.getNeighbors().size());
+
+    list.removeAll(neighbors);
+    space.setNeighbors(list);
+    Assert.assertEquals(1, space.getNeighbors().size());
   }
 
   @Test
@@ -131,6 +138,9 @@ public class SpaceTest {
     space.setWeapons(list);
     Assert.assertEquals(1, space.getWeapons().size());
     Assert.assertEquals("weapon0", space.getWeapons().get(0).getName());
+    list.remove(0);
+    space.setWeapons(list);
+    Assert.assertEquals(0, space.getWeapons().size());
   }
 
 }

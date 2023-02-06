@@ -1,6 +1,6 @@
 50 60 Middle Earth
 60 Sauron
-22
+23
 3 1 20 9 Lindon
 1 10 39 26 Eriador
 0 27 3 46 Forodwaith
@@ -23,6 +23,7 @@
 39 43 41 44 Barad-dur
 39 41 41 42 Orodruin
 37 41 38 55 Ered Lithui
+43 3 48 8 Numenor
 21
 0 3 Hammer
 4 4 Sword

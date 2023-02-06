@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.Assert;
@@ -14,6 +15,7 @@ import world.base.BaseWeapon;
 import world.impl.WorldImpl;
 import world.model.Space;
 import world.model.Target;
+import world.model.Weapon;
 
 /**
  * Test class of world.
@@ -45,7 +47,7 @@ public class WorldTest {
     world1 = new WorldImpl(36, 30, "Doctor Lucky's Mansion", target, baseSpaces, baseWeapons);
     try {
       /* Construct world with file */
-      FileReader fileReader = new FileReader("./res/mansion.txt");
+      Readable fileReader = new FileReader("./res/mansion.txt");
       world2 = new WorldImpl(fileReader);
     } catch (FileNotFoundException e) {
       e.printStackTrace();
@@ -75,12 +77,17 @@ public class WorldTest {
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("There is a overlap in the spaces.", e.getMessage());
     }
+    try {
+      constructWithInvalidWeapon();
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Space index or damage is smaller than 0.", e.getMessage());
+    }
   }
 
   private void constructWithInvalidWidth() {
     try {
       /* Invalid width. */
-      FileReader fileReader = new FileReader("./res/invalid width.txt");
+      Readable fileReader = new FileReader("./res/invalid width.txt");
       world1 = new WorldImpl(fileReader);
     } catch (FileNotFoundException e) {
       e.printStackTrace();
@@ -90,7 +97,7 @@ public class WorldTest {
   private void constructWithInvalidCoordinates() {
     try {
       /* There is a space whose lower right corner coordinates are invalid. */
-      FileReader fileReader = new FileReader("./res/invalid coordinates.txt");
+      Readable fileReader = new FileReader("./res/invalid coordinates.txt");
       world1 = new WorldImpl(fileReader);
     } catch (FileNotFoundException e) {
       e.printStackTrace();
@@ -100,7 +107,17 @@ public class WorldTest {
   private void constructWithOverlapSpace() {
     try {
       /* There is a overlap in the spaces. */
-      FileReader fileReader = new FileReader("./res/overlap space.txt");
+      Readable fileReader = new FileReader("./res/overlap space.txt");
+      world1 = new WorldImpl(fileReader);
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void constructWithInvalidWeapon() {
+    try {
+      /* There is a overlap in the spaces. */
+      Readable fileReader = new FileReader("./res/invalid weapon.txt");
       world1 = new WorldImpl(fileReader);
     } catch (FileNotFoundException e) {
       e.printStackTrace();
@@ -211,6 +228,14 @@ public class WorldTest {
       }
     }
 
+    /* No weapon */
+    Assert.assertEquals(0, world2.getSpace(20).getWeapons().size());
+
+    /* One weapon */
+    Assert.assertEquals(1, world2.getSpace(0).getWeapons().size());
+    Assert.assertEquals(Arrays.asList("Revolver"),
+        world2.getSpace(0).getWeapons().stream().map(Weapon::getName).collect(Collectors.toList()));
+
     /* Get the space with invalid space name */
     Assert.assertNull(world1.getSpace("test"));
     Assert.assertNull(world2.getSpace("test"));
@@ -228,6 +253,16 @@ public class WorldTest {
     /* 8 is the index of Kitchen */
     Assert.assertEquals(initNeighborsForKitchen(), world2.getNeighbors(8));
 
+    Assert.assertEquals(Arrays.asList("Hedge Maze"), world2.getNeighbors("Green House"));
+
+    try {
+      /* Construct world with file */
+      Readable fileReader = new FileReader("./res/MyWorld.txt");
+      world2 = new WorldImpl(fileReader);
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
+    Assert.assertEquals(new ArrayList<>(), world1.getNeighbors("Numenor"));
   }
 
   private List<String> initNeighborsForDiningHall() {
