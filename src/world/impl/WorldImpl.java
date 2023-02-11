@@ -23,6 +23,8 @@ import javax.imageio.ImageIO;
 import world.World;
 import world.base.BaseSpace;
 import world.base.BaseWeapon;
+import world.exception.BusinessException;
+import world.model.Player;
 import world.model.Space;
 import world.model.Target;
 import world.model.Weapon;
@@ -59,6 +61,11 @@ public class WorldImpl implements World {
    * Spaces in the world.
    */
   private List<Space> spaces;
+
+  /**
+   * Players in the world.
+   */
+  private List<Player> players;
 
   /**
    * Construct world with readable source.
@@ -104,6 +111,8 @@ public class WorldImpl implements World {
 
     initMatrixAndValidateSpaces(m, n, baseSpaces);
     initNeighborMapAndSpaces(m, n, baseSpaces, baseWeapons);
+
+    this.players = new ArrayList<>();
   }
 
   /**
@@ -123,6 +132,7 @@ public class WorldImpl implements World {
     this.name = name;
     this.target = target;
     initNeighborMapAndSpaces(m, n, baseSpaces, baseWeapons);
+    this.players = new ArrayList<>();
   }
 
   /**
@@ -192,7 +202,7 @@ public class WorldImpl implements World {
 
     baseWeapons.forEach(baseWeapon -> {
       int index = baseWeapon.getSpaceIndex();
-      Weapon weapon = new Weapon(baseWeapon, baseSpaces.get(index));
+      Weapon weapon = new Weapon(baseWeapon);
       spaces.get(index).getWeapons().add(weapon);
     });
 
@@ -356,6 +366,79 @@ public class WorldImpl implements World {
     int newPos = (pos + 1) % spaces.size();
     target.setPosition(newPos);
     return spaces.get(newPos);
+  }
+
+  /**
+   * Get all the players.
+   *
+   * @return players
+   */
+  @Override
+  public List<Player> getAllPlayers() {
+    return this.players;
+  }
+
+  /**
+   * Get player according to index.
+   *
+   * @param index index
+   * @return player
+   */
+  @Override
+  public Player getPlayer(int index) {
+    if (index < 0 || index >= this.players.size()) {
+      return null;
+    }
+    return this.players.get(index);
+  }
+
+  /**
+   * Add a player.
+   *
+   * @param player player
+   * @return if successful
+   */
+  @Override
+  public Boolean addPlayer(Player player) {
+    boolean repeat = this.players.stream()
+        .anyMatch(item -> item.getName().equals(player.getName()));
+    if (repeat) {
+      return false;
+    }
+    return this.players.add(player);
+  }
+
+  /**
+   * Move a player to a space.
+   *
+   * @param player player
+   * @param space  space
+   * @throws BusinessException invalid space
+   */
+  @Override
+  public void movePlayer(Player player, Space space) throws BusinessException {
+    if (Objects.isNull(space)) {
+      throw new BusinessException("Invalid space.");
+    }
+    Space cur = getSpace(player.getSpaceIndex());
+    cur.getOccupiers().remove(player);
+    player.setSpaceIndex(space.getOrder());
+    space.getOccupiers().add(player);
+  }
+
+  /**
+   * Player pick up a weapon.
+   *
+   * @param player player
+   * @param weapon weapon
+   */
+  @Override
+  public void pickUp(Player player, Weapon weapon) throws BusinessException {
+    if (!player.addWeapon(weapon)) {
+      throw new BusinessException("Player's weapons reach limit.");
+    }
+    Space cur = getSpace(player.getSpaceIndex());
+    cur.getWeapons().remove(weapon);
   }
 
   /**

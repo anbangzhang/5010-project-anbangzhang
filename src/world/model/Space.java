@@ -1,5 +1,6 @@
 package world.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import world.base.BaseSpace;
 
@@ -22,6 +23,11 @@ public class Space extends BaseSpace {
   private List<Weapon> weapons;
 
   /**
+   * Players in the space.
+   */
+  private List<Player> occupiers;
+
+  /**
    * Constructor of space.
    *
    * @param baseSpace base space
@@ -32,6 +38,7 @@ public class Space extends BaseSpace {
     super(baseSpace);
     this.neighbors = neighbors;
     this.weapons = weapons;
+    this.occupiers = new ArrayList<>();
   }
 
   /**
@@ -68,5 +75,23 @@ public class Space extends BaseSpace {
    */
   public void setWeapons(List<Weapon> weapons) {
     this.weapons = weapons;
+  }
+
+  /**
+   * Get occupiers.
+   *
+   * @return occupiers
+   */
+  public List<Player> getOccupiers() {
+    return this.occupiers;
+  }
+
+  /**
+   * Set occupiers.
+   *
+   * @param occupiers occupiers
+   */
+  public void setOccupiers(List<Player> occupiers) {
+    this.occupiers = occupiers;
   }
 }

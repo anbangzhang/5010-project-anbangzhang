@@ -1,7 +1,6 @@
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import world.base.BaseSpace;
 import world.base.BaseWeapon;
 import world.model.Weapon;
 
@@ -23,7 +22,7 @@ public class WeaponTest {
   @Before
   public void setUp() {
     base = new BaseWeapon(0, 10, "baseWeapon");
-    weapon = new Weapon(base, new BaseSpace(0, 0, 2, 2, 5, "baseSpace"));
+    weapon = new Weapon(base);
   }
 
   @Test
@@ -56,16 +55,5 @@ public class WeaponTest {
   public void testGetDamage() {
     Assert.assertEquals(10, base.getDamage());
     Assert.assertEquals(10, weapon.getDamage());
-  }
-
-  @Test
-  public void testGetBelongTo() {
-    Assert.assertEquals("baseSpace", weapon.getBelongTo().getName());
-  }
-
-  @Test
-  public void testSetBelongTo() {
-    weapon.setBelongTo(new BaseSpace(0, 0, 4, 4, 1, "newSpace"));
-    Assert.assertEquals("newSpace", weapon.getBelongTo().getName());
   }
 }

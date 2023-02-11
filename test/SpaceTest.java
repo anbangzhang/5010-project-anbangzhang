@@ -4,8 +4,11 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import world.base.BasePlayer;
 import world.base.BaseSpace;
 import world.base.BaseWeapon;
+import world.enums.PlayerType;
+import world.model.Player;
 import world.model.Space;
 import world.model.Weapon;
 
@@ -28,9 +31,8 @@ public class SpaceTest {
   public void setUp() {
     List<BaseSpace> baseSpaces = initNeighbors();
     base = new BaseSpace(1, 1, 2, 2, 0, "base");
-    space = new Space(base, baseSpaces,
-        Arrays.asList(new Weapon(new BaseWeapon(0, 2, "weapon0"), base),
-            new Weapon(new BaseWeapon(0, 3, "weapon1"), base)));
+    space = new Space(base, baseSpaces, Arrays.asList(new Weapon(new BaseWeapon(0, 2, "weapon0")),
+        new Weapon(new BaseWeapon(0, 3, "weapon1"))));
   }
 
   private List<BaseSpace> initNeighbors() {
@@ -141,6 +143,16 @@ public class SpaceTest {
     list.remove(0);
     space.setWeapons(list);
     Assert.assertEquals(0, space.getWeapons().size());
+  }
+
+  @Test
+  public void testOccupiers() {
+    List<Player> players = new ArrayList<>();
+    players.add(new BasePlayer(0, "player0", 0, PlayerType.HUMAN_CONTROLLED, 4));
+    players.add(new BasePlayer(1, "player1", 0, PlayerType.COMPUTER_CONTROLLED, 2));
+    Assert.assertEquals(0, space.getOccupiers().size());
+    space.setOccupiers(players);
+    Assert.assertEquals(2, space.getOccupiers().size());
   }
 
 }

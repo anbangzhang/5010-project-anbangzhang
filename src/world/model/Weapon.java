@@ -1,6 +1,5 @@
 package world.model;
 
-import world.base.BaseSpace;
 import world.base.BaseWeapon;
 
 /**
@@ -12,36 +11,11 @@ import world.base.BaseWeapon;
 public class Weapon extends BaseWeapon {
 
   /**
-   * The space it belong to.
-   */
-  private BaseSpace belongTo;
-
-  /**
    * Constructor of weapon.
    * 
-   * @param base     base weapon
-   * @param belongTo space
+   * @param base base weapon
    */
-  public Weapon(BaseWeapon base, BaseSpace belongTo) {
+  public Weapon(BaseWeapon base) {
     super(base);
-    this.belongTo = belongTo;
-  }
-
-  /**
-   * Getter of belong to.
-   * 
-   * @return belong to
-   */
-  public BaseSpace getBelongTo() {
-    return this.belongTo;
-  }
-
-  /**
-   * Setter of belong to.
-   * 
-   * @param belongTo belong to
-   */
-  public void setBelongTo(BaseSpace belongTo) {
-    this.belongTo = belongTo;
   }
 }

@@ -2,7 +2,10 @@ package world;
 
 import java.io.IOException;
 import java.util.List;
+import world.exception.BusinessException;
+import world.model.Player;
 import world.model.Space;
+import world.model.Weapon;
 
 /**
  * The world interface of the game.
@@ -66,6 +69,47 @@ public interface World {
    * @return the space that target is in
    */
   Space moveTarget();
+
+  /**
+   * Get all the players.
+   * 
+   * @return players
+   */
+  List<Player> getAllPlayers();
+
+  /**
+   * Get player according to index.
+   * 
+   * @param index index
+   * @return player
+   */
+  Player getPlayer(int index);
+
+  /**
+   * Add a player.
+   * 
+   * @param player player
+   * @return if successful
+   */
+  Boolean addPlayer(Player player);
+
+  /**
+   * Move a player to a space.
+   * 
+   * @param player player
+   * @param space  space
+   * @throws BusinessException invalid space
+   */
+  void movePlayer(Player player, Space space) throws BusinessException;
+
+  /**
+   * Player pick up a weapon.
+   * 
+   * @param player player
+   * @param weapon weapon
+   * @throws BusinessException player's weapons reach limit
+   */
+  void pickUp(Player player, Weapon weapon) throws BusinessException;
 
   /**
    * Show the world in image.
