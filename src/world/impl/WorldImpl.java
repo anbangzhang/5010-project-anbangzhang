@@ -405,6 +405,11 @@ public class WorldImpl implements World {
     if (repeat) {
       return false;
     }
+    Space space = getSpace(player.getSpaceIndex());
+    if (Objects.isNull(space)) {
+      return false;
+    }
+    space.getOccupiers().add(player);
     return this.players.add(player);
   }
 

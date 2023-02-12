@@ -10,9 +10,13 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import world.World;
+import world.base.BasePlayer;
 import world.base.BaseSpace;
 import world.base.BaseWeapon;
+import world.enums.PlayerType;
+import world.exception.BusinessException;
 import world.impl.WorldImpl;
+import world.model.Player;
 import world.model.Space;
 import world.model.Target;
 import world.model.Weapon;
@@ -263,6 +267,83 @@ public class WorldTest {
       e.printStackTrace();
     }
     Assert.assertEquals(new ArrayList<>(), world1.getNeighbors("Numenor"));
+  }
+
+  @Test
+  public void testPlayer() {
+    Assert.assertEquals(0, world2.getAllPlayers().size());
+    Player player0 = new BasePlayer(0, "player0", 6, PlayerType.HUMAN_CONTROLLED, 1);
+    Player player1 = new BasePlayer(1, "player1", 8, PlayerType.COMPUTER_CONTROLLED, null);
+    Player player2 = new BasePlayer(2, "player0", 8, PlayerType.COMPUTER_CONTROLLED, 2);
+    Player player3 = new BasePlayer(2, "player3", 100, PlayerType.HUMAN_CONTROLLED, 2);
+    world2.addPlayer(player0);
+    Assert.assertEquals(1, world2.getAllPlayers().size());
+
+    /* add player with repeated name fail */
+    Assert.assertFalse(world2.addPlayer(player2));
+    Assert.assertEquals(1, world2.getAllPlayers().size());
+
+    /* add player with invalid space index fail */
+    Assert.assertFalse(world2.addPlayer(player3));
+    Assert.assertEquals(1, world2.getAllPlayers().size());
+
+    /* get all players */
+    world2.addPlayer(player1);
+    Assert.assertEquals(Arrays.asList("player0", "player1"),
+        world2.getAllPlayers().stream().map(Player::getName).collect(Collectors.toList()));
+
+    /* get player by index */
+    Assert.assertEquals(player0, world2.getPlayer(0));
+    Assert.assertEquals(player1, world2.getPlayer(1));
+
+    /* get player with invalid index */
+    Assert.assertNull(world2.getPlayer(10));
+
+    Assert.assertEquals(6, world2.getPlayer(0).getSpaceIndex());
+    Assert.assertEquals(8, world2.getPlayer(1).getSpaceIndex());
+
+    /* player with weapon limit picks up weapon and reach limit */
+    Space space6 = world2.getSpace(player0.getSpaceIndex());
+    while (!space6.getWeapons().isEmpty()) {
+      Weapon weapon = space6.getWeapons().get(0);
+      try {
+        world2.pickUp(player0, weapon);
+      } catch (BusinessException e) {
+        Assert.assertEquals("Player's weapons reach limit.", e.getMessage());
+        break;
+      }
+    }
+    Assert.assertEquals(1, player0.getWeapons().size());
+
+    /* player with unlimited weapon limit picks up all the weapons in one space */
+    Space space8 = world2.getSpace(player1.getSpaceIndex());
+    while (!space8.getWeapons().isEmpty()) {
+      Weapon weapon = space8.getWeapons().get(0);
+      try {
+        world2.pickUp(player1, weapon);
+      } catch (BusinessException e) {
+        Assert.assertEquals("Player's weapons reach limit.", e.getMessage());
+        break;
+      }
+    }
+    Assert.assertEquals(2, player1.getWeapons().size());
+
+    /* move a player */
+    BaseSpace baseSpace = space6.getNeighbors().get(0);
+    try {
+      world2.movePlayer(player0, world2.getSpace(baseSpace.getName()));
+    } catch (BusinessException e) {
+      Assert.assertEquals("Invalid space.", e.getMessage());
+    }
+    Assert.assertEquals(baseSpace.getOrder(), player0.getSpaceIndex());
+
+    /* move a player to a null space, fail */
+    try {
+      world2.movePlayer(player1, null);
+    } catch (BusinessException e) {
+      Assert.assertEquals("Invalid space.", e.getMessage());
+    }
+    Assert.assertEquals(8, player1.getSpaceIndex());
   }
 
   private List<String> initNeighborsForDiningHall() {
