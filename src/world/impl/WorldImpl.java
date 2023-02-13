@@ -467,20 +467,39 @@ public class WorldImpl implements World {
     graphics.setColor(Color.BLACK);
 
     Font font = new Font("Microsoft YaHei", Font.PLAIN, 10);
-    spaces.forEach(space -> {
+    for (Space space : spaces) {
       int[] start = space.getStart();
       int[] end = space.getEnd();
       graphics.drawRect(start[1] * SCALE_FACTOR, start[0] * SCALE_FACTOR,
           (end[1] - start[1] + 1) * SCALE_FACTOR, (end[0] - start[0] + 1) * SCALE_FACTOR);
       graphics.setFont(font);
-      drawString(graphics, space.getName(), start[1] * SCALE_FACTOR + 3,
-          start[0] * SCALE_FACTOR + 10, (end[1] - start[1]) * SCALE_FACTOR + 8);
-    });
+      int x = start[1] * SCALE_FACTOR + 3;
+      int y = start[0] * SCALE_FACTOR + 10;
+      int rowWidth = (end[1] - start[1]) * SCALE_FACTOR + 8;
+      List<String> strings = composeString(space);
+      for (String string : strings) {
+        y = drawString(graphics, string, x, y, rowWidth);
+      }
+    }
     String fileName = (directory.endsWith("/")) ? String.format("%s%s.png", directory, this.name)
         : String.format("%s/%s.png", directory, this.name);
     File outputFile = new File(fileName);
     graphics.dispose();
     ImageIO.write(image, "png", outputFile);
+  }
+
+  /**
+   * Compose string.
+   * 
+   * @param space space
+   * @return string
+   */
+  private List<String> composeString(Space space) {
+    if (space.getOccupiers().isEmpty()) {
+      return Arrays.asList(space.getName());
+    }
+    return Arrays.asList(space.getName(), String.format("players: %s",
+        space.getOccupiers().stream().map(Player::getName).collect(Collectors.toList())));
   }
 
   /**
@@ -492,11 +511,11 @@ public class WorldImpl implements World {
    * @param y        y
    * @param rowWidth row width
    */
-  private void drawString(Graphics2D g, String text, int x, int y, int rowWidth) {
+  private int drawString(Graphics2D g, String text, int x, int y, int rowWidth) {
     int stringWidth = g.getFontMetrics().stringWidth(text);
     if (stringWidth <= rowWidth) {
       g.drawString(text, x, y);
-      return;
+      return y + g.getFontMetrics().getHeight();
     }
     for (int i = 1;; i++) {
       String str = text.substring(0, i);
@@ -508,6 +527,6 @@ public class WorldImpl implements World {
       }
     }
     int stringHeight = g.getFontMetrics().getHeight();
-    drawString(g, text, x, y + stringHeight, rowWidth);
+    return drawString(g, text, x, y + stringHeight, rowWidth);
   }
 }

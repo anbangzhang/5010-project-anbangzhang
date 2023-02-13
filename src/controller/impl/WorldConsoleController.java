@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+
 import controller.WorldController;
 import world.World;
 import world.base.BasePlayer;
@@ -84,8 +85,45 @@ public class WorldConsoleController implements WorldController {
       this.out.append(String.format("All the players in the game: %s\n",
           players.stream().map(Player::getName).collect(Collectors.toList())));
 
-      run(world);
+      while (true) {
+        this.out.append("Please input the number below to select the function:\n"
+            + "\t1. displayAllSpaces\n" + "\t2. displaySpaceDetail\n"
+            + "\t3. displayGraphicalImage\n" + "\t4. startGame\n" + "\tq. exit\n");
+        try {
+          String selection = getInput();
 
+          int select = Integer.parseInt(selection);
+          /* displayAllSpaces */
+          if (select == 1) {
+            this.out.append(String.format("The spaces: %s\n", world.getAllSpaces()));
+            /* displaySpaceDetail */
+          } else if (select == 2) {
+            this.out.append("Please input the space index:\n");
+            selection = getNumberInput();
+            Space space = world.getSpace(Integer.parseInt(selection));
+            if (Objects.nonNull(space)) {
+              this.out.append(String.format("%s\n", space.toString()));
+            } else {
+              this.out.append("The space is null.\n");
+            }
+            /* displayGraphicalImage */
+          } else if (select == 3) {
+            this.out.append("Please input the output directory:\n");
+            selection = this.scan.nextLine().trim();
+            world.showGraphicalImage(selection);
+            this.out.append(String.format(
+                "Graphical Image generation succeed, please check %s directory\n", selection));
+            /* startGame */
+          } else if (select == 4) {
+            run(world);
+            break;
+          } else {
+            this.out.append("Invalid selection.\n");
+          }
+        } catch (InterruptedException e) {
+          break;
+        }
+      }
     } catch (IOException ioe) {
       throw new IllegalStateException("Append failed.", ioe);
     }
@@ -106,6 +144,8 @@ public class WorldConsoleController implements WorldController {
       for (Player player : players) {
         this.out.append(
             String.format("This is the %dth turn for player [%s].\n", i + 1, player.getName()));
+        displayPlayerDetail(player, world);
+
         if (Objects.equals(PlayerType.HUMAN_CONTROLLED, player.getType())) {
           while (true) {
             this.out.append(String.format(
@@ -251,11 +291,11 @@ public class WorldConsoleController implements WorldController {
     this.out.append("Please input the name of player:\n");
     String name = this.scan.nextLine();
     this.out.append("Please input the space index that the player created at:\n");
-    input = getInput();
+    input = getNumberInput();
     int spaceIndex = Integer.parseInt(input);
-    this.out.append("Please input the weapon limit of player:\n");
-    input = getInput();
-    int limit = Integer.parseInt(input);
+    this.out.append("Please input the weapon limit of player, -1 indicates no limit:\n");
+    input = getNumberInput();
+    Integer limit = Integer.parseInt(input) == -1 ? null : Integer.parseInt(input);
     if (!world.addPlayer(new BasePlayer(order, name, spaceIndex, type, limit))) {
       this.out.append("The name of player is repeated or the space index is invalid.");
     } else {
@@ -280,6 +320,21 @@ public class WorldConsoleController implements WorldController {
   }
 
   /**
+   * get input.
+   *
+   * @return input string
+   * @throws IOException fail to append
+   */
+  private String getNumberInput() throws IOException {
+    String str = this.scan.nextLine();
+    while (validNumber(str)) {
+      this.out.append(String.format("Not a valid number: %s\n", str));
+      str = this.scan.nextLine();
+    }
+    return str;
+  }
+
+  /**
    * check if input is invalid.
    *
    * @param num num
@@ -290,6 +345,21 @@ public class WorldConsoleController implements WorldController {
     if ("Q".equals(num) || "q".equals(num)) {
       throw new InterruptedException();
     }
+    try {
+      Integer.parseInt(num);
+      return false;
+    } catch (NumberFormatException e) {
+      return true;
+    }
+  }
+
+  /**
+   * check if input is number.
+   *
+   * @param num num
+   * @return if it's valid number
+   */
+  private boolean validNumber(String num) {
     try {
       Integer.parseInt(num);
       return false;

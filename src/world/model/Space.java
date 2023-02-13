@@ -2,6 +2,8 @@ package world.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import world.base.BaseSpace;
 
 /**
@@ -93,5 +95,13 @@ public class Space extends BaseSpace {
    */
   public void setOccupiers(List<Player> occupiers) {
     this.occupiers = occupiers;
+  }
+
+  @Override
+  public String toString() {
+    return String.format("Space: [%s], neighbors: %s, weapons: %s, occupies: %s", getName(),
+        neighbors.stream().map(BaseSpace::getName).collect(Collectors.toList()),
+        weapons.stream().map(Weapon::getName).collect(Collectors.toList()),
+        occupiers.stream().map(Player::getName).collect(Collectors.toList()));
   }
 }
