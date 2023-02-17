@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.stream.Collectors;
-
 import controller.WorldController;
 import world.World;
 import world.base.BasePlayer;
@@ -115,7 +114,7 @@ public class WorldConsoleController implements WorldController {
                 "Graphical Image generation succeed, please check %s directory\n", selection));
             /* startGame */
           } else if (select == 4) {
-            run(world);
+            start(world);
             break;
           } else {
             this.out.append("Invalid selection.\n");
@@ -135,7 +134,7 @@ public class WorldConsoleController implements WorldController {
    * @param world world
    * @throws IOException output fail
    */
-  private void run(World world) throws IOException {
+  private void start(World world) throws IOException {
     this.out.append("\nGame start.\n");
     List<Player> players = world.getAllPlayers();
     String input = "";
@@ -254,8 +253,9 @@ public class WorldConsoleController implements WorldController {
   private void displayPlayerSpaceDetail(Player player, World world) throws IOException {
     Space space = world.getSpace(player.getSpaceIndex());
     this.out.append(String.format(
-        "Player: [%s] is in space: [%s], its neighbors: %s, weapons inside this space: %s\n",
+        "Player: [%s] is in space: [%s], players inside this space: %s, its neighbors: %s, weapons inside this space: %s\n",
         player.getName(), space.getName(),
+        space.getOccupiers().stream().map(Player::getName).collect(Collectors.toList()),
         space.getNeighbors().stream().map(BaseSpace::getName).collect(Collectors.toList()),
         space.getWeapons().stream().map(Weapon::getName).collect(Collectors.toList())));
   }
@@ -297,7 +297,7 @@ public class WorldConsoleController implements WorldController {
     input = getNumberInput();
     Integer limit = Integer.parseInt(input) == -1 ? null : Integer.parseInt(input);
     if (!world.addPlayer(new BasePlayer(order, name, spaceIndex, type, limit))) {
-      this.out.append("The name of player is repeated or the space index is invalid.");
+      this.out.append("The name of player is repeated or the space index is invalid.\n");
     } else {
       this.out.append(String.format("Add player [%s] succeed.\n", name));
     }
