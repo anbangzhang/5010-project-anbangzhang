@@ -1,0 +1,138 @@
+$ java -jar WorldDriver.jar mansion.txt 3
+Please input the type of player to create:
+        1. human-controlled
+        2. computer-controlled
+        q. quit creating
+1
+Please input the name of player:
+Adam
+Please input the space index that the player created at:
+8
+Please input the weapon limit of player, -1 indicates no limit:
+-1
+Add player [Adam] succeed.
+Please input the type of player to create:
+        1. human-controlled
+        2. computer-controlled
+        q. quit creating
+1
+Please input the name of player:
+Eve
+Please input the space index that the player created at:
+4
+Please input the weapon limit of player, -1 indicates no limit:
+2
+Add player [Eve] succeed.
+Please input the type of player to create:
+        1. human-controlled
+        2. computer-controlled
+        q. quit creating
+2
+Please input the name of player:
+Arthur
+Please input the space index that the player created at:
+1
+Please input the weapon limit of player, -1 indicates no limit:
+4
+Add player [Arthur] succeed.
+Please input the type of player to create:
+        1. human-controlled
+        2. computer-controlled
+        q. quit creating
+q
+All the players in the game: [Adam, Eve, Arthur]
+Please input the number below to select the function:
+        1. displayAllSpaces
+        2. displaySpaceDetail
+        3. displayGraphicalImage
+        4. startGame
+        q. exit
+4
+
+Game start.
+
+This is the 1th turn of game.
+This is the 1th turn for player [Adam].
+Player: [Adam] is in space: [Kitchen], carrying weapons: []
+Please use the number below to select thea action for player [Adam]
+        1. move to a neighbor space.
+        2. pick up a weapon in the space.
+        3. look around the space.
+2
+Please input a weapon name from the weapons: [Crepe Pan, Sharp Knife]
+Crepe Pan
+Player [Adam] pick up weapon [Crepe Pan] succeed.
+This is the 1th turn for player [Eve].
+Player: [Eve] is in space: [Drawing Room], carrying weapons: []
+Please use the number below to select thea action for player [Eve]
+        1. move to a neighbor space.
+        2. pick up a weapon in the space.
+        3. look around the space.
+2
+Please input a weapon name from the weapons: [Letter Opener]
+Trowel
+Player [Eve] pick up weapon [Trowel] failed, cause: Weapon Trowel is not in current space.
+Please use the number below to select thea action for player [Eve]
+        1. move to a neighbor space.
+        2. pick up a weapon in the space.
+        3. look around the space.
+2
+Please input a weapon name from the weapons: [Letter Opener]
+Letter Opener
+Player [Eve] pick up weapon [Letter Opener] succeed.
+This is the 1th turn for player [Arthur].
+Player: [Arthur] is in space: [Billiard Room], carrying weapons: []
+Player: [Arthur] is in space: [Billiard Room], players inside this space: [Arthur], its neighbors: [Armory, Dining Hall, Trophy Room], weapons inside this space: [Billiard Cue]
+
+This is the 2th turn of game.
+This is the 2th turn for player [Adam].
+Player: [Adam] is in space: [Kitchen], carrying weapons: [Crepe Pan]
+Please use the number below to select thea action for player [Adam]
+        1. move to a neighbor space.
+        2. pick up a weapon in the space.
+        3. look around the space.
+1
+Please input a neighbor space name from the neighbors: [Dining Hall, Parlor, Wine Cellar]
+Wine Cellar
+Player [Adam] move to space [Wine Cellar] succeed.
+This is the 2th turn for player [Eve].
+Player: [Eve] is in space: [Drawing Room], carrying weapons: [Letter Opener]
+Please use the number below to select thea action for player [Eve]
+        1. move to a neighbor space.
+        2. pick up a weapon in the space.
+        3. look around the space.
+1
+Please input a neighbor space name from the neighbors: [Armory, Dining Hall, Foyer, Wine Cellar]
+Wine Cellar
+Player [Eve] move to space [Wine Cellar] succeed.
+This is the 2th turn for player [Arthur].
+Player: [Arthur] is in space: [Billiard Room], carrying weapons: []
+Player: [Arthur] is in space: [Billiard Room], players inside this space: [Arthur], its neighbors: [Armory, Dining Hall, Trophy Room], weapons inside this space: [Billiard Cue]
+
+This is the 3th turn of game.
+This is the 3th turn for player [Adam].
+Player: [Adam] is in space: [Wine Cellar], carrying weapons: [Crepe Pan]
+Please use the number below to select thea action for player [Adam]
+        1. move to a neighbor space.
+        2. pick up a weapon in the space.
+        3. look around the space.
+3
+Player: [Adam] is in space: [Wine Cellar], players inside this space: [Adam, Eve], its neighbors: [Dining Hall, Drawing Room, Kitchen], weapons inside this space: [Rat Poison, Piece of Rope]
+This is the 3th turn for player [Eve].
+Player: [Eve] is in space: [Wine Cellar], carrying weapons: [Letter Opener]
+Please use the number below to select thea action for player [Eve]
+        1. move to a neighbor space.
+        2. pick up a weapon in the space.
+        3. look around the space.
+2
+Please input a weapon name from the weapons: [Rat Poison, Piece of Rope]
+Rat Poison
+Player [Eve] pick up weapon [Rat Poison] succeed.
+This is the 3th turn for player [Arthur].
+Player: [Arthur] is in space: [Billiard Room], carrying weapons: []
+Player: [Arthur] is in space: [Billiard Room], players inside this space: [Arthur], its neighbors: [Armory, Dining Hall, Trophy Room], weapons inside this space: [Billiard Cue]
+
+Game end.
+Player: [Adam] is in space: [Wine Cellar], carrying weapons: [Crepe Pan]
+Player: [Eve] is in space: [Wine Cellar], carrying weapons: [Letter Opener, Rat Poison]
+Player: [Arthur] is in space: [Billiard Room], carrying weapons: []

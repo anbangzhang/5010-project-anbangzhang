@@ -1,0 +1,78 @@
+$ java -jar WorldDriver.jar mansion.txt 3
+Please input the type of player to create:
+        1. human-controlled
+        2. computer-controlled
+        q. quit creating
+1
+Please input the name of player:
+Adam
+Please input the space index that the player created at:
+8
+Please input the weapon limit of player, -1 indicates no limit:
+-1
+Add player [Adam] succeed.
+Please input the type of player to create:
+        1. human-controlled
+        2. computer-controlled
+        q. quit creating
+2
+Please input the name of player:
+Eve
+Please input the space index that the player created at:
+6
+Please input the weapon limit of player, -1 indicates no limit:
+2
+Add player [Eve] succeed.
+Please input the type of player to create:
+        1. human-controlled
+        2. computer-controlled
+        q. quit creating
+2
+Please input the name of player:
+Eve
+Please input the space index that the player created at:
+4
+Please input the weapon limit of player, -1 indicates no limit:
+2
+The name of player is repeated or the space index is invalid.
+Please input the type of player to create:
+        1. human-controlled
+        2. computer-controlled
+        q. quit creating
+q
+All the players in the game: [Adam, Eve]
+Please input the number below to select the function:
+        1. displayAllSpaces
+        2. displaySpaceDetail
+        3. displayGraphicalImage
+        4. startGame
+        q. exit
+1
+The spaces: [Armory, Billiard Room, Carriage House, Dining Hall, Drawing Room, Foyer, Green House, Hedge Maze, Kitchen, Lancaster Room, Library, Lilac Room, Master Suite, Nursery, Parlor, Piazza, Servants' Quarters, Tennessee Room, Trophy Room, Wine Cellar, Winter Garden]
+Please input the number below to select the function:
+        1. displayAllSpaces
+        2. displaySpaceDetail
+        3. displayGraphicalImage
+        4. startGame
+        q. exit
+2
+Please input the space index:
+8
+Space: [Kitchen], neighbors: [Dining Hall, Parlor, Wine Cellar], weapons: [Crepe Pan, Sharp Knife], occupies: [Adam]
+Please input the number below to select the function:
+        1. displayAllSpaces
+        2. displaySpaceDetail
+        3. displayGraphicalImage
+        4. startGame
+        q. exit
+3
+Please input the output directory:
+./
+Graphical Image generation succeed, please check ./ directory
+Please input the number below to select the function:
+        1. displayAllSpaces
+        2. displaySpaceDetail
+        3. displayGraphicalImage
+        4. startGame
+        q. exit
+q
