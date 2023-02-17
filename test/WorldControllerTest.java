@@ -1,3 +1,5 @@
+import controller.WorldController;
+import controller.impl.WorldConsoleController;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.StringReader;
@@ -9,8 +11,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import controller.WorldController;
-import controller.impl.WorldConsoleController;
 import world.World;
 import world.enums.PlayerType;
 import world.impl.WorldImpl;
@@ -39,6 +39,9 @@ public class WorldControllerTest {
   @Mock
   private Player mockPlayer2;
 
+  /**
+   * Set up world and mocks.
+   */
   @Before
   public void setUp() {
     MockitoAnnotations.openMocks(this);
@@ -54,7 +57,8 @@ public class WorldControllerTest {
   @Test
   public void testWithConcreteModel() {
     StringReader input = new StringReader(
-        "1\nPlayer1\n6\n5\n2\nPlayer2\n3\n4\nq\n1\n2\n6\n3\nres/\n4\n3\n2\nTrowel\n1\nHedge Maze\n");
+        "1\nPlayer1\n6\n5\n2\nPlayer2\n3\n4\nq\n1\n2\n6\n3\nres/\n4\n3\n2\nTrowel\n"
+            + "1\nHedge Maze\n");
     StringBuilder log = new StringBuilder();
     controller = new WorldConsoleController(input, log, 3);
     controller.playGame(world);
@@ -159,7 +163,8 @@ public class WorldControllerTest {
     Mockito.when(weapon.getName()).thenReturn("Weapon");
 
     StringReader input = new StringReader(
-        "a\n1\nA\n0\n5\n2\nA\n2\n4\n2\nB\n1\n4\nq\n1\n2\n6\n3\nres/\n4\n3\n2\nTrowel\n2\nWeapon\n1\nSpace2\n1\nSpace1\n");
+        "a\n1\nA\n0\n5\n2\nA\n2\n4\n2\nB\n1\n4\nq\n1\n2\n6\n3\nres/\n4\n3\n2\nTrowel\n"
+            + "2\nWeapon\n1\nSpace2\n1\nSpace1\n");
     StringBuilder log = new StringBuilder();
     controller = new WorldConsoleController(input, log, 3);
     controller.playGame(mockWorld);

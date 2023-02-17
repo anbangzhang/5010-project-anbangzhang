@@ -272,10 +272,10 @@ public class WorldTest {
   @Test
   public void testPlayer() {
     Assert.assertEquals(0, world2.getAllPlayers().size());
-    Player player0 = new BasePlayer(0, "player0", 6, PlayerType.HUMAN_CONTROLLED, 1);
-    Player player1 = new BasePlayer(1, "player1", 8, PlayerType.COMPUTER_CONTROLLED, null);
-    Player player2 = new BasePlayer(2, "player0", 8, PlayerType.COMPUTER_CONTROLLED, 2);
-    Player player3 = new BasePlayer(2, "player3", 100, PlayerType.HUMAN_CONTROLLED, 2);
+    final Player player0 = new BasePlayer(0, "player0", 6, PlayerType.HUMAN_CONTROLLED, 1);
+    final Player player1 = new BasePlayer(1, "player1", 8, PlayerType.COMPUTER_CONTROLLED, null);
+    final Player player2 = new BasePlayer(2, "player0", 8, PlayerType.COMPUTER_CONTROLLED, 2);
+    final Player player3 = new BasePlayer(2, "player3", 100, PlayerType.HUMAN_CONTROLLED, 2);
     world2.addPlayer(player0);
     Assert.assertEquals(1, world2.getAllPlayers().size());
 

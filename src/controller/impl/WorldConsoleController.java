@@ -1,11 +1,11 @@
 package controller.impl;
 
+import controller.WorldController;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.stream.Collectors;
-import controller.WorldController;
 import world.World;
 import world.base.BasePlayer;
 import world.base.BaseSpace;
@@ -148,7 +148,8 @@ public class WorldConsoleController implements WorldController {
         if (Objects.equals(PlayerType.HUMAN_CONTROLLED, player.getType())) {
           while (true) {
             this.out.append(String.format(
-                "Please use the number below to select thea action for player [%s]\n\t1. move to a neighbor space.\n"
+                "Please use the number below to select thea action for player [%s]\n"
+                    + "\t1. move to a neighbor space.\n"
                     + "\t2. pick up a weapon in the space.\n\t3. look around the space.\n",
                 player.getName()));
             input = this.scan.nextLine().trim();
@@ -253,7 +254,8 @@ public class WorldConsoleController implements WorldController {
   private void displayPlayerSpaceDetail(Player player, World world) throws IOException {
     Space space = world.getSpace(player.getSpaceIndex());
     this.out.append(String.format(
-        "Player: [%s] is in space: [%s], players inside this space: %s, its neighbors: %s, weapons inside this space: %s\n",
+        "Player: [%s] is in space: [%s], players inside this space: %s,"
+            + " its neighbors: %s, weapons inside this space: %s\n",
         player.getName(), space.getName(),
         space.getOccupiers().stream().map(Player::getName).collect(Collectors.toList()),
         space.getNeighbors().stream().map(BaseSpace::getName).collect(Collectors.toList()),
@@ -283,13 +285,13 @@ public class WorldConsoleController implements WorldController {
    * @throws IOException          fail to write out stream
    */
   private void createPlayer(World world, int order) throws InterruptedException, IOException {
-    this.out.append(
-        "Please input the type of player to create:\n\t1. human-controlled\n\t2. computer-controlled\n\tq. quit creating\n");
+    this.out.append("Please input the type of player to create:\n"
+        + "\t1. human-controlled\n\t2. computer-controlled\n\tq. quit creating\n");
     String input = getInput();
-    PlayerType type = Integer.parseInt(input) == 1 ? PlayerType.HUMAN_CONTROLLED
+    final PlayerType type = Integer.parseInt(input) == 1 ? PlayerType.HUMAN_CONTROLLED
         : PlayerType.COMPUTER_CONTROLLED;
     this.out.append("Please input the name of player:\n");
-    String name = this.scan.nextLine();
+    final String name = this.scan.nextLine();
     this.out.append("Please input the space index that the player created at:\n");
     input = getNumberInput();
     int spaceIndex = Integer.parseInt(input);
