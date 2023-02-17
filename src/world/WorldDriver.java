@@ -16,6 +16,11 @@ import world.impl.WorldImpl;
  */
 public class WorldDriver {
 
+  /**
+   * main function.
+   * 
+   * @param args arguments
+   */
   public static void main(String[] args) {
     if (args.length == 0) {
       System.out.println("Please input valid world specification file address.");
