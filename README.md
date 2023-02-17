@@ -45,83 +45,127 @@
  1. Open the terminal line and navigate to the folder where the jar is located on your PC.
  2. Execute the following command:
 
-        java -jar WorldDriver.jar `input_file_name`
+        java -jar WorldDriver.jar `input_file_name` `turn_amount`
 
     Sample:
 
-        java -jar WorldDriver.jar mansion.txt
+        java -jar WorldDriver.jar mansion.txt 3
 
- The above command is going to take `mansion.txt` file as input world specification.
+ The above command is going to take `mansion.txt` file as input world specification, and specify that there are `3` rounds in the game.
 
- Then the program is going to print some instructions to guide you, eg
+ #Example Run
+ 
+ There are two example runs in the `res/example/` directory.
+ 
+ **Run 1**
 
-    Please use the order number below to select the function:
-        1. getAllSpaces
-        2. getNeighbors
-        3. getSpace
-        4. getTargetPosition
-        5. moveTarget
-        6. showGraphicalImage
-        7. exit
+ * Start the program with `mansion.txt` as the world specification and `3` as the turn amount.
+ 
+ * Create a human-controlled player, its name is `Adam`, its starting space index is `8`, it has unlimited weapon limit.
+ 
+ * Create a computer-controlled player, its name is `Eve`, its starting space index is `6`, its weapon limit is `2`.
+ 
+ * Creating a computer-controlled player failed due to repeated name, its name is `Eve`, its starting space index is `4`, its weapon limit is `2`.
+ 
+ * Quit player creation process.
+ 
+ * Display all the spaces in the world.
+ 
+ * Display the details of 2nd space in the world.
+ 
+ * Generate a graphical image at `res/` directory.
+ 
+ * Quit the program.
+ 
+ **Run 2**
 
- An input of number is required here.
+ * Start the program with `mansion.txt` as the world specification and `3` as the turn amount.
+ 
+ * Create a human-controlled player, its name is `Adam`, its starting space index is `8`, it has unlimited weapon limit.
+ 
+ * Create a human-controlled player, its name is `Eve`, its starting space index is `4`, its weapon limit is `2`.
+ 
+ * Create a computer-controlled player, its name is `Arthur`, its starting space index is `1`, its weapon limit is `4`.
 
- **getAllSpaces**
+ * Quit player creation process.
+ 
+ * Start the game.
+ 
+ * At each turn for the player, the player's detail is displayed.
+ 
+ * In the 1st turn, human-controlled player `Adam` picks up the weapon `Crepe Pan`.
+ 
+ * In the 1st turn, human-controlled player `Eve` fails to pick up the weapon `Trowel`, then picks up the weapon `Letter Opener`.
+ 
+ * In the 1st turn, computer-controlled player `Arthur` looks around the space.
+ 
+ * In the 2nd turn, human-controlled player `Adam` moves to a neighbor space `Wine Cellar`.
+ 
+ * In the 2nd turn, human-controlled player `Eve` moves to a neighbor space `Wine Cellar`.
+ 
+ * In the 2nd turn, computer-controlled player `Arthur` looks around the space.
+ 
+ * In the 3rd turn, human-controlled player `Adam` looks around the space.
+ 
+ * In the 3rd turn, human-controlled player `Eve` picks up the weapon `Rat Poison`.
+ 
+ * In the 3rd turn, computer-controlled player `Arthur` looks around the space.
+ 
+ * The game ends, each player's detail is displayed.
+ 
+ #Game Instructions
 
- Input `1` here, then the program is going to print all the spaces in the map:
+ The program is going to print some instructions to guide you
+ 
+ **Create Player**
 
-    The spaces: [Armory, Billiard Room, Carriage House, Dining Hall, Drawing Room, Foyer, Green House, Hedge Maze, Kitchen, Lancaster Room, Library, Lilac Room, Master Suite, Nursery, Parlor, Piazza, Servants' Quarters, Tennessee Room, Trophy Room, Wine Cellar, Winter Garden]
+ Select player type:
+ 
+    Please input the type of player to create:
+            1. human-controlled
+            2. computer-controlled
+            q. quit creating
 
- **getNeighbors**
+ Input player name:
 
- Input `2` here, then the program is going to require an input of space index, then the instruction is like below:
+    Please input the name of player:
 
-    Please input the index of space.
+ Input player space index:
 
- Input '4' as the index of space, then the program is going to print the neighbors of this space like below:
+    Please input the space index that the player created at:
+  
+ Input player weapon limit:
+ 
+    Please input the weapon limit of player, -1 indicates no limit:
+ 
+ **Game Menu** 
+ 
+    Please input the number below to select the function:
+            1. displayAllSpaces
+            2. displaySpaceDetail
+            3. displayGraphicalImage
+            4. startGame
+            q. exit
 
-    The neighbors of 2th space: [Armory, Dining Hall, Foyer, Wine Cellar]
-
- Input an invalid index eg `-1`, then the program is going to print an empty list like below:
-
-    The neighbors of -1th space: []
-
- **getSpace**
-
- Input '3' here, then the program is going to require an input of space index, then the instruction is like below:
-
-    Please input the index of space.
-
- Input `1` as the index of space, then the program is going to print the space info like below:
-
-    The space is Billiard Room, its neighbors: [Armory, Dining Hall, Trophy Room], weapons inside this space: [Billiard Cue]
-
- Input an invalid index eg `-1`, then the program is going to print response like below:
-
-    The space is null.
-
- **getTargetPosition**
-
- Input '4' here, then the program is going to print the name of target's current space like below:
-
-    The target is at space Armory.
-
- **moveTarget**
-
- Input `5` here, then the program is going to move the target to the next space and print the space name after move:
-
-    The target moves to space Billiard Room.
-
- **showGraphicalImage**
-
- Input `6` here, then the program is going to require an input of output directory like below:
-
+ Input space index:
+ 
+    Please input the space index:
+ 
+ Input image output directory:
+ 
     Please input the output directory:
-
- Input `./` as the output directory, then the program is going to generate a png file at `./` directory and print the status like below:
-
-    Graphical image has been generated, please check the ./ directory.
-
- **exit**
-
- Input `7` here, then the program is going to exit.
+ 
+ Player action selection:
+ 
+    Please use the number below to select thea action for player [Adam]
+            1. move to a neighbor space.
+            2. pick up a weapon in the space.
+            3. look around the space.
+ 
+ Input neighbor name:
+ 
+    Please input a neighbor space name from the neighbors: [Dining Hall, Parlor, Wine Cellar]
+ 
+ Input weapon name:
+ 
+    Please input a weapon name from the weapons: [Rat Poison, Piece of Rope]
