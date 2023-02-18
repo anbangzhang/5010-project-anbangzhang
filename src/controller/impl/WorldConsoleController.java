@@ -75,7 +75,9 @@ public class WorldConsoleController implements WorldController {
       /* add players */
       while (true) {
         try {
-          createPlayer(world, playerOrder++);
+          if (createPlayer(world, playerOrder) ){
+            playerOrder++;
+          }
         } catch (InterruptedException e) {
           break;
         }
@@ -281,10 +283,11 @@ public class WorldConsoleController implements WorldController {
    * 
    * @param world world
    * @param order player order
+   * @return create player successful
    * @throws InterruptedException quit game
    * @throws IOException          fail to write out stream
    */
-  private void createPlayer(World world, int order) throws InterruptedException, IOException {
+  private Boolean createPlayer(World world, int order) throws InterruptedException, IOException {
     this.out.append("Please input the type of player to create:\n"
         + "\t1. human-controlled\n\t2. computer-controlled\n\tq. quit creating\n");
     String input = getInput();
@@ -300,8 +303,10 @@ public class WorldConsoleController implements WorldController {
     Integer limit = Integer.parseInt(input) == -1 ? null : Integer.parseInt(input);
     if (!world.addPlayer(new BasePlayer(order, name, spaceIndex, type, limit))) {
       this.out.append("The name of player is repeated or the space index is invalid.\n");
+      return Boolean.FALSE;
     } else {
       this.out.append(String.format("Add player [%s] succeed.\n", name));
+      return Boolean.TRUE;
     }
   }
 
