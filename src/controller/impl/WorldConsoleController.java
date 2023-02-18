@@ -75,7 +75,7 @@ public class WorldConsoleController implements WorldController {
       /* add players */
       while (true) {
         try {
-          if (createPlayer(world, playerOrder) ){
+          if (createPlayer(world, playerOrder)) {
             playerOrder++;
           }
         } catch (InterruptedException e) {
