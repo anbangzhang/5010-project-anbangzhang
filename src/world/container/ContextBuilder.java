@@ -85,6 +85,8 @@ public class ContextBuilder {
     initNeighborMapAndSpaces(m, n, matrix, baseSpaces, context);
 
     context.setPlayers(new ArrayList<>());
+    context.setExposedSpaces(new HashSet<>());
+    context.setEvidences(new ArrayList<>());
 
     return context;
   }

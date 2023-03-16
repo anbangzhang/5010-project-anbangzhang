@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
@@ -140,6 +141,14 @@ public class SpaceTest {
     players.add(new BasePlayer(1, "player1", 0, PlayerType.COMPUTER_CONTROLLED, 2));
     ctx.setPlayers(players);
     Assert.assertEquals(2, space.getOccupiers().size());
+  }
+
+  @Test
+  public void testIsExposed() {
+    Assert.assertFalse(space.isExposed());
+    ctx.setExposedSpaces(new HashSet<>());
+    ctx.getExposedSpaces().add(space);
+    Assert.assertTrue(space.isExposed());
   }
 
 }
