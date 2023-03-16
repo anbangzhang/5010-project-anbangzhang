@@ -1,4 +1,4 @@
- #5010-project-anbangzhang
+ # 5010-project-anbangzhang
 
  name: Anbang Zhang
  
@@ -6,13 +6,13 @@
 
  email: zhang.anb@northeastern.edu
  
- #Project Introduction
+ # Project Introduction
 
  This project is the project of CS5010, and it's a board game that is loosely inspired by Doctor Lucky series of games.
  
  Running this project will create a graphical image of the world specified in the input txt file.
 
- #Input File Format
+ # Input File Format
 
  The input file specifies the world map in the following three sections, you can refer to the sample _/res/mansion.txt_.
   
@@ -39,7 +39,7 @@
      - the amount of damage the item could do if it was used to attack the target character
      - the name of the item
 
- #How to Run
+ # How to Run
 
  The Jar file can be executed with the following instructions:
  1. Open the terminal line and navigate to the folder where the jar is located on your PC.
@@ -53,7 +53,7 @@
 
  The above command is going to take `mansion.txt` file as input world specification, and specify that there are `3` rounds in the game.
 
- #Example Run
+ # Example Run
  
  There are two example runs in the `res/example/` directory.
  
@@ -113,7 +113,7 @@
  
  * The game ends, each player's detail is displayed.
  
- #Game Instructions
+ # Game Instructions
 
  The program is going to print some instructions to guide you
  
