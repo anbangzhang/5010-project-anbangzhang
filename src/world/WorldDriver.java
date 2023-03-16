@@ -43,6 +43,8 @@ public class WorldDriver {
       WorldController controller = new WorldConsoleController(in, System.out,
           Integer.parseInt(args[1]));
       controller.playGame(world);
+
+      ContextHolder.remove();
     } catch (FileNotFoundException e1) {
       System.out.println(String.format("File: %s doesn't exist.", args[0]));
     } catch (IOException e2) {

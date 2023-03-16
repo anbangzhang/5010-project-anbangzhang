@@ -30,4 +30,12 @@ public class ContextHolder {
   public static Context get() {
     return HOLDER.get();
   }
+
+  /**
+   * Clear.
+   */
+  public static void remove() {
+    HOLDER.remove();
+  }
+
 }
