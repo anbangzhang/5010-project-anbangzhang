@@ -20,7 +20,6 @@ import world.enums.PlayerType;
 import world.impl.WorldImpl;
 import world.model.Player;
 import world.model.Space;
-
 import static org.mockito.ArgumentMatchers.eq;
 
 /**

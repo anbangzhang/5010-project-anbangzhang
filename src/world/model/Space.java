@@ -1,7 +1,6 @@
 package world.model;
 
 import world.base.BaseWeapon;
-
 import java.util.List;
 
 /**
