@@ -45,20 +45,6 @@ public class BaseSpace implements Space {
   /**
    * Constructor of base space.
    * 
-   * @param baseSpace base space.
-   */
-  public BaseSpace(BaseSpace baseSpace) {
-    this.startX = baseSpace.startX;
-    this.startY = baseSpace.startY;
-    this.endX = baseSpace.endX;
-    this.endY = baseSpace.endY;
-    this.order = baseSpace.order;
-    this.name = baseSpace.name;
-  }
-
-  /**
-   * Constructor of base space.
-   * 
    * @param startX startX
    * @param startY startY
    * @param endX   endX

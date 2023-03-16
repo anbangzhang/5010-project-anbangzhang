@@ -46,7 +46,7 @@ public class BaseWeapon {
   }
 
   /**
-   * Get the space index..
+   * Get the space index.
    *
    * @return space index.
    */
