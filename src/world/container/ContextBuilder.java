@@ -30,7 +30,7 @@ public class ContextBuilder {
    * @return context
    * @throws IllegalArgumentException invalid input
    */
-  public static Context builder(Readable in) throws IllegalArgumentException {
+  public static Context build(Readable in) throws IllegalArgumentException {
     if (Objects.isNull(in)) {
       throw new IllegalArgumentException("Invalid input source.");
     }

@@ -35,7 +35,7 @@ public class WorldDriver {
     }
     try (FileReader fileReader = new FileReader(args[0])) {
 
-      Context context = ContextBuilder.builder(fileReader);
+      Context context = ContextBuilder.build(fileReader);
       ContextHolder.set(context);
 
       World world = new WorldImpl(context.getWorldName());

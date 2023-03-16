@@ -45,7 +45,7 @@ public class WorldTest {
     try {
       /* Construct world with file */
       Readable fileReader = new FileReader("./res/world specification/mansion.txt");
-      context = ContextBuilder.builder(fileReader);
+      context = ContextBuilder.build(fileReader);
       ContextHolder.set(context);
       world1 = new WorldImpl(context.getWorldName());
     } catch (FileNotFoundException e) {
@@ -56,7 +56,7 @@ public class WorldTest {
   @Test
   public void testConstructFail() {
     try {
-      Context ctx = ContextBuilder.builder(null);
+      Context ctx = ContextBuilder.build(null);
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Invalid input source.", e.getMessage());
     }
@@ -87,7 +87,7 @@ public class WorldTest {
     try {
       /* Invalid width. */
       Readable fileReader = new FileReader("./res/world specification/invalid width.txt");
-      context = ContextBuilder.builder(fileReader);
+      context = ContextBuilder.build(fileReader);
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
@@ -97,7 +97,7 @@ public class WorldTest {
     try {
       /* There is a space whose lower right corner coordinates are invalid. */
       Readable fileReader = new FileReader("./res/world specification/invalid coordinates.txt");
-      context = ContextBuilder.builder(fileReader);
+      context = ContextBuilder.build(fileReader);
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
@@ -107,7 +107,7 @@ public class WorldTest {
     try {
       /* There is a overlap in the spaces. */
       Readable fileReader = new FileReader("./res/world specification/overlap space.txt");
-      context = ContextBuilder.builder(fileReader);
+      context = ContextBuilder.build(fileReader);
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
@@ -117,7 +117,7 @@ public class WorldTest {
     try {
       /* There is a overlap in the spaces. */
       Readable fileReader = new FileReader("./res/world specification/invalid weapon.txt");
-      context = ContextBuilder.builder(fileReader);
+      context = ContextBuilder.build(fileReader);
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
@@ -247,7 +247,7 @@ public class WorldTest {
     try {
       /* Construct world with file */
       Readable fileReader = new FileReader("./res/world specification/MyWorld.txt");
-      context = ContextBuilder.builder(fileReader);
+      context = ContextBuilder.build(fileReader);
       ContextHolder.set(context);
       world1 = new WorldImpl(context.getWorldName());
     } catch (FileNotFoundException e) {

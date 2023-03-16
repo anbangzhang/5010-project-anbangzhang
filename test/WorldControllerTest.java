@@ -54,7 +54,7 @@ public class WorldControllerTest {
     try {
       /* Construct world with file */
       Readable fileReader = new FileReader("./res/world specification/mansion.txt");
-      context = ContextBuilder.builder(fileReader);
+      context = ContextBuilder.build(fileReader);
       ContextHolder.set(context);
       world = new WorldImpl(context.getWorldName());
     } catch (FileNotFoundException e) {
