@@ -49,4 +49,11 @@ public class WeaponTest {
   public void testGetDamage() {
     Assert.assertEquals(10, base.getDamage());
   }
+
+  @Test
+  public void testHolder() {
+    Assert.assertNull(base.getHolder());
+    base.setHolder("123");
+    Assert.assertEquals("123", base.getHolder());
+  }
 }
