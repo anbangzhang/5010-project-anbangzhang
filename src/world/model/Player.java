@@ -1,6 +1,7 @@
 package world.model;
 
 import java.util.List;
+import world.base.BaseWeapon;
 import world.enums.PlayerType;
 
 /**
@@ -59,12 +60,12 @@ public interface Player {
    * @param weapon weapon
    * @return success or fail
    */
-  Boolean addWeapon(Weapon weapon);
+  Boolean addWeapon(BaseWeapon weapon);
 
   /**
    * Get weapons.
    * 
    * @return weapons
    */
-  List<Weapon> getWeapons();
+  List<BaseWeapon> getWeapons();
 }

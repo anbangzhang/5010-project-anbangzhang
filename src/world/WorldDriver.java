@@ -6,6 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import world.container.Context;
+import world.container.ContextHolder;
+import world.container.ContextBuilder;
 import world.impl.WorldImpl;
 
 /**
@@ -31,7 +35,11 @@ public class WorldDriver {
       return;
     }
     try (FileReader fileReader = new FileReader(args[0])) {
-      World world = new WorldImpl(fileReader);
+
+      Context context = ContextBuilder.builder(fileReader);
+      ContextHolder.set(context);
+
+      World world = new WorldImpl(context.getWorldName());
       Readable in = new InputStreamReader(System.in);
       WorldController controller = new WorldConsoleController(in, System.out,
           Integer.parseInt(args[1]));

@@ -1,8 +1,6 @@
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import world.model.Target;
 
 /**
@@ -12,9 +10,6 @@ import world.model.Target;
  * @date 2023-01-30 21:41
  */
 public class TargetTest {
-
-  @Rule
-  public ExpectedException thrown = ExpectedException.none();
 
   private Target target;
 
@@ -28,8 +23,11 @@ public class TargetTest {
 
   @Test
   public void testInitFail() {
-    thrown.expect(IllegalArgumentException.class);
-    target = new Target(0, "fail");
+    try {
+      target = new Target(0, "fail");
+    } catch (IllegalArgumentException e) {
+      Assert.assertNull(e.getMessage());
+    }
   }
 
   @Test

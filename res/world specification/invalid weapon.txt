@@ -1,5 +1,6 @@
 36 30 Doctor Lucky's Mansion
 50 Doctor Lucky
+Fortune the Cat
 21
 22 19 23 26 Armory
 16 21 21 28 Billiard Room
@@ -23,7 +24,7 @@
 22  5 23 12 Wine Cellar
 30  6 35 11 Winter Garden
 20
-8 3 Crepe Pan
+-1 3 Crepe Pan
 4 2 Letter Opener
 12 2 Shoe Horn
 8 3 Sharp Knife

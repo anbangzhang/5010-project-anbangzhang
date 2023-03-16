@@ -1,5 +1,6 @@
-36 30 Doctor Lucky's Mansion
+36 0 Doctor Lucky's Mansion
 50 Doctor Lucky
+Fortune the Cat
 21
 22 19 23 26 Armory
 16 21 21 28 Billiard Room
@@ -15,7 +16,7 @@
  2  9  7 14 Lilac Room
  2 15  7 22 Master Suite
  0 23  3 28 Nursery
-10  5 17 13 Parlor
+10  5 15 10 Parlor
 28 12 35 19 Piazza
  6  3  9  8 Servants' Quarters
  8 11 11 20 Tennessee Room

@@ -1,5 +1,3 @@
-import controller.WorldController;
-import controller.impl.WorldConsoleController;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.StringReader;
@@ -11,12 +9,19 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import controller.WorldController;
+import controller.impl.WorldConsoleController;
 import world.World;
+import world.base.BaseWeapon;
+import world.container.Context;
+import world.container.ContextBuilder;
+import world.container.ContextHolder;
 import world.enums.PlayerType;
 import world.impl.WorldImpl;
 import world.model.Player;
 import world.model.Space;
-import world.model.Weapon;
+
+import static org.mockito.ArgumentMatchers.eq;
 
 /**
  * Test class for WorldController.
@@ -26,9 +31,11 @@ import world.model.Weapon;
  */
 public class WorldControllerTest {
 
-  private WorldController controller;
+  private Context context;
 
   private World world;
+
+  private WorldController controller;
 
   @Mock
   private World mockWorld;
@@ -47,8 +54,10 @@ public class WorldControllerTest {
     MockitoAnnotations.openMocks(this);
     try {
       /* Construct world with file */
-      Readable fileReader = new FileReader("./res/mansion.txt");
-      world = new WorldImpl(fileReader);
+      Readable fileReader = new FileReader("./res/world specification/mansion.txt");
+      context = ContextBuilder.builder(fileReader);
+      ContextHolder.set(context);
+      world = new WorldImpl(context.getWorldName());
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
@@ -136,13 +145,16 @@ public class WorldControllerTest {
   public void testWithMockModel() {
     Space space0 = Mockito.mock(Space.class);
     Space space1 = Mockito.mock(Space.class);
-    Weapon weapon = Mockito.mock(Weapon.class);
-    Mockito.when(mockWorld.addPlayer(Mockito.any(Player.class))).thenReturn(true, false, true);
-    Mockito.when(mockWorld.getAllPlayers()).thenReturn(Arrays.asList(mockPlayer1, mockPlayer2));
-    Mockito.when(mockWorld.getAllSpaces()).thenReturn(Arrays.asList("Space0", "Space1", "Space2"));
-    Mockito.when(mockWorld.getSpace(0)).thenReturn(space0);
-    Mockito.when(mockWorld.getSpace(1)).thenReturn(space1);
-    Mockito.when(mockWorld.getSpace("Space1")).thenReturn(space1);
+    BaseWeapon weapon = Mockito.mock(BaseWeapon.class);
+    Mockito.when(mockWorld.addPlayer(Mockito.any(Context.class), Mockito.any(Player.class)))
+        .thenReturn(true, false, true);
+    Mockito.when(mockWorld.getAllPlayers(Mockito.any(Context.class)))
+        .thenReturn(Arrays.asList(mockPlayer1, mockPlayer2));
+    Mockito.when(mockWorld.getAllSpaces(Mockito.any(Context.class)))
+        .thenReturn(Arrays.asList("Space0", "Space1", "Space2"));
+    Mockito.when(mockWorld.getSpace(Mockito.any(Context.class), eq(0))).thenReturn(space0);
+    Mockito.when(mockWorld.getSpace(Mockito.any(Context.class), eq(1))).thenReturn(space1);
+    Mockito.when(mockWorld.getSpace(Mockito.any(Context.class), eq("Space1"))).thenReturn(space1);
     Mockito.when(space0.getName()).thenReturn("Space0");
     Mockito.when(space0.getNeighbors()).thenReturn(Arrays.asList(space1));
     Mockito.when(space0.getWeapons()).thenReturn(Arrays.asList(weapon));

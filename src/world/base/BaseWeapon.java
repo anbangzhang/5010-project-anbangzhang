@@ -24,15 +24,9 @@ public class BaseWeapon {
   private String name;
 
   /**
-   * Constructor of base weapon.
-   * 
-   * @param base base weapon
+   * Holder, it can be space name or player name.
    */
-  public BaseWeapon(BaseWeapon base) {
-    this.space = base.space;
-    this.damage = base.damage;
-    this.name = base.name;
-  }
+  private String holder;
 
   /**
    * Constructor of base weapon.
@@ -52,12 +46,30 @@ public class BaseWeapon {
   }
 
   /**
-   * Get the space index.
-   * 
-   * @return space index
+   * Get the space index..
+   *
+   * @return space index.
    */
   public int getSpaceIndex() {
     return this.space;
+  }
+
+  /**
+   * Set the holder.
+   * 
+   * @param holder holder
+   */
+  public void setHolder(String holder) {
+    this.holder = holder;
+  }
+
+  /**
+   * Get the holder.
+   * 
+   * @return holder
+   */
+  public String getHolder() {
+    return this.holder;
   }
 
   /**

@@ -1,16 +1,18 @@
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import world.base.BasePlayer;
 import world.base.BaseSpace;
 import world.base.BaseWeapon;
+import world.container.Context;
+import world.container.ContextHolder;
 import world.enums.PlayerType;
 import world.model.Player;
 import world.model.Space;
-import world.model.Weapon;
 
 /**
  * Test class for BaseSpace and Space.
@@ -20,9 +22,9 @@ import world.model.Weapon;
  */
 public class SpaceTest {
 
-  private BaseSpace base;
-
   private Space space;
+
+  private Context ctx;
 
   /**
    * Set up baseSpace and space.
@@ -30,9 +32,20 @@ public class SpaceTest {
   @Before
   public void setUp() {
     List<BaseSpace> baseSpaces = initNeighbors();
-    base = new BaseSpace(1, 1, 2, 2, 0, "base");
-    space = new Space(base, baseSpaces, Arrays.asList(new Weapon(new BaseWeapon(0, 2, "weapon0")),
-        new Weapon(new BaseWeapon(0, 3, "weapon1"))));
+    space = new BaseSpace(1, 1, 2, 2, 0, "space");
+    ctx = new Context();
+    ctx.setNeighborMap(new HashMap<>());
+    ctx.getNeighborMap().put((BaseSpace) space, baseSpaces);
+
+    ctx.setWeapons(new ArrayList<>());
+    BaseWeapon w1 = new BaseWeapon(0, 2, "weapon0");
+    w1.setHolder("space: space");
+    BaseWeapon w2 = new BaseWeapon(0, 3, "weapon1");
+    w2.setHolder("space: space");
+    ctx.getWeapons().add(w1);
+    ctx.getWeapons().add(w2);
+
+    ContextHolder.set(ctx);
   }
 
   private List<BaseSpace> initNeighbors() {
@@ -45,37 +58,37 @@ public class SpaceTest {
   @Test
   public void testInitFail() {
     try {
-      base = new BaseSpace(-1, 0, 1, 1, 0, "fail");
+      space = new BaseSpace(-1, 0, 1, 1, 0, "fail");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Invalid coordinates.", e.getMessage());
     }
     try {
-      base = new BaseSpace(0, -10, 1, 1, 0, "fail");
+      space = new BaseSpace(0, -10, 1, 1, 0, "fail");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Invalid coordinates.", e.getMessage());
     }
     try {
-      base = new BaseSpace(0, 0, -1, 1, 0, "fail");
+      space = new BaseSpace(0, 0, -1, 1, 0, "fail");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Invalid coordinates.", e.getMessage());
     }
     try {
-      base = new BaseSpace(0, 0, 1, -1, 0, "fail");
+      space = new BaseSpace(0, 0, 1, -1, 0, "fail");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Invalid coordinates.", e.getMessage());
     }
     try {
-      base = new BaseSpace(10, 10, 3, 30, 0, "fail");
+      space = new BaseSpace(10, 10, 3, 30, 0, "fail");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Invalid coordinates.", e.getMessage());
     }
     try {
-      base = new BaseSpace(10, 10, 15, 1, 0, "fail");
+      space = new BaseSpace(10, 10, 15, 1, 0, "fail");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Invalid coordinates.", e.getMessage());
     }
     try {
-      base = new BaseSpace(10, 10, 15, 18, -1, "fail");
+      space = new BaseSpace(10, 10, 15, 18, -1, "fail");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Invalid order.", e.getMessage());
     }
@@ -83,75 +96,50 @@ public class SpaceTest {
 
   @Test
   public void testGetName() {
-    Assert.assertEquals("base", base.getName());
-    Assert.assertEquals("base", space.getName());
+    Assert.assertEquals("space", space.getName());
   }
 
   @Test
   public void testGetStart() {
-    int[] start = base.getStart();
-    Assert.assertEquals(1, start[0]);
-    Assert.assertEquals(1, start[1]);
-    start = space.getStart();
+    BaseSpace baseSpace = (BaseSpace) space;
+    int[] start = baseSpace.getStart();
     Assert.assertEquals(1, start[0]);
     Assert.assertEquals(1, start[1]);
   }
 
   @Test
   public void testGetEnd() {
-    int[] end = base.getEnd();
-    Assert.assertEquals(2, end[0]);
-    Assert.assertEquals(2, end[1]);
-    end = space.getEnd();
+    BaseSpace baseSpace = (BaseSpace) space;
+    int[] end = baseSpace.getEnd();
     Assert.assertEquals(2, end[0]);
     Assert.assertEquals(2, end[1]);
   }
 
   @Test
   public void testGetOrder() {
-    Assert.assertEquals(0, base.getOrder());
     Assert.assertEquals(0, space.getOrder());
   }
 
   @Test
   public void testNeighbors() {
-    List<BaseSpace> neighbors = space.getNeighbors();
+    List<Space> neighbors = space.getNeighbors();
     Assert.assertEquals(2, neighbors.size());
-    List<BaseSpace> list = new ArrayList<>(neighbors);
-    list.add(new BaseSpace(0, 2, 2, 3, 3, "b3"));
-    space.setNeighbors(list);
-    Assert.assertEquals(3, space.getNeighbors().size());
-    Assert.assertEquals("b3", space.getNeighbors().get(2).getName());
-
-    space.setNeighbors(new ArrayList<>());
-    Assert.assertEquals(0, space.getNeighbors().size());
-
-    list.removeAll(neighbors);
-    space.setNeighbors(list);
-    Assert.assertEquals(1, space.getNeighbors().size());
   }
 
   @Test
   public void testWeapons() {
-    List<Weapon> weapons = space.getWeapons();
+    List<BaseWeapon> weapons = space.getWeapons();
     Assert.assertEquals(2, weapons.size());
-    List<Weapon> list = new ArrayList<>(weapons);
-    list.remove(1);
-    space.setWeapons(list);
-    Assert.assertEquals(1, space.getWeapons().size());
-    Assert.assertEquals("weapon0", space.getWeapons().get(0).getName());
-    list.remove(0);
-    space.setWeapons(list);
-    Assert.assertEquals(0, space.getWeapons().size());
   }
 
   @Test
   public void testOccupiers() {
+    Assert.assertEquals(0, space.getOccupiers().size());
+
     List<Player> players = new ArrayList<>();
     players.add(new BasePlayer(0, "player0", 0, PlayerType.HUMAN_CONTROLLED, 4));
     players.add(new BasePlayer(1, "player1", 0, PlayerType.COMPUTER_CONTROLLED, 2));
-    Assert.assertEquals(0, space.getOccupiers().size());
-    space.setOccupiers(players);
+    ctx.setPlayers(players);
     Assert.assertEquals(2, space.getOccupiers().size());
   }
 

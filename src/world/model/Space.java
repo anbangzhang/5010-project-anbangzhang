@@ -1,106 +1,57 @@
 package world.model;
 
-import java.util.ArrayList;
+import world.base.BaseWeapon;
+
 import java.util.List;
-import java.util.stream.Collectors;
-import world.base.BaseSpace;
 
 /**
- * Space class.
+ * Space.
  * 
  * @author anbang
- * @date 2023-01-28 22:41
+ * @date 2023-03-15 23:20
  */
-public class Space extends BaseSpace {
+public interface Space {
 
   /**
-   * Neighbors of space.
+   * Get name.
+   * 
+   * @return name
    */
-  private List<BaseSpace> neighbors;
+  String getName();
 
   /**
-   * Weapons in the space.
-   */
-  private List<Weapon> weapons;
-
-  /**
-   * Players in the space.
-   */
-  private List<Player> occupiers;
-
-  /**
-   * Constructor of space.
+   * Getter of order.
    *
-   * @param baseSpace base space
-   * @param neighbors neighbors
-   * @param weapons   weapons
+   * @return order
    */
-  public Space(BaseSpace baseSpace, List<BaseSpace> neighbors, List<Weapon> weapons) {
-    super(baseSpace);
-    this.neighbors = neighbors;
-    this.weapons = weapons;
-    this.occupiers = new ArrayList<>();
-  }
+  int getOrder();
 
   /**
    * Get neighbors.
    * 
    * @return neighbors
    */
-  public List<BaseSpace> getNeighbors() {
-    return this.neighbors;
-  }
+  List<Space> getNeighbors();
 
   /**
-   * Set neighbors.
+   * Get occupiers.
    * 
-   * @param neighbors neighbors
+   * @return occupiers
    */
-  public void setNeighbors(List<BaseSpace> neighbors) {
-    this.neighbors = neighbors;
-  }
+  List<Player> getOccupiers();
 
   /**
    * Get weapons.
    * 
    * @return weapons
    */
-  public List<Weapon> getWeapons() {
-    return this.weapons;
-  }
+  List<BaseWeapon> getWeapons();
 
   /**
-   * Set Weapons.
+   * Is exposed.
    * 
-   * @param weapons weapons
+   * @return is visible
    */
-  public void setWeapons(List<Weapon> weapons) {
-    this.weapons = weapons;
-  }
+  Boolean isExposed();
 
-  /**
-   * Get occupiers.
-   *
-   * @return occupiers
-   */
-  public List<Player> getOccupiers() {
-    return this.occupiers;
-  }
-
-  /**
-   * Set occupiers.
-   *
-   * @param occupiers occupiers
-   */
-  public void setOccupiers(List<Player> occupiers) {
-    this.occupiers = occupiers;
-  }
-
-  @Override
-  public String toString() {
-    return String.format("Space: [%s], neighbors: %s, weapons: %s, occupies: %s", getName(),
-        neighbors.stream().map(BaseSpace::getName).collect(Collectors.toList()),
-        weapons.stream().map(Weapon::getName).collect(Collectors.toList()),
-        occupiers.stream().map(Player::getName).collect(Collectors.toList()));
-  }
 }

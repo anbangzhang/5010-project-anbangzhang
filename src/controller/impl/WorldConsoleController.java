@@ -1,19 +1,21 @@
 package controller.impl;
 
-import controller.WorldController;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+
+import controller.WorldController;
 import world.World;
 import world.base.BasePlayer;
-import world.base.BaseSpace;
+import world.base.BaseWeapon;
+import world.container.Context;
+import world.container.ContextHolder;
 import world.enums.PlayerType;
 import world.exception.BusinessException;
 import world.model.Player;
 import world.model.Space;
-import world.model.Weapon;
 
 /**
  * WorldConsoleController class.
@@ -70,19 +72,20 @@ public class WorldConsoleController implements WorldController {
     if (Objects.isNull(world)) {
       throw new IllegalArgumentException("invalid world model");
     }
+    Context context = ContextHolder.get();
     try {
       int playerOrder = 0;
       /* add players */
       while (true) {
         try {
-          if (createPlayer(world, playerOrder)) {
+          if (createPlayer(context, world, playerOrder)) {
             playerOrder++;
           }
         } catch (InterruptedException e) {
           break;
         }
       }
-      List<Player> players = world.getAllPlayers();
+      List<Player> players = world.getAllPlayers(context);
       this.out.append(String.format("All the players in the game: %s\n",
           players.stream().map(Player::getName).collect(Collectors.toList())));
 
@@ -96,12 +99,12 @@ public class WorldConsoleController implements WorldController {
           int select = Integer.parseInt(selection);
           /* displayAllSpaces */
           if (select == 1) {
-            this.out.append(String.format("The spaces: %s\n", world.getAllSpaces()));
+            this.out.append(String.format("The spaces: %s\n", world.getAllSpaces(context)));
             /* displaySpaceDetail */
           } else if (select == 2) {
             this.out.append("Please input the space index:\n");
             selection = getNumberInput();
-            Space space = world.getSpace(Integer.parseInt(selection));
+            Space space = world.getSpace(context, Integer.parseInt(selection));
             if (Objects.nonNull(space)) {
               this.out.append(String.format("%s\n", space.toString()));
             } else {
@@ -111,12 +114,12 @@ public class WorldConsoleController implements WorldController {
           } else if (select == 3) {
             this.out.append("Please input the output directory:\n");
             selection = this.scan.nextLine().trim();
-            world.showGraphicalImage(selection);
+            world.showGraphicalImage(context, selection);
             this.out.append(String.format(
                 "Graphical Image generation succeed, please check %s directory\n", selection));
             /* startGame */
           } else if (select == 4) {
-            start(world);
+            start(context, world);
             break;
           } else {
             this.out.append("Invalid selection.\n");
@@ -133,19 +136,20 @@ public class WorldConsoleController implements WorldController {
   /**
    * Start the game.
    * 
+   * @param ctx   context
    * @param world world
    * @throws IOException output fail
    */
-  private void start(World world) throws IOException {
+  private void start(Context ctx, World world) throws IOException {
     this.out.append("\nGame start.\n");
-    List<Player> players = world.getAllPlayers();
+    List<Player> players = world.getAllPlayers(ctx);
     String input = "";
     for (int i = 0; i < this.turn; i++) {
       this.out.append(String.format("\nThis is the %dth turn of game.\n", i + 1));
       for (Player player : players) {
         this.out.append(
             String.format("This is the %dth turn for player [%s].\n", i + 1, player.getName()));
-        displayPlayerDetail(player, world);
+        displayPlayerDetail(ctx, player, world);
 
         if (Objects.equals(PlayerType.HUMAN_CONTROLLED, player.getType())) {
           while (true) {
@@ -156,15 +160,15 @@ public class WorldConsoleController implements WorldController {
                 player.getName()));
             input = this.scan.nextLine().trim();
             int action = Integer.parseInt(input);
-            Space cur = world.getSpace(player.getSpaceIndex());
+            Space cur = world.getSpace(ctx, player.getSpaceIndex());
             /* move the player */
             if (action == 1) {
               this.out.append(String.format(
-                  "Please input a neighbor space name from the neighbors: %s\n", cur.getNeighbors()
-                      .stream().map(BaseSpace::getName).collect(Collectors.toList())));
+                  "Please input a neighbor space name from the neighbors: %s\n",
+                  cur.getNeighbors().stream().map(Space::getName).collect(Collectors.toList())));
               input = this.scan.nextLine().trim();
               try {
-                movePlayer(player, cur, input, world);
+                movePlayer(ctx, player, cur, input, world);
                 break;
               } catch (BusinessException e) {
                 this.out.append(String.format("Player [%s] move to space [%s] failed, cause: %s\n",
@@ -173,7 +177,7 @@ public class WorldConsoleController implements WorldController {
               /* pick up a weapon */
             } else if (action == 2) {
               this.out.append(String.format("Please input a weapon name from the weapons: %s\n",
-                  cur.getWeapons().stream().map(Weapon::getName).collect(Collectors.toList())));
+                  cur.getWeapons().stream().map(BaseWeapon::getName).collect(Collectors.toList())));
               input = this.scan.nextLine().trim();
               try {
                 pickUp(player, cur, input, world);
@@ -184,25 +188,26 @@ public class WorldConsoleController implements WorldController {
               }
               /* look around */
             } else if (action == 3) {
-              displayPlayerSpaceDetail(player, world);
+              displayPlayerSpaceDetail(ctx, player, world);
               break;
             }
           }
         } else {
           /* show player's detail */
-          displayPlayerSpaceDetail(player, world);
+          displayPlayerSpaceDetail(ctx, player, world);
         }
       }
     }
     this.out.append("\nGame end.\n");
     for (Player player : players) {
-      displayPlayerDetail(player, world);
+      displayPlayerDetail(ctx, player, world);
     }
   }
 
   /**
    * Move a player to a neighbor space.
    * 
+   * @param ctx      context
    * @param player   player
    * @param cur      current space
    * @param neighbor neighbor name
@@ -210,13 +215,13 @@ public class WorldConsoleController implements WorldController {
    * @throws BusinessException move fail
    * @throws IOException       output fail
    */
-  private void movePlayer(Player player, Space cur, String neighbor, World world)
+  private void movePlayer(Context ctx, Player player, Space cur, String neighbor, World world)
       throws BusinessException, IOException {
     if (cur.getNeighbors().stream().noneMatch(item -> neighbor.equals(item.getName()))) {
       throw new BusinessException(
           String.format("Space %s is not a neighbor of player's current space.", neighbor));
     } else {
-      Space next = world.getSpace(neighbor);
+      Space next = world.getSpace(ctx, neighbor);
       world.movePlayer(player, next);
       this.out.append(
           String.format("Player [%s] move to space [%s] succeed.\n", player.getName(), neighbor));
@@ -235,8 +240,8 @@ public class WorldConsoleController implements WorldController {
    */
   private void pickUp(Player player, Space cur, String weapon, World world)
       throws BusinessException, IOException {
-    Weapon w = cur.getWeapons().stream().filter(item -> weapon.equals(item.getName())).findFirst()
-        .orElse(null);
+    BaseWeapon w = cur.getWeapons().stream().filter(item -> weapon.equals(item.getName()))
+        .findFirst().orElse(null);
     if (Objects.isNull(w)) {
       throw new BusinessException(String.format("Weapon %s is not in current space.", weapon));
     } else {
@@ -249,45 +254,50 @@ public class WorldConsoleController implements WorldController {
   /**
    * Display player's space detail.
    * 
+   * @param ctx    context
    * @param player player
    * @param world  world
    * @throws IOException output fail
    */
-  private void displayPlayerSpaceDetail(Player player, World world) throws IOException {
-    Space space = world.getSpace(player.getSpaceIndex());
+  private void displayPlayerSpaceDetail(Context ctx, Player player, World world)
+      throws IOException {
+    Space space = world.getSpace(ctx, player.getSpaceIndex());
     this.out.append(String.format(
         "Player: [%s] is in space: [%s], players inside this space: %s,"
             + " its neighbors: %s, weapons inside this space: %s\n",
         player.getName(), space.getName(),
         space.getOccupiers().stream().map(Player::getName).collect(Collectors.toList()),
-        space.getNeighbors().stream().map(BaseSpace::getName).collect(Collectors.toList()),
-        space.getWeapons().stream().map(Weapon::getName).collect(Collectors.toList())));
+        space.getNeighbors().stream().map(Space::getName).collect(Collectors.toList()),
+        space.getWeapons().stream().map(BaseWeapon::getName).collect(Collectors.toList())));
   }
 
   /**
    * Display player's detail.
    * 
+   * @param ctx    context
    * @param player player
    * @param world  world
    * @throws IOException output fail
    */
-  private void displayPlayerDetail(Player player, World world) throws IOException {
-    Space space = world.getSpace(player.getSpaceIndex());
+  private void displayPlayerDetail(Context ctx, Player player, World world) throws IOException {
+    Space space = world.getSpace(ctx, player.getSpaceIndex());
     this.out.append(String.format("Player: [%s] is in space: [%s], carrying weapons: %s\n",
         player.getName(), space.getName(),
-        player.getWeapons().stream().map(Weapon::getName).collect(Collectors.toList())));
+        player.getWeapons().stream().map(BaseWeapon::getName).collect(Collectors.toList())));
   }
 
   /**
    * Create player from user input.
    * 
+   * @param ctx   context
    * @param world world
    * @param order player order
    * @return create player successful
    * @throws InterruptedException quit game
    * @throws IOException          fail to write out stream
    */
-  private Boolean createPlayer(World world, int order) throws InterruptedException, IOException {
+  private Boolean createPlayer(Context ctx, World world, int order)
+      throws InterruptedException, IOException {
     this.out.append("Please input the type of player to create:\n"
         + "\t1. human-controlled\n\t2. computer-controlled\n\tq. quit creating\n");
     String input = getInput();
@@ -301,7 +311,7 @@ public class WorldConsoleController implements WorldController {
     this.out.append("Please input the weapon limit of player, -1 indicates no limit:\n");
     input = getNumberInput();
     Integer limit = Integer.parseInt(input) == -1 ? null : Integer.parseInt(input);
-    if (!world.addPlayer(new BasePlayer(order, name, spaceIndex, type, limit))) {
+    if (!world.addPlayer(ctx, new BasePlayer(order, name, spaceIndex, type, limit))) {
       this.out.append("The name of player is repeated or the space index is invalid.\n");
       return Boolean.FALSE;
     } else {

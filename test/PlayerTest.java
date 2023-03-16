@@ -1,11 +1,15 @@
+import java.util.ArrayList;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 import world.base.BasePlayer;
 import world.base.BaseWeapon;
+import world.container.Context;
+import world.container.ContextHolder;
 import world.enums.PlayerType;
 import world.model.Player;
-import world.model.Weapon;
 
 /**
  * Test class for player.
@@ -73,14 +77,23 @@ public class PlayerTest {
 
   @Test
   public void testWeapons() {
+    Context context = new Context();
+    context.setWeapons(new ArrayList<>());
+    ContextHolder.set(context);
     for (int i = 0; i < 3; i++) {
-      Weapon w = new Weapon(new BaseWeapon(i, i + 1, String.valueOf(i)));
-      humanPlayer.addWeapon(w);
-      computerPlayer.addWeapon(w);
+      BaseWeapon w1 = new BaseWeapon(i, i + 1, String.valueOf(i));
+      humanPlayer.addWeapon(w1);
+      w1.setHolder(String.format("player: %s", humanPlayer.getName()));
+      context.getWeapons().add(w1);
+
+      BaseWeapon w2 = new BaseWeapon(i, i + 1, String.valueOf(i + 10));
+      computerPlayer.addWeapon(w2);
+      w2.setHolder(String.format("player: %s", computerPlayer.getName()));
+      context.getWeapons().add(w2);
     }
     Assert.assertEquals(3, humanPlayer.getWeapons().size());
     Assert.assertEquals(3, computerPlayer.getWeapons().size());
-    Weapon w = new Weapon(new BaseWeapon(4, 5, "4"));
+    BaseWeapon w = new BaseWeapon(4, 5, "4");
     Assert.assertFalse(humanPlayer.addWeapon(w));
     Assert.assertTrue(computerPlayer.addWeapon(w));
   }

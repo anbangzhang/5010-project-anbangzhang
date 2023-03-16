@@ -1,11 +1,13 @@
 package world.base;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+
+import world.container.Context;
+import world.container.ContextHolder;
 import world.enums.PlayerType;
 import world.model.Player;
-import world.model.Weapon;
 
 /**
  * BasePlayer class.
@@ -35,10 +37,6 @@ public class BasePlayer implements Player {
    * Weapon limit.
    */
   private Integer weaponLimit;
-  /**
-   * Weapons.
-   */
-  private List<Weapon> weapons;
 
   /**
    * Constructor.
@@ -58,7 +56,6 @@ public class BasePlayer implements Player {
     this.spaceIndex = spaceIndex;
     this.type = type;
     this.weaponLimit = weaponLimit;
-    this.weapons = new ArrayList<>();
   }
 
   /**
@@ -128,13 +125,12 @@ public class BasePlayer implements Player {
    * @return success or fail
    */
   @Override
-  public Boolean addWeapon(Weapon weapon) {
+  public Boolean addWeapon(BaseWeapon weapon) {
+    List<BaseWeapon> weapons = getWeapons();
     if (Objects.nonNull(this.weaponLimit)) {
-      if (this.weapons.size() == this.weaponLimit) {
-        return false;
-      }
+      return weapons.size() != this.weaponLimit;
     }
-    return this.weapons.add(weapon);
+    return true;
   }
 
   /**
@@ -143,7 +139,12 @@ public class BasePlayer implements Player {
    * @return weapons
    */
   @Override
-  public List<Weapon> getWeapons() {
-    return this.weapons;
+  public List<BaseWeapon> getWeapons() {
+    Context ctx = ContextHolder.get();
+    return ctx.getWeapons().stream()
+        .filter(
+            weapon -> Objects.equals(weapon.getHolder(), String.format("player: %s", this.name)))
+        .collect(Collectors.toList());
   }
+
 }

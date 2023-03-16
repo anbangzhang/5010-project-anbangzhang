@@ -13,46 +13,41 @@ import world.World;
 import world.base.BasePlayer;
 import world.base.BaseSpace;
 import world.base.BaseWeapon;
+import world.container.Context;
+import world.container.ContextBuilder;
+import world.container.ContextHolder;
 import world.enums.PlayerType;
 import world.exception.BusinessException;
 import world.impl.WorldImpl;
 import world.model.Player;
 import world.model.Space;
-import world.model.Target;
-import world.model.Weapon;
 
 /**
  * Test class of world.
- * 
+ *
  * @author anbang
  * @date 2023-01-29 03:40
  */
 public class WorldTest {
 
-  private Target target;
-
   private List<BaseSpace> baseSpaces;
 
-  private List<BaseWeapon> baseWeapons;
+  private Context context;
 
   private World world1;
-
-  private World world2;
 
   /**
    * Set up the world variables.
    */
   @Before
   public void setUp() {
-    target = new Target(50, "Doctor Lucky");
     baseSpaces = initSpaces();
-    baseWeapons = initWeapons();
-    /* Construct world with java objects */
-    world1 = new WorldImpl(36, 30, "Doctor Lucky's Mansion", target, baseSpaces, baseWeapons);
     try {
       /* Construct world with file */
-      Readable fileReader = new FileReader("./res/mansion.txt");
-      world2 = new WorldImpl(fileReader);
+      Readable fileReader = new FileReader("./res/world specification/mansion.txt");
+      context = ContextBuilder.builder(fileReader);
+      ContextHolder.set(context);
+      world1 = new WorldImpl(context.getWorldName());
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
@@ -61,7 +56,7 @@ public class WorldTest {
   @Test
   public void testConstructFail() {
     try {
-      world1 = new WorldImpl(null);
+      Context ctx = ContextBuilder.builder(null);
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Invalid input source.", e.getMessage());
     }
@@ -91,8 +86,8 @@ public class WorldTest {
   private void constructWithInvalidWidth() {
     try {
       /* Invalid width. */
-      Readable fileReader = new FileReader("./res/invalid width.txt");
-      world1 = new WorldImpl(fileReader);
+      Readable fileReader = new FileReader("./res/world specification/invalid width.txt");
+      context = ContextBuilder.builder(fileReader);
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
@@ -101,8 +96,8 @@ public class WorldTest {
   private void constructWithInvalidCoordinates() {
     try {
       /* There is a space whose lower right corner coordinates are invalid. */
-      Readable fileReader = new FileReader("./res/invalid coordinates.txt");
-      world1 = new WorldImpl(fileReader);
+      Readable fileReader = new FileReader("./res/world specification/invalid coordinates.txt");
+      context = ContextBuilder.builder(fileReader);
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
@@ -111,8 +106,8 @@ public class WorldTest {
   private void constructWithOverlapSpace() {
     try {
       /* There is a overlap in the spaces. */
-      Readable fileReader = new FileReader("./res/overlap space.txt");
-      world1 = new WorldImpl(fileReader);
+      Readable fileReader = new FileReader("./res/world specification/overlap space.txt");
+      context = ContextBuilder.builder(fileReader);
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
@@ -121,8 +116,8 @@ public class WorldTest {
   private void constructWithInvalidWeapon() {
     try {
       /* There is a overlap in the spaces. */
-      Readable fileReader = new FileReader("./res/invalid weapon.txt");
-      world1 = new WorldImpl(fileReader);
+      Readable fileReader = new FileReader("./res/world specification/invalid weapon.txt");
+      context = ContextBuilder.builder(fileReader);
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
@@ -131,20 +126,20 @@ public class WorldTest {
   @Test
   public void testGetAllSpaces() {
     Assert.assertEquals(baseSpaces.stream().map(BaseSpace::getName).collect(Collectors.toList()),
-        world1.getAllSpaces());
+        world1.getAllSpaces(context));
     Assert.assertEquals(baseSpaces.stream().map(BaseSpace::getName).collect(Collectors.toList()),
-        world2.getAllSpaces());
+        world1.getAllSpaces(context));
   }
 
   @Test
   public void testGetTargetPosition() {
     /* Get the space that target is in */
-    Assert.assertEquals(0, world1.getTargetPosition().getOrder());
-    Assert.assertEquals(baseSpaces.get(0).getName(), world1.getTargetPosition().getName());
+    Assert.assertEquals(0, world1.getTargetPosition(context).getOrder());
+    Assert.assertEquals(baseSpaces.get(0).getName(), world1.getTargetPosition(context).getName());
 
     /* Get the space that target is in */
-    Assert.assertEquals(0, world2.getTargetPosition().getOrder());
-    Assert.assertEquals(baseSpaces.get(0).getName(), world2.getTargetPosition().getName());
+    Assert.assertEquals(0, world1.getTargetPosition(context).getOrder());
+    Assert.assertEquals(baseSpaces.get(0).getName(), world1.getTargetPosition(context).getName());
   }
 
   @Test
@@ -152,23 +147,13 @@ public class WorldTest {
     int n = baseSpaces.size();
     for (int i = 0; i < n - 1; i++) {
       /* Target move from i to i + 1 space */
-      Space space = world1.moveTarget();
-      Assert.assertEquals(i + 1, space.getOrder());
-      Assert.assertEquals(baseSpaces.get(i + 1).getName(), space.getName());
-
-      /* Target move from i to i + 1 space */
-      space = world2.moveTarget();
+      Space space = world1.moveTarget(context);
       Assert.assertEquals(i + 1, space.getOrder());
       Assert.assertEquals(baseSpaces.get(i + 1).getName(), space.getName());
     }
 
     /* Target move from the last space to 0th space */
-    Space space = world1.moveTarget();
-    Assert.assertEquals(0, space.getOrder());
-    Assert.assertEquals(baseSpaces.get(0).getName(), space.getName());
-
-    /* Target move from the last space to 0th space */
-    world2.moveTarget();
+    Space space = world1.moveTarget(context);
     Assert.assertEquals(0, space.getOrder());
     Assert.assertEquals(baseSpaces.get(0).getName(), space.getName());
   }
@@ -176,7 +161,7 @@ public class WorldTest {
   @Test
   public void testShowGraphicalImage() {
     try {
-      world2.showGraphicalImage("res/");
+      world1.showGraphicalImage(context, "res/");
       File file = new File("res/Doctor Lucky's Mansion.png");
       Assert.assertTrue(file.exists());
     } catch (IOException e) {
@@ -188,126 +173,128 @@ public class WorldTest {
   public void testGetSpace() {
     for (int i = 0; i < baseSpaces.size(); i++) {
       /* Get the space with valid space name */
-      Assert.assertEquals(baseSpaces.get(i).getName(), world1.getSpace(i).getName());
+      Assert.assertEquals(baseSpaces.get(i).getName(), world1.getSpace(context, i).getName());
       Assert.assertEquals(baseSpaces.get(i).getName(),
-          world1.getSpace(baseSpaces.get(i).getName()).getName());
+          world1.getSpace(context, baseSpaces.get(i).getName()).getName());
 
       /* Get the space with valid index */
-      Assert.assertEquals(baseSpaces.get(i).getName(), world2.getSpace(i).getName());
+      Assert.assertEquals(baseSpaces.get(i).getName(), world1.getSpace(context, i).getName());
       Assert.assertEquals(baseSpaces.get(i).getName(),
-          world2.getSpace(baseSpaces.get(i).getName()).getName());
+          world1.getSpace(context, baseSpaces.get(i).getName()).getName());
 
       if (baseSpaces.get(i).getName().equals("Kitchen")) {
-        Space space = world1.getSpace("Kitchen");
+        Space space = world1.getSpace(context, "Kitchen");
         /* Check weapons */
         Assert.assertEquals(initWeaponsForKitchen(),
             space.getWeapons().stream().map(BaseWeapon::getName).collect(Collectors.toList()));
         /* Check neighbors */
         Assert.assertEquals(initNeighborsForKitchen(),
-            space.getNeighbors().stream().map(BaseSpace::getName).collect(Collectors.toList()));
+            space.getNeighbors().stream().map(Space::getName).collect(Collectors.toList()));
 
-        space = world1.getSpace(i);
+        space = world1.getSpace(context, i);
         /* Check weapons */
         Assert.assertEquals(initWeaponsForKitchen(),
             space.getWeapons().stream().map(BaseWeapon::getName).collect(Collectors.toList()));
         /* Check neighbors */
         Assert.assertEquals(initNeighborsForKitchen(),
-            space.getNeighbors().stream().map(BaseSpace::getName).collect(Collectors.toList()));
+            space.getNeighbors().stream().map(Space::getName).collect(Collectors.toList()));
 
-        space = world2.getSpace("Kitchen");
+        space = world1.getSpace(context, "Kitchen");
         /* Check weapons */
         Assert.assertEquals(initWeaponsForKitchen(),
             space.getWeapons().stream().map(BaseWeapon::getName).collect(Collectors.toList()));
         /* Check neighbors */
         Assert.assertEquals(initNeighborsForKitchen(),
-            space.getNeighbors().stream().map(BaseSpace::getName).collect(Collectors.toList()));
+            space.getNeighbors().stream().map(Space::getName).collect(Collectors.toList()));
 
-        space = world2.getSpace(i);
+        space = world1.getSpace(context, i);
         /* Check weapons */
         Assert.assertEquals(initWeaponsForKitchen(),
             space.getWeapons().stream().map(BaseWeapon::getName).collect(Collectors.toList()));
         /* Check neighbors */
         Assert.assertEquals(initNeighborsForKitchen(),
-            space.getNeighbors().stream().map(BaseSpace::getName).collect(Collectors.toList()));
+            space.getNeighbors().stream().map(Space::getName).collect(Collectors.toList()));
       }
     }
 
     /* No weapon */
-    Assert.assertEquals(0, world2.getSpace(20).getWeapons().size());
+    Assert.assertEquals(0, world1.getSpace(context, 20).getWeapons().size());
 
     /* One weapon */
-    Assert.assertEquals(1, world2.getSpace(0).getWeapons().size());
-    Assert.assertEquals(Arrays.asList("Revolver"),
-        world2.getSpace(0).getWeapons().stream().map(Weapon::getName).collect(Collectors.toList()));
+    Assert.assertEquals(1, world1.getSpace(context, 0).getWeapons().size());
+    Assert.assertEquals(Arrays.asList("Revolver"), world1.getSpace(context, 0).getWeapons().stream()
+        .map(BaseWeapon::getName).collect(Collectors.toList()));
 
     /* Get the space with invalid space name */
-    Assert.assertNull(world1.getSpace("test"));
-    Assert.assertNull(world2.getSpace("test"));
+    Assert.assertNull(world1.getSpace(context, "test"));
+    Assert.assertNull(world1.getSpace(context, "test"));
 
     /* Get the space with invalid index */
-    Assert.assertNull(world1.getSpace(baseSpaces.size() + 10));
-    Assert.assertNull(world2.getSpace(baseSpaces.size() + 10));
+    Assert.assertNull(world1.getSpace(context, baseSpaces.size() + 10));
+    Assert.assertNull(world1.getSpace(context, baseSpaces.size() + 10));
   }
 
   @Test
   public void testGetNeighbors() {
-    Assert.assertEquals(new ArrayList<>(), world2.getNeighbors("null"));
-    Assert.assertEquals(initNeighborsForDiningHall(), world2.getNeighbors("Dining Hall"));
-    Assert.assertEquals(initNeighborsForKitchen(), world2.getNeighbors("Kitchen"));
+    Assert.assertEquals(new ArrayList<>(), world1.getNeighbors(context, "null"));
+    Assert.assertEquals(initNeighborsForDiningHall(), world1.getNeighbors(context, "Dining Hall"));
+    Assert.assertEquals(initNeighborsForKitchen(), world1.getNeighbors(context, "Kitchen"));
     /* 8 is the index of Kitchen */
-    Assert.assertEquals(initNeighborsForKitchen(), world2.getNeighbors(8));
+    Assert.assertEquals(initNeighborsForKitchen(), world1.getNeighbors(context, 8));
 
-    Assert.assertEquals(Arrays.asList("Hedge Maze"), world2.getNeighbors("Green House"));
+    Assert.assertEquals(Arrays.asList("Hedge Maze"), world1.getNeighbors(context, "Green House"));
 
     try {
       /* Construct world with file */
-      Readable fileReader = new FileReader("./res/MyWorld.txt");
-      world2 = new WorldImpl(fileReader);
+      Readable fileReader = new FileReader("./res/world specification/MyWorld.txt");
+      context = ContextBuilder.builder(fileReader);
+      ContextHolder.set(context);
+      world1 = new WorldImpl(context.getWorldName());
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
-    Assert.assertEquals(new ArrayList<>(), world1.getNeighbors("Numenor"));
+    Assert.assertEquals(new ArrayList<>(), world1.getNeighbors(context, "Numenor"));
   }
 
   @Test
   public void testPlayer() {
-    Assert.assertEquals(0, world2.getAllPlayers().size());
+    Assert.assertEquals(0, world1.getAllPlayers(context).size());
     final Player player0 = new BasePlayer(0, "player0", 6, PlayerType.HUMAN_CONTROLLED, 1);
     final Player player1 = new BasePlayer(1, "player1", 8, PlayerType.COMPUTER_CONTROLLED, null);
     final Player player2 = new BasePlayer(2, "player0", 8, PlayerType.COMPUTER_CONTROLLED, 2);
     final Player player3 = new BasePlayer(2, "player3", 100, PlayerType.HUMAN_CONTROLLED, 2);
-    world2.addPlayer(player0);
-    Assert.assertEquals(1, world2.getAllPlayers().size());
+    world1.addPlayer(context, player0);
+    Assert.assertEquals(1, world1.getAllPlayers(context).size());
 
     /* add player with repeated name fail */
-    Assert.assertFalse(world2.addPlayer(player2));
-    Assert.assertEquals(1, world2.getAllPlayers().size());
+    Assert.assertFalse(world1.addPlayer(context, player2));
+    Assert.assertEquals(1, world1.getAllPlayers(context).size());
 
     /* add player with invalid space index fail */
-    Assert.assertFalse(world2.addPlayer(player3));
-    Assert.assertEquals(1, world2.getAllPlayers().size());
+    Assert.assertFalse(world1.addPlayer(context, player3));
+    Assert.assertEquals(1, world1.getAllPlayers(context).size());
 
     /* get all players */
-    world2.addPlayer(player1);
+    world1.addPlayer(context, player1);
     Assert.assertEquals(Arrays.asList("player0", "player1"),
-        world2.getAllPlayers().stream().map(Player::getName).collect(Collectors.toList()));
+        world1.getAllPlayers(context).stream().map(Player::getName).collect(Collectors.toList()));
 
     /* get player by index */
-    Assert.assertEquals(player0, world2.getPlayer(0));
-    Assert.assertEquals(player1, world2.getPlayer(1));
+    Assert.assertEquals(player0, world1.getPlayer(context, 0));
+    Assert.assertEquals(player1, world1.getPlayer(context, 1));
 
     /* get player with invalid index */
-    Assert.assertNull(world2.getPlayer(10));
+    Assert.assertNull(world1.getPlayer(context, 10));
 
-    Assert.assertEquals(6, world2.getPlayer(0).getSpaceIndex());
-    Assert.assertEquals(8, world2.getPlayer(1).getSpaceIndex());
+    Assert.assertEquals(6, world1.getPlayer(context, 0).getSpaceIndex());
+    Assert.assertEquals(8, world1.getPlayer(context, 1).getSpaceIndex());
 
     /* player with weapon limit picks up weapon and reach limit */
-    Space space6 = world2.getSpace(player0.getSpaceIndex());
+    Space space6 = world1.getSpace(context, player0.getSpaceIndex());
     while (!space6.getWeapons().isEmpty()) {
-      Weapon weapon = space6.getWeapons().get(0);
+      BaseWeapon weapon = space6.getWeapons().get(0);
       try {
-        world2.pickUp(player0, weapon);
+        world1.pickUp(player0, weapon);
       } catch (BusinessException e) {
         Assert.assertEquals("Player's weapons reach limit.", e.getMessage());
         break;
@@ -316,11 +303,11 @@ public class WorldTest {
     Assert.assertEquals(1, player0.getWeapons().size());
 
     /* player with unlimited weapon limit picks up all the weapons in one space */
-    Space space8 = world2.getSpace(player1.getSpaceIndex());
+    Space space8 = world1.getSpace(context, player1.getSpaceIndex());
     while (!space8.getWeapons().isEmpty()) {
-      Weapon weapon = space8.getWeapons().get(0);
+      BaseWeapon weapon = space8.getWeapons().get(0);
       try {
-        world2.pickUp(player1, weapon);
+        world1.pickUp(player1, weapon);
       } catch (BusinessException e) {
         Assert.assertEquals("Player's weapons reach limit.", e.getMessage());
         break;
@@ -329,9 +316,9 @@ public class WorldTest {
     Assert.assertEquals(2, player1.getWeapons().size());
 
     /* move a player */
-    BaseSpace baseSpace = space6.getNeighbors().get(0);
+    Space baseSpace = space6.getNeighbors().get(0);
     try {
-      world2.movePlayer(player0, world2.getSpace(baseSpace.getName()));
+      world1.movePlayer(player0, world1.getSpace(context, baseSpace.getName()));
     } catch (BusinessException e) {
       Assert.assertEquals("Invalid space.", e.getMessage());
     }
@@ -339,7 +326,7 @@ public class WorldTest {
 
     /* move a player to a null space, fail */
     try {
-      world2.movePlayer(player1, null);
+      world1.movePlayer(player1, null);
     } catch (BusinessException e) {
       Assert.assertEquals("Invalid space.", e.getMessage());
     }
