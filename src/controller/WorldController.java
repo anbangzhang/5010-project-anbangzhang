@@ -1,6 +1,6 @@
 package controller;
 
-import world.World;
+import world.container.Context;
 
 /**
  * WorldController interface.
@@ -13,7 +13,7 @@ public interface WorldController {
   /**
    * Play the game.
    * 
-   * @param world world model
+   * @param context context
    */
-  void playGame(World world);
+  void playGame(Context context);
 }

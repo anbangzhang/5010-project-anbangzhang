@@ -1,3 +1,5 @@
+import static org.mockito.ArgumentMatchers.eq;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.StringReader;
@@ -7,20 +9,19 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import controller.WorldController;
 import controller.impl.WorldConsoleController;
-import world.World;
 import world.base.BaseWeapon;
 import world.container.Context;
 import world.container.ContextBuilder;
 import world.container.ContextHolder;
 import world.enums.PlayerType;
-import world.impl.WorldImpl;
+import world.impl.World;
 import world.model.Player;
 import world.model.Space;
-import static org.mockito.ArgumentMatchers.eq;
 
 /**
  * Test class for WorldController.
@@ -32,12 +33,7 @@ public class WorldControllerTest {
 
   private Context context;
 
-  private World world;
-
   private WorldController controller;
-
-  @Mock
-  private World mockWorld;
 
   @Mock
   private Player mockPlayer1;
@@ -56,7 +52,6 @@ public class WorldControllerTest {
       Readable fileReader = new FileReader("./res/world specification/mansion.txt");
       context = ContextBuilder.build(fileReader);
       ContextHolder.set(context);
-      world = new WorldImpl(context.getWorldName());
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
@@ -69,7 +64,7 @@ public class WorldControllerTest {
             + "1\nHedge Maze\n");
     StringBuilder log = new StringBuilder();
     controller = new WorldConsoleController(input, log, 3);
-    controller.playGame(world);
+    controller.playGame(context);
     Assert.assertEquals("Please input the type of player to create:\n" + "\t1. human-controlled\n"
         + "\t2. computer-controlled\n" + "\tq. quit creating\n"
         + "Please input the name of player:\n"
@@ -102,7 +97,7 @@ public class WorldControllerTest {
         + "\tq. exit\n" + "\n" + "Game start.\n" + "\n" + "This is the 1th turn of game.\n"
         + "This is the 1th turn for player [Player1].\n"
         + "Player: [Player1] is in space: [Green House], carrying weapons: []\n"
-        + "Please use the number below to select thea action for player [Player1]\n"
+        + "Please use the number below to select thea template for player [Player1]\n"
         + "\t1. move to a neighbor space.\n" + "\t2. pick up a weapon in the space.\n"
         + "\t3. look around the space.\n"
         + "Player: [Player1] is in space: [Green House], players inside this space: [Player1], "
@@ -114,7 +109,7 @@ public class WorldControllerTest {
         + "Trophy Room, Wine Cellar], weapons inside this space: []\n" + "\n"
         + "This is the 2th turn of game.\n" + "This is the 2th turn for player [Player1].\n"
         + "Player: [Player1] is in space: [Green House], carrying weapons: []\n"
-        + "Please use the number below to select thea action for player [Player1]\n"
+        + "Please use the number below to select thea template for player [Player1]\n"
         + "\t1. move to a neighbor space.\n" + "\t2. pick up a weapon in the space.\n"
         + "\t3. look around the space.\n"
         + "Please input a weapon name from the weapons: [Trowel, Pinking Shears]\n"
@@ -126,7 +121,7 @@ public class WorldControllerTest {
         + "Trophy Room, Wine Cellar], weapons inside this space: []\n" + "\n"
         + "This is the 3th turn of game.\n" + "This is the 3th turn for player [Player1].\n"
         + "Player: [Player1] is in space: [Green House], carrying weapons: [Trowel]\n"
-        + "Please use the number below to select thea action for player [Player1]\n"
+        + "Please use the number below to select thea template for player [Player1]\n"
         + "\t1. move to a neighbor space.\n" + "\t2. pick up a weapon in the space.\n"
         + "\t3. look around the space.\n"
         + "Please input a neighbor space name from the neighbors: [Hedge Maze]\n"
@@ -145,15 +140,18 @@ public class WorldControllerTest {
     Space space0 = Mockito.mock(Space.class);
     Space space1 = Mockito.mock(Space.class);
     BaseWeapon weapon = Mockito.mock(BaseWeapon.class);
-    Mockito.when(mockWorld.addPlayer(Mockito.any(Context.class), Mockito.any(Player.class)))
+    MockedStatic<World> mockStatic = Mockito.mockStatic(World.class);
+
+    mockStatic.when(() -> World.addPlayer(Mockito.any(Context.class), Mockito.any(Player.class)))
         .thenReturn(true, false, true);
-    Mockito.when(mockWorld.getAllPlayers(Mockito.any(Context.class)))
+    mockStatic.when(() -> World.getAllPlayers(Mockito.any(Context.class)))
         .thenReturn(Arrays.asList(mockPlayer1, mockPlayer2));
-    Mockito.when(mockWorld.getAllSpaces(Mockito.any(Context.class)))
+    mockStatic.when(() -> World.getAllSpaces(Mockito.any(Context.class)))
         .thenReturn(Arrays.asList("Space0", "Space1", "Space2"));
-    Mockito.when(mockWorld.getSpace(Mockito.any(Context.class), eq(0))).thenReturn(space0);
-    Mockito.when(mockWorld.getSpace(Mockito.any(Context.class), eq(1))).thenReturn(space1);
-    Mockito.when(mockWorld.getSpace(Mockito.any(Context.class), eq("Space1"))).thenReturn(space1);
+    mockStatic.when(() -> World.getSpace(Mockito.any(Context.class), eq(0))).thenReturn(space0);
+    mockStatic.when(() -> World.getSpace(Mockito.any(Context.class), eq(1))).thenReturn(space1);
+    mockStatic.when(() -> World.getSpace(Mockito.any(Context.class), eq("Space1")))
+        .thenReturn(space1);
     Mockito.when(space0.getName()).thenReturn("Space0");
     Mockito.when(space0.getNeighbors()).thenReturn(Arrays.asList(space1));
     Mockito.when(space0.getWeapons()).thenReturn(Arrays.asList(weapon));
@@ -178,7 +176,9 @@ public class WorldControllerTest {
             + "2\nWeapon\n1\nSpace2\n1\nSpace1\n");
     StringBuilder log = new StringBuilder();
     controller = new WorldConsoleController(input, log, 3);
-    controller.playGame(mockWorld);
+    controller.playGame(context);
+
+    mockStatic.close();
     Assert.assertEquals("Please input the type of player to create:\n" + "\t1. human-controlled\n"
         + "\t2. computer-controlled\n" + "\tq. quit creating\n" + "Not a valid number: a\n"
         + "Please input the name of player:\n"
@@ -213,7 +213,7 @@ public class WorldControllerTest {
         + "\tq. exit\n" + "\n" + "Game start.\n" + "\n" + "This is the 1th turn of game.\n"
         + "This is the 1th turn for player [A].\n"
         + "Player: [A] is in space: [Space0], carrying weapons: []\n"
-        + "Please use the number below to select thea action for player [A]\n"
+        + "Please use the number below to select thea template for player [A]\n"
         + "\t1. move to a neighbor space.\n" + "\t2. pick up a weapon in the space.\n"
         + "\t3. look around the space.\n"
         + "Player: [A] is in space: [Space0], players inside this space: [A], "
@@ -224,13 +224,13 @@ public class WorldControllerTest {
         + "its neighbors: [Space0], weapons inside this space: []\n" + "\n"
         + "This is the 2th turn of game.\n" + "This is the 2th turn for player [A].\n"
         + "Player: [A] is in space: [Space0], carrying weapons: []\n"
-        + "Please use the number below to select thea action for player [A]\n"
+        + "Please use the number below to select thea template for player [A]\n"
         + "\t1. move to a neighbor space.\n" + "\t2. pick up a weapon in the space.\n"
         + "\t3. look around the space.\n"
         + "Please input a weapon name from the weapons: [Weapon]\n"
         + "Player [A] pick up weapon [Trowel] failed, "
         + "cause: Weapon Trowel is not in current space.\n"
-        + "Please use the number below to select thea action for player [A]\n"
+        + "Please use the number below to select thea template for player [A]\n"
         + "\t1. move to a neighbor space.\n" + "\t2. pick up a weapon in the space.\n"
         + "\t3. look around the space.\n"
         + "Please input a weapon name from the weapons: [Weapon]\n"
@@ -240,13 +240,13 @@ public class WorldControllerTest {
         + "its neighbors: [Space0], weapons inside this space: []\n" + "\n"
         + "This is the 3th turn of game.\n" + "This is the 3th turn for player [A].\n"
         + "Player: [A] is in space: [Space0], carrying weapons: []\n"
-        + "Please use the number below to select thea action for player [A]\n"
+        + "Please use the number below to select thea template for player [A]\n"
         + "\t1. move to a neighbor space.\n" + "\t2. pick up a weapon in the space.\n"
         + "\t3. look around the space.\n"
         + "Please input a neighbor space name from the neighbors: [Space1]\n"
         + "Player [A] move to space [Space2] failed, "
         + "cause: Space Space2 is not a neighbor of player's current space.\n"
-        + "Please use the number below to select thea action for player [A]\n"
+        + "Please use the number below to select thea template for player [A]\n"
         + "\t1. move to a neighbor space.\n" + "\t2. pick up a weapon in the space.\n"
         + "\t3. look around the space.\n"
         + "Please input a neighbor space name from the neighbors: [Space1]\n"

@@ -14,7 +14,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
-import world.World;
 import world.base.BaseSpace;
 import world.base.BaseWeapon;
 import world.container.Context;
@@ -23,12 +22,12 @@ import world.model.Player;
 import world.model.Space;
 
 /**
- * WorldImpl class. Implementation of world interface.
+ * World class.
  * 
  * @author anbang
  * @date 2023-01-28 22:51
  */
-public class WorldImpl implements World {
+public class World {
 
   /**
    * Scale factor.
@@ -36,31 +35,36 @@ public class WorldImpl implements World {
   private static final int SCALE_FACTOR = 20;
 
   /**
-   * World name.
-   */
-  private String name;
-
-  /**
-   * Constructor of World.
+   * Get the whole space name list.
    *
-   * @param name name
+   * @param context context
+   * @return space name list
    */
-  public WorldImpl(String name) {
-    this.name = name;
-  }
-
-  @Override
-  public List<String> getAllSpaces(Context context) {
+  public static List<String> getAllSpaces(Context context) {
     return context.getSpaces().stream().map(BaseSpace::getName).collect(Collectors.toList());
   }
 
-  @Override
-  public List<String> getNeighbors(Context context, String name) {
+  /**
+   * Get the neighbors of the given space name. Spaces that share a "wall" are
+   * neighbors.
+   *
+   * @param context context
+   * @param name    the space name
+   * @return the list of neighbors
+   */
+  public static List<String> getNeighbors(Context context, String name) {
     return getNeighborNamesFromSpace(getSpace(context, name));
   }
 
-  @Override
-  public List<String> getNeighbors(Context context, Integer index) {
+  /**
+   * Get the neighbors of the given space index. Spaces that share a "wall" are
+   * neighbors.
+   *
+   * @param context context
+   * @param index   the space index
+   * @return the list of neighbors
+   */
+  public static List<String> getNeighbors(Context context, Integer index) {
     return getNeighborNamesFromSpace(getSpace(context, index));
   }
 
@@ -70,21 +74,33 @@ public class WorldImpl implements World {
    * @param space space
    * @return neighbor's name list
    */
-  private List<String> getNeighborNamesFromSpace(Space space) {
+  private static List<String> getNeighborNamesFromSpace(Space space) {
     List<String> result = new ArrayList<>();
     Optional.ofNullable(space).ifPresent(space1 -> result
         .addAll(space.getNeighbors().stream().map(Space::getName).collect(Collectors.toList())));
     return result;
   }
 
-  @Override
-  public Space getSpace(Context context, String name) {
+  /**
+   * Get the space with neighbors and weapons.
+   *
+   * @param context context
+   * @param name    space name
+   * @return space
+   */
+  public static Space getSpace(Context context, String name) {
     return context.getSpaces().stream().filter(item -> Objects.equals(item.getName(), name))
         .findFirst().orElse(null);
   }
 
-  @Override
-  public Space getSpace(Context context, Integer index) {
+  /**
+   * Get the space with neighbors and weapons.
+   *
+   * @param context context
+   * @param index   space index
+   * @return space
+   */
+  public static Space getSpace(Context context, Integer index) {
     List<BaseSpace> spaces = context.getSpaces();
     if (index < 0 || index >= spaces.size()) {
       return null;
@@ -92,14 +108,24 @@ public class WorldImpl implements World {
     return spaces.get(index);
   }
 
-  @Override
-  public Space getTargetPosition(Context context) {
+  /**
+   * Get target current position.
+   *
+   * @param context context
+   * @return space of current position
+   */
+  public static Space getTargetPosition(Context context) {
     int pos = context.getTarget().getPosition();
     return context.getSpaces().get(pos);
   }
 
-  @Override
-  public Space moveTarget(Context context) {
+  /**
+   * Move the target character.
+   *
+   * @param context context
+   * @return the space that target is in
+   */
+  public static Space moveTarget(Context context) {
     int pos = context.getTarget().getPosition();
     List<BaseSpace> spaces = context.getSpaces();
     int newPos = (pos + 1) % spaces.size();
@@ -107,13 +133,24 @@ public class WorldImpl implements World {
     return spaces.get(newPos);
   }
 
-  @Override
-  public List<Player> getAllPlayers(Context context) {
+  /**
+   * Get all the players.
+   *
+   * @param context context
+   * @return players
+   */
+  public static List<Player> getAllPlayers(Context context) {
     return context.getPlayers();
   }
 
-  @Override
-  public Player getPlayer(Context context, int index) {
+  /**
+   * Get player according to index.
+   *
+   * @param context context
+   * @param index   index
+   * @return player
+   */
+  public static Player getPlayer(Context context, int index) {
     List<Player> players = context.getPlayers();
     if (index < 0 || index >= players.size()) {
       return null;
@@ -121,8 +158,14 @@ public class WorldImpl implements World {
     return players.get(index);
   }
 
-  @Override
-  public Boolean addPlayer(Context context, Player player) {
+  /**
+   * Add a player.
+   *
+   * @param context context
+   * @param player  player
+   * @return if successful
+   */
+  public static Boolean addPlayer(Context context, Player player) {
     boolean repeat = context.getPlayers().stream()
         .anyMatch(item -> item.getName().equals(player.getName()));
     if (repeat) {
@@ -135,24 +178,42 @@ public class WorldImpl implements World {
     return context.getPlayers().add(player);
   }
 
-  @Override
-  public void movePlayer(Player player, Space space) throws BusinessException {
+  /**
+   * Move a player to a space.
+   *
+   * @param player player
+   * @param space  space
+   * @throws BusinessException invalid space
+   */
+  public static void movePlayer(Player player, Space space) throws BusinessException {
     if (Objects.isNull(space)) {
       throw new BusinessException("Invalid space.");
     }
     player.setSpaceIndex(space.getOrder());
   }
 
-  @Override
-  public void pickUp(Player player, BaseWeapon weapon) throws BusinessException {
+  /**
+   * Player pick up a weapon.
+   *
+   * @param player player
+   * @param weapon weapon
+   * @throws BusinessException player's weapons reach limit
+   */
+  public static void pickUp(Player player, BaseWeapon weapon) throws BusinessException {
     if (!player.addWeapon(weapon)) {
       throw new BusinessException("Player's weapons reach limit.");
     }
     weapon.setHolder(String.format("player: %s", player.getName()));
   }
 
-  @Override
-  public void showGraphicalImage(Context context, String directory) throws IOException {
+  /**
+   * Show the world in image.
+   *
+   * @param context   context
+   * @param directory directory of output
+   * @throws IOException if write file fail
+   */
+  public static void showGraphicalImage(Context context, String directory) throws IOException {
     int m = context.getM();
     int n = context.getN();
     BufferedImage image = new BufferedImage(n * SCALE_FACTOR, m * SCALE_FACTOR,
@@ -180,8 +241,9 @@ public class WorldImpl implements World {
         y = drawString(graphics, string, x, y, rowWidth);
       }
     }
-    String fileName = (directory.endsWith("/")) ? String.format("%s%s.png", directory, this.name)
-        : String.format("%s/%s.png", directory, this.name);
+    String fileName = (directory.endsWith("/"))
+        ? String.format("%s%s.png", directory, context.getWorldName())
+        : String.format("%s/%s.png", directory, context.getWorldName());
     File outputFile = new File(fileName);
     graphics.dispose();
     ImageIO.write(image, "png", outputFile);
@@ -193,7 +255,7 @@ public class WorldImpl implements World {
    * @param space space
    * @return string
    */
-  private List<String> composeString(Space space) {
+  private static List<String> composeString(Space space) {
     if (space.getOccupiers().isEmpty()) {
       return Arrays.asList(space.getName());
     }
@@ -210,7 +272,7 @@ public class WorldImpl implements World {
    * @param y        y
    * @param rowWidth row width
    */
-  private int drawString(Graphics2D g, String text, int x, int y, int rowWidth) {
+  private static int drawString(Graphics2D g, String text, int x, int y, int rowWidth) {
     int stringWidth = g.getFontMetrics().stringWidth(text);
     if (stringWidth <= rowWidth) {
       g.drawString(text, x, y);

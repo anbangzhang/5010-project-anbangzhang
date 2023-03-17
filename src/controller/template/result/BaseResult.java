@@ -1,4 +1,4 @@
-package controller.result;
+package controller.template.result;
 
 import java.io.Serializable;
 

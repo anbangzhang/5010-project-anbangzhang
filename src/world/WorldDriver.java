@@ -9,7 +9,6 @@ import java.io.InputStreamReader;
 import world.container.Context;
 import world.container.ContextHolder;
 import world.container.ContextBuilder;
-import world.impl.WorldImpl;
 
 /**
  * WorldDriver class.
@@ -38,11 +37,10 @@ public class WorldDriver {
       Context context = ContextBuilder.build(fileReader);
       ContextHolder.set(context);
 
-      World world = new WorldImpl(context.getWorldName());
       Readable in = new InputStreamReader(System.in);
       WorldController controller = new WorldConsoleController(in, System.out,
           Integer.parseInt(args[1]));
-      controller.playGame(world);
+      controller.playGame(context);
 
       ContextHolder.remove();
     } catch (FileNotFoundException e1) {
