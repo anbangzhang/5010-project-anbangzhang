@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import world.container.Context;
-import world.container.ContextHolder;
+import world.context.Context;
+import world.context.ContextHolder;
 import world.enums.PlayerType;
 import world.model.Player;
 

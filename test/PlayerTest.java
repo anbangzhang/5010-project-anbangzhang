@@ -5,8 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 import world.base.BasePlayer;
 import world.base.BaseWeapon;
-import world.container.Context;
-import world.container.ContextHolder;
+import world.context.Context;
+import world.context.ContextHolder;
 import world.enums.PlayerType;
 import world.model.Player;
 

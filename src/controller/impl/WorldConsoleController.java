@@ -17,7 +17,7 @@ import controller.template.action.PickUpWeaponAction;
 import controller.template.impl.ServiceTemplateImpl;
 import world.base.BasePlayer;
 import world.base.BaseWeapon;
-import world.container.Context;
+import world.context.Context;
 import world.enums.PlayerType;
 import world.exception.BusinessException;
 import world.impl.World;

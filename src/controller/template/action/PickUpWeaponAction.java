@@ -2,7 +2,7 @@ package controller.template.action;
 
 import controller.template.result.BaseResult;
 import controller.template.ActionCallBack;
-import world.container.Context;
+import world.context.Context;
 
 /**
  * PickUpWeaponAction.

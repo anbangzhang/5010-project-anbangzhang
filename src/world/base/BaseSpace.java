@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import world.container.Context;
-import world.container.ContextHolder;
+import world.context.Context;
+import world.context.ContextHolder;
 import world.model.Player;
 import world.model.Space;
 

@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
 import world.base.BaseSpace;
 import world.base.BaseWeapon;
-import world.container.Context;
+import world.context.Context;
 import world.exception.BusinessException;
 import world.model.Player;
 import world.model.Space;
