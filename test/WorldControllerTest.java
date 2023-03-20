@@ -19,7 +19,7 @@ import world.context.Context;
 import world.context.ContextBuilder;
 import world.context.ContextHolder;
 import world.enums.PlayerType;
-import world.impl.World;
+import world.World;
 import world.model.Player;
 import world.model.Space;
 
@@ -63,7 +63,10 @@ public class WorldControllerTest {
         "1\nPlayer1\n6\n5\n2\nPlayer2\n3\n4\nq\n1\n2\n6\n3\nres/\n4\n3\n2\nTrowel\n"
             + "1\nHedge Maze\n");
     StringBuilder log = new StringBuilder();
-    controller = new WorldConsoleController(input, log, 3);
+    controller = new WorldConsoleController();
+    controller.setIn(input);
+    controller.setOut(log);
+    controller.setTurn(3);
     controller.playGame(context);
     Assert.assertEquals("Please input the type of player to create:\n" + "\t1. human-controlled\n"
         + "\t2. computer-controlled\n" + "\tq. quit creating\n"
@@ -97,7 +100,7 @@ public class WorldControllerTest {
         + "\tq. exit\n" + "\n" + "Game start.\n" + "\n" + "This is the 1th turn of game.\n"
         + "This is the 1th turn for player [Player1].\n"
         + "Player: [Player1] is in space: [Green House], carrying weapons: []\n"
-        + "Please use the number below to select thea template for player [Player1]\n"
+        + "Please use the number below to select thea flowengine for player [Player1]\n"
         + "\t1. move to a neighbor space.\n" + "\t2. pick up a weapon in the space.\n"
         + "\t3. look around the space.\n"
         + "Player: [Player1] is in space: [Green House], players inside this space: [Player1], "
@@ -109,7 +112,7 @@ public class WorldControllerTest {
         + "Trophy Room, Wine Cellar], weapons inside this space: []\n" + "\n"
         + "This is the 2th turn of game.\n" + "This is the 2th turn for player [Player1].\n"
         + "Player: [Player1] is in space: [Green House], carrying weapons: []\n"
-        + "Please use the number below to select thea template for player [Player1]\n"
+        + "Please use the number below to select thea flowengine for player [Player1]\n"
         + "\t1. move to a neighbor space.\n" + "\t2. pick up a weapon in the space.\n"
         + "\t3. look around the space.\n"
         + "Please input a weapon name from the weapons: [Trowel, Pinking Shears]\n"
@@ -121,7 +124,7 @@ public class WorldControllerTest {
         + "Trophy Room, Wine Cellar], weapons inside this space: []\n" + "\n"
         + "This is the 3th turn of game.\n" + "This is the 3th turn for player [Player1].\n"
         + "Player: [Player1] is in space: [Green House], carrying weapons: [Trowel]\n"
-        + "Please use the number below to select thea template for player [Player1]\n"
+        + "Please use the number below to select thea flowengine for player [Player1]\n"
         + "\t1. move to a neighbor space.\n" + "\t2. pick up a weapon in the space.\n"
         + "\t3. look around the space.\n"
         + "Please input a neighbor space name from the neighbors: [Hedge Maze]\n"
@@ -175,7 +178,10 @@ public class WorldControllerTest {
         "a\n1\nA\n0\n5\n2\nA\n2\n4\n2\nB\n1\n4\nq\n1\n2\n6\n3\nres/\n4\n3\n2\nTrowel\n"
             + "2\nWeapon\n1\nSpace2\n1\nSpace1\n");
     StringBuilder log = new StringBuilder();
-    controller = new WorldConsoleController(input, log, 3);
+    controller = new WorldConsoleController();
+    controller.setIn(input);
+    controller.setOut(log);
+    controller.setTurn(3);
     controller.playGame(context);
 
     mockStatic.close();
@@ -213,7 +219,7 @@ public class WorldControllerTest {
         + "\tq. exit\n" + "\n" + "Game start.\n" + "\n" + "This is the 1th turn of game.\n"
         + "This is the 1th turn for player [A].\n"
         + "Player: [A] is in space: [Space0], carrying weapons: []\n"
-        + "Please use the number below to select thea template for player [A]\n"
+        + "Please use the number below to select thea flowengine for player [A]\n"
         + "\t1. move to a neighbor space.\n" + "\t2. pick up a weapon in the space.\n"
         + "\t3. look around the space.\n"
         + "Player: [A] is in space: [Space0], players inside this space: [A], "
@@ -224,13 +230,13 @@ public class WorldControllerTest {
         + "its neighbors: [Space0], weapons inside this space: []\n" + "\n"
         + "This is the 2th turn of game.\n" + "This is the 2th turn for player [A].\n"
         + "Player: [A] is in space: [Space0], carrying weapons: []\n"
-        + "Please use the number below to select thea template for player [A]\n"
+        + "Please use the number below to select thea flowengine for player [A]\n"
         + "\t1. move to a neighbor space.\n" + "\t2. pick up a weapon in the space.\n"
         + "\t3. look around the space.\n"
         + "Please input a weapon name from the weapons: [Weapon]\n"
         + "Player [A] pick up weapon [Trowel] failed, "
         + "cause: Weapon Trowel is not in current space.\n"
-        + "Please use the number below to select thea template for player [A]\n"
+        + "Please use the number below to select thea flowengine for player [A]\n"
         + "\t1. move to a neighbor space.\n" + "\t2. pick up a weapon in the space.\n"
         + "\t3. look around the space.\n"
         + "Please input a weapon name from the weapons: [Weapon]\n"
@@ -240,13 +246,13 @@ public class WorldControllerTest {
         + "its neighbors: [Space0], weapons inside this space: []\n" + "\n"
         + "This is the 3th turn of game.\n" + "This is the 3th turn for player [A].\n"
         + "Player: [A] is in space: [Space0], carrying weapons: []\n"
-        + "Please use the number below to select thea template for player [A]\n"
+        + "Please use the number below to select thea flowengine for player [A]\n"
         + "\t1. move to a neighbor space.\n" + "\t2. pick up a weapon in the space.\n"
         + "\t3. look around the space.\n"
         + "Please input a neighbor space name from the neighbors: [Space1]\n"
         + "Player [A] move to space [Space2] failed, "
         + "cause: Space Space2 is not a neighbor of player's current space.\n"
-        + "Please use the number below to select thea template for player [A]\n"
+        + "Please use the number below to select thea flowengine for player [A]\n"
         + "\t1. move to a neighbor space.\n" + "\t2. pick up a weapon in the space.\n"
         + "\t3. look around the space.\n"
         + "Please input a neighbor space name from the neighbors: [Space1]\n"

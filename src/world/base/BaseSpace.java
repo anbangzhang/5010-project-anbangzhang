@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
 import world.context.Context;
 import world.context.ContextHolder;
 import world.model.Player;
@@ -133,6 +134,22 @@ public class BaseSpace implements Space {
   public Boolean isExposed() {
     Context context = ContextHolder.get();
     return context.getExposedSpaces().contains(this);
+  }
+
+  @Override
+  public String showDetail() {
+    Context context = ContextHolder.get();
+    StringBuilder sb = new StringBuilder();
+    sb.append(String.format("Space: [%s], occupiers: %s, weapons: %s", this.name,
+        getOccupiers().stream().map(Player::getName).collect(Collectors.toList()),
+        getWeapons().stream().map(BaseWeapon::getName).collect(Collectors.toList())));
+    if (Objects.equals(context.getTarget().getPosition(), this.order)) {
+      sb.append(String.format(", Target: [%s]", context.getTarget().getName()));
+    }
+    if (Objects.equals(context.getPet().getSpaceIndex(), this.order)) {
+      sb.append(String.format(", Pet: [%s]", context.getPet().getName()));
+    }
+    return sb.toString();
   }
 
   @Override

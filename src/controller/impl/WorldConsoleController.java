@@ -2,25 +2,24 @@ package controller.impl;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+
+import application.annotation.Qualifier;
 import com.google.common.collect.ImmutableMap;
+import application.annotation.Autowired;
+import application.annotation.Component;
 import controller.WorldController;
-import controller.template.ActionCallBack;
-import controller.template.ServiceTemplate;
-import controller.template.action.AttackAction;
-import controller.template.action.LookAroundAction;
-import controller.template.action.MovePetAction;
-import controller.template.action.MovePlayerAction;
-import controller.template.action.PickUpWeaponAction;
-import controller.template.impl.ServiceTemplateImpl;
+import flowengine.template.ServiceTemplate;
+import world.World;
 import world.base.BasePlayer;
 import world.base.BaseWeapon;
+import world.constant.Flow;
 import world.context.Context;
 import world.enums.PlayerType;
 import world.exception.BusinessException;
-import world.impl.World;
 import world.model.Player;
 import world.model.Space;
 
@@ -30,6 +29,7 @@ import world.model.Space;
  * @author anbang
  * @date 2023-02-10 22:30
  */
+@Component
 public class WorldConsoleController implements WorldController {
   /**
    * Input.
@@ -50,30 +50,39 @@ public class WorldConsoleController implements WorldController {
   /**
    * ServiceTemplate.
    */
-  private ServiceTemplate serviceTemplate = new ServiceTemplateImpl();
+  @Autowired
+  @Qualifier("serviceTemplate")
+  private ServiceTemplate serviceTemplate;
   /**
    * Action map.
    */
-  private static final ImmutableMap<Integer, ActionCallBack> ACTION_MAP = ImmutableMap
-      .<Integer, ActionCallBack>builder().put(1, new MovePlayerAction())
-      .put(2, new PickUpWeaponAction()).put(3, new LookAroundAction()).put(4, new MovePetAction())
-      .put(5, new AttackAction()).build();
+  private static final Map<Integer, String> ACTION_MAP = ImmutableMap.<Integer, String>builder()
+      .put(1, Flow.MOVE_TO_NEIGHBOR).put(2, Flow.PICK_UP_WEAPON).put(3, Flow.LOOK_AROUND)
+      .put(4, Flow.MOVE_PET).put(5, Flow.ATTACK_TARGET).build();
 
-  /**
-   * Constructor.
-   * 
-   * @param in   input
-   * @param out  output
-   * @param turn turn limit
-   */
-  public WorldConsoleController(Readable in, Appendable out, Integer turn) {
-    if (Objects.isNull(in) || Objects.isNull(out)) {
-      throw new IllegalArgumentException("Invalid input and output source.");
+  @Override
+  public void setIn(Readable in) {
+    if (Objects.isNull(in)) {
+      throw new IllegalArgumentException("Invalid input source.");
     }
     this.in = in;
-    this.out = out;
-    this.turn = turn;
     this.scan = new Scanner(this.in);
+  }
+
+  @Override
+  public void setOut(Appendable out) {
+    if (Objects.isNull(out)) {
+      throw new IllegalArgumentException("Invalid output source.");
+    }
+    this.out = out;
+  }
+
+  @Override
+  public void setTurn(Integer turn) {
+    if (Objects.isNull(turn)) {
+      throw new IllegalArgumentException("Invalid turn.");
+    }
+    this.turn = turn;
   }
 
   @Override
@@ -161,7 +170,7 @@ public class WorldConsoleController implements WorldController {
         if (Objects.equals(PlayerType.HUMAN_CONTROLLED, player.getType())) {
           while (true) {
             this.out.append(String.format(
-                "Please use the number below to select thea template for player [%s]\n"
+                "Please use the number below to select thea flowengine for player [%s]\n"
                     + "\t1. move to a neighbor space.\n"
                     + "\t2. pick up a weapon in the space.\n\t3. look around the space.\n",
                 player.getName()));

@@ -1,14 +1,14 @@
-package world;
+package application;
 
-import controller.WorldController;
-import controller.impl.WorldConsoleController;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import controller.WorldController;
+import controller.impl.WorldConsoleController;
 import world.context.Context;
-import world.context.ContextHolder;
 import world.context.ContextBuilder;
+import world.context.ContextHolder;
 
 /**
  * WorldDriver class.
@@ -38,8 +38,13 @@ public class WorldDriver {
       ContextHolder.set(context);
 
       Readable in = new InputStreamReader(System.in);
-      WorldController controller = new WorldConsoleController(in, System.out,
-          Integer.parseInt(args[1]));
+      ApplicationContext ctx = new AnnotationConfigApplicationContext("flowengine", "controller");
+
+      WorldController controller = (WorldController) ctx.getBean(WorldConsoleController.class);
+      controller.setIn(in);
+      controller.setOut(System.out);
+      controller.setTurn(Integer.parseInt(args[1]));
+
       controller.playGame(context);
 
       ContextHolder.remove();

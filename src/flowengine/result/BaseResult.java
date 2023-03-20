@@ -1,4 +1,4 @@
-package controller.template.result;
+package flowengine.result;
 
 import java.io.Serializable;
 

@@ -53,4 +53,10 @@ public interface Space {
    */
   Boolean isExposed();
 
+  /**
+   * Show the detail of current space.
+   * @return detail
+   */
+  String showDetail();
+
 }

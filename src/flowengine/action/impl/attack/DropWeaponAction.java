@@ -1,0 +1,29 @@
+package flowengine.action.impl.attack;
+
+import java.util.Objects;
+import application.annotation.Component;
+import flowengine.action.Action;
+import flowengine.request.AttackRequest;
+import world.base.BaseWeapon;
+import world.context.Context;
+
+/**
+ * DropWeaponAction.
+ * 
+ * @author anbang
+ * @date 2023-03-18 09:01
+ */
+@Component
+public class DropWeaponAction implements Action {
+
+  @Override
+  public void execute(Context context) {
+    AttackRequest request = (AttackRequest) context.getRequest();
+    BaseWeapon weapon = request.getWeapon();
+    if (Objects.nonNull(weapon)) {
+      context.getWeapons().remove(weapon);
+      context.getEvidences().add(weapon);
+    }
+  }
+
+}

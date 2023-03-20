@@ -144,7 +144,7 @@ public class BasePlayer implements Player {
     return ctx.getWeapons().stream()
         .filter(
             weapon -> Objects.equals(weapon.getHolder(), String.format("player: %s", this.name)))
-        .collect(Collectors.toList());
+        .sorted((a, b) -> b.getDamage() - a.getDamage()).collect(Collectors.toList());
   }
 
 }

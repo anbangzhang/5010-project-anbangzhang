@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import flowengine.request.BaseRequest;
+import flowengine.result.BaseResult;
 import world.base.BaseSpace;
 import world.base.BaseWeapon;
 import world.constant.Constants;
@@ -21,11 +23,40 @@ import world.model.Target;
  * @date 2023-03-15 16:48
  */
 public class Context {
-
   /**
    * map.
    */
   private final Map<String, Object> map = new HashMap<>();
+  /**
+   * flow name.
+   */
+  private String flow;
+  /**
+   * Request.
+   */
+  private BaseRequest request;
+  /**
+   * result.
+   */
+  private BaseResult result;
+
+  /**
+   * Set flow.
+   * 
+   * @param flow flow
+   */
+  public void setFlow(String flow) {
+    this.flow = flow;
+  }
+
+  /**
+   * Get flow.
+   * 
+   * @return flow
+   */
+  public String getFlow() {
+    return this.flow;
+  }
 
   /**
    * Set m.
@@ -150,7 +181,10 @@ public class Context {
    * @return spaces
    */
   public List<BaseSpace> getSpaces() {
-    return (List<BaseSpace>) map.getOrDefault(Constants.SPACES, new ArrayList<>());
+    if (null == map.get(Constants.SPACES)) {
+      map.put(Constants.SPACES, new ArrayList<>());
+    }
+    return (List<BaseSpace>) map.get(Constants.SPACES);
   }
 
   /**
@@ -171,8 +205,10 @@ public class Context {
    * @return neighborMap
    */
   public Map<BaseSpace, List<BaseSpace>> getNeighborMap() {
-    return (Map<BaseSpace, List<BaseSpace>>) map.getOrDefault(Constants.NEIGHBOR_MAP,
-        new HashMap<>());
+    if (null == map.get(Constants.NEIGHBOR_MAP)) {
+      map.put(Constants.NEIGHBOR_MAP, new HashMap<>());
+    }
+    return (Map<BaseSpace, List<BaseSpace>>) map.get(Constants.NEIGHBOR_MAP);
   }
 
   /**
@@ -193,7 +229,10 @@ public class Context {
    * @return exposed spaces
    */
   public Set<Space> getExposedSpaces() {
-    return (Set<Space>) map.getOrDefault(Constants.EXPOSED_SPACES, new HashSet<>());
+    if (null == map.get(Constants.EXPOSED_SPACES)) {
+      map.put(Constants.EXPOSED_SPACES, new HashSet<>());
+    }
+    return (Set<Space>) map.get(Constants.EXPOSED_SPACES);
   }
 
   /**
@@ -214,7 +253,10 @@ public class Context {
    * @return weapons
    */
   public List<BaseWeapon> getWeapons() {
-    return (List<BaseWeapon>) map.getOrDefault(Constants.WEAPONS, new ArrayList<>());
+    if (null == map.get(Constants.WEAPONS)) {
+      map.put(Constants.WEAPONS, new ArrayList<>());
+    }
+    return (List<BaseWeapon>) map.get(Constants.WEAPONS);
   }
 
   /**
@@ -235,7 +277,10 @@ public class Context {
    * @return evidences
    */
   public List<BaseWeapon> getEvidences() {
-    return (List<BaseWeapon>) map.getOrDefault(Constants.EVIDENCES, new ArrayList<>());
+    if (null == map.get(Constants.EVIDENCES)) {
+      map.put(Constants.EVIDENCES, new ArrayList<>());
+    }
+    return (List<BaseWeapon>) map.get(Constants.EVIDENCES);
   }
 
   /**
@@ -256,6 +301,66 @@ public class Context {
    * @return players
    */
   public List<Player> getPlayers() {
-    return (List<Player>) map.getOrDefault(Constants.PLAYERS, new ArrayList<>());
+    if (null == map.get(Constants.PLAYERS)) {
+      map.put(Constants.PLAYERS, new ArrayList<>());
+    }
+    return (List<Player>) map.get(Constants.PLAYERS);
   }
+
+  /**
+   * Set request.
+   * 
+   * @param request request
+   */
+  public void setRequest(BaseRequest request) {
+    this.request = request;
+  }
+
+  /**
+   * Get request.
+   * 
+   * @return request
+   */
+  public BaseRequest getRequest() {
+    return request;
+  }
+
+  /**
+   * Set result.
+   *
+   * @param result result
+   */
+  public void setResult(BaseResult result) {
+    this.result = result;
+  }
+
+  /**
+   * Get result.
+   * 
+   * @return result
+   */
+  public BaseResult getResult() {
+    return result;
+  }
+
+  /**
+   * Set key and value.
+   * 
+   * @param key   key
+   * @param value value
+   */
+  public void set(String key, String value) {
+    map.put(key, value);
+  }
+
+  /**
+   * Get value from key.
+   * 
+   * @param key key
+   * @return value
+   */
+  public String get(String key) {
+    return (String) map.get(key);
+  }
+
 }

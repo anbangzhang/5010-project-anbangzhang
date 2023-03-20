@@ -1,4 +1,4 @@
-package world.impl;
+package world;
 
 import java.awt.Color;
 import java.awt.Font;

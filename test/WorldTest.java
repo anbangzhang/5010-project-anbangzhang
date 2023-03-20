@@ -17,7 +17,7 @@ import world.context.ContextBuilder;
 import world.context.ContextHolder;
 import world.enums.PlayerType;
 import world.exception.BusinessException;
-import world.impl.World;
+import world.World;
 import world.model.Player;
 import world.model.Space;
 

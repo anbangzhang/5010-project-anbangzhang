@@ -37,7 +37,7 @@ public class BaseWeapon {
    * @throws IllegalArgumentException if param is invalid
    */
   public BaseWeapon(int space, int damage, String name) throws IllegalArgumentException {
-    if (space < 0 || damage < 0) {
+    if (space < 0 || damage <= 0) {
       throw new IllegalArgumentException("Space index or damage is smaller than 0.");
     }
     this.space = space;
