@@ -1,15 +1,14 @@
 package application;
 
-import controller.ControllerApplication;
 import controller.WorldController;
 import controller.impl.WorldConsoleController;
-import flowengine.FlowEngineApplication;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
 import world.context.Context;
 import world.context.ContextBuilder;
 import world.context.ContextHolder;
@@ -20,6 +19,7 @@ import world.context.ContextHolder;
  * @author anbang
  * @date 2023-02-01 22:59
  */
+@ComponentScan(basePackages = {"controller", "flowengine"})
 public class WorldDriver {
 
   /**
@@ -42,8 +42,7 @@ public class WorldDriver {
       ContextHolder.set(context);
 
       Readable in = new InputStreamReader(System.in);
-      ApplicationContext ctx = new AnnotationConfigApplicationContext(FlowEngineApplication.class,
-          ControllerApplication.class);
+      ApplicationContext ctx = new AnnotationConfigApplicationContext(WorldDriver.class);
 
       WorldController controller = ctx.getBean(WorldConsoleController.class);
       controller.setIn(in);
