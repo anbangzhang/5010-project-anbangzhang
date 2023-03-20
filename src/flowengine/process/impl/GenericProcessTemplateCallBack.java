@@ -1,6 +1,7 @@
 package flowengine.process.impl;
 
 import com.google.common.collect.ImmutableMap;
+import flowengine.Flow;
 import flowengine.action.Action;
 import flowengine.process.ProcessTemplateCallBack;
 import flowengine.result.BaseResult;
@@ -12,7 +13,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import world.constant.Flow;
 import world.context.Context;
 
 /**
@@ -29,14 +29,15 @@ public class GenericProcessTemplateCallBack<T extends Context>
    * Flow action names map.
    */
   private final Map<String, List<String>> flowMap = ImmutableMap.<String, List<String>>builder()
-      .put(Flow.MOVE_PLAYER,
+      .put(Flow.MOVE_PLAYER.getDesc(),
           Arrays.asList("getInputAction", "neighborValidateAction", "movePlayerAction"))
-      .put(Flow.PICK_UP_WEAPON,
+      .put(Flow.PICK_UP_WEAPON.getDesc(),
           Arrays.asList("getInputAction", "weaponValidateAction", "pickUpWeaponAction"))
-      .put(Flow.LOOK_AROUND, Collections.singletonList("lookAroundAction"))
-      .put(Flow.MOVE_PET, Arrays.asList("getInputAction", "spaceValidateAction", "movePetAction"))
-      .put(Flow.ATTACK_TARGET, Arrays.asList("attackValidateAction", "attackRequestAssembleAction",
-          "dropWeaponAction", "attackAction"))
+      .put(Flow.LOOK_AROUND.getDesc(), Collections.singletonList("lookAroundAction"))
+      .put(Flow.MOVE_PET.getDesc(),
+          Arrays.asList("getInputAction", "spaceValidateAction", "movePetAction"))
+      .put(Flow.ATTACK_TARGET.getDesc(), Arrays.asList("attackValidateAction",
+          "attackRequestAssembleAction", "dropWeaponAction", "attackAction"))
       .build();
 
   /**
