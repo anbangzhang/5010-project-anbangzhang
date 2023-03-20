@@ -1,15 +1,15 @@
 package application;
 
+import controller.ControllerApplication;
+import controller.WorldController;
+import controller.impl.WorldConsoleController;
+import flowengine.FlowEngineApplication;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import controller.ControllerApplication;
-import controller.WorldController;
-import controller.impl.WorldConsoleController;
-import flowengine.FlowEngineApplication;
 import world.context.Context;
 import world.context.ContextBuilder;
 import world.context.ContextHolder;

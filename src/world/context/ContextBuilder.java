@@ -97,8 +97,8 @@ public class ContextBuilder {
    * @param m          row
    * @param n          col
    * @param baseSpaces base spaces
-   * @throws IllegalArgumentException any param is invalid
    * @return matrix
+   * @throws IllegalArgumentException any param is invalid
    */
   private static int[][] initMatrixAndValidateSpaces(int m, int n, List<BaseSpace> baseSpaces)
       throws IllegalArgumentException {

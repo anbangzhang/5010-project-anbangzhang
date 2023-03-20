@@ -1,7 +1,7 @@
 package world.model;
 
-import world.base.BaseWeapon;
 import java.util.List;
+import world.base.BaseWeapon;
 
 /**
  * Space.
@@ -55,6 +55,7 @@ public interface Space {
 
   /**
    * Show the detail of current space.
+   * 
    * @return detail
    */
   String showDetail();

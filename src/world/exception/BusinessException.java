@@ -8,10 +8,18 @@ package world.exception;
  */
 public class BusinessException extends Exception {
 
+  /**
+   * Constructor.
+   */
   public BusinessException() {
     super();
   }
 
+  /**
+   * Constructor.
+   * 
+   * @param message msg
+   */
   public BusinessException(String message) {
     super(message);
   }

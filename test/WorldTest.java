@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import world.World;
 import world.base.BasePlayer;
 import world.base.BaseSpace;
 import world.base.BaseWeapon;
@@ -17,7 +18,6 @@ import world.context.ContextBuilder;
 import world.context.ContextHolder;
 import world.enums.PlayerType;
 import world.exception.BusinessException;
-import world.World;
 import world.model.Player;
 import world.model.Space;
 

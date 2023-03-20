@@ -1,14 +1,14 @@
 package controller.impl;
 
+import com.google.common.collect.ImmutableMap;
+import controller.WorldController;
+import flowengine.template.ServiceTemplate;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.stream.Collectors;
-import com.google.common.collect.ImmutableMap;
-import controller.WorldController;
-import flowengine.template.ServiceTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -31,6 +31,12 @@ import world.model.Space;
 @Component(value = "worldController")
 public class WorldConsoleController implements WorldController {
   /**
+   * Action map.
+   */
+  private static final Map<Integer, String> ACTION_MAP = ImmutableMap.<Integer, String>builder()
+      .put(1, Flow.MOVE_PLAYER).put(2, Flow.PICK_UP_WEAPON).put(3, Flow.LOOK_AROUND)
+      .put(4, Flow.MOVE_PET).put(5, Flow.ATTACK_TARGET).build();
+  /**
    * Input.
    */
   private Readable in;
@@ -52,12 +58,6 @@ public class WorldConsoleController implements WorldController {
   @Autowired
   @Qualifier(value = "serviceTemplate")
   private ServiceTemplate serviceTemplate;
-  /**
-   * Action map.
-   */
-  private static final Map<Integer, String> ACTION_MAP = ImmutableMap.<Integer, String>builder()
-      .put(1, Flow.MOVE_PLAYER).put(2, Flow.PICK_UP_WEAPON).put(3, Flow.LOOK_AROUND)
-      .put(4, Flow.MOVE_PET).put(5, Flow.ATTACK_TARGET).build();
 
   @Override
   public void setIn(Readable in) {

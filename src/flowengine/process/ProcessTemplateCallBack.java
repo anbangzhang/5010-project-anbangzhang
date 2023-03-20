@@ -47,7 +47,7 @@ public interface ProcessTemplateCallBack<T extends Context> {
   void afterProcess(T context);
 
   /**
-   * Assemble result
+   * Assemble result.
    * 
    * @param context context
    * @return result

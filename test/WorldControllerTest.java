@@ -1,5 +1,7 @@
 import static org.mockito.ArgumentMatchers.eq;
 
+import controller.WorldController;
+import controller.impl.WorldConsoleController;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.StringReader;
@@ -12,14 +14,12 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import controller.WorldController;
-import controller.impl.WorldConsoleController;
+import world.World;
 import world.base.BaseWeapon;
 import world.context.Context;
 import world.context.ContextBuilder;
 import world.context.ContextHolder;
 import world.enums.PlayerType;
-import world.World;
 import world.model.Player;
 import world.model.Space;
 
