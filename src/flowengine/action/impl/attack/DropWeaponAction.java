@@ -1,7 +1,7 @@
 package flowengine.action.impl.attack;
 
 import java.util.Objects;
-import application.annotation.Component;
+import org.springframework.stereotype.Component;
 import flowengine.action.Action;
 import flowengine.request.AttackRequest;
 import world.base.BaseWeapon;
@@ -13,7 +13,7 @@ import world.context.Context;
  * @author anbang
  * @date 2023-03-18 09:01
  */
-@Component
+@Component(value = "dropWeaponAction")
 public class DropWeaponAction implements Action {
 
   @Override

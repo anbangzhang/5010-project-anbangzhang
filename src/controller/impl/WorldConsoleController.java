@@ -6,13 +6,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.stream.Collectors;
-
-import application.annotation.Qualifier;
 import com.google.common.collect.ImmutableMap;
-import application.annotation.Autowired;
-import application.annotation.Component;
 import controller.WorldController;
 import flowengine.template.ServiceTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 import world.World;
 import world.base.BasePlayer;
 import world.base.BaseWeapon;
@@ -29,7 +28,7 @@ import world.model.Space;
  * @author anbang
  * @date 2023-02-10 22:30
  */
-@Component
+@Component(value = "worldController")
 public class WorldConsoleController implements WorldController {
   /**
    * Input.
@@ -51,13 +50,13 @@ public class WorldConsoleController implements WorldController {
    * ServiceTemplate.
    */
   @Autowired
-  @Qualifier("serviceTemplate")
+  @Qualifier(value = "serviceTemplate")
   private ServiceTemplate serviceTemplate;
   /**
    * Action map.
    */
   private static final Map<Integer, String> ACTION_MAP = ImmutableMap.<Integer, String>builder()
-      .put(1, Flow.MOVE_TO_NEIGHBOR).put(2, Flow.PICK_UP_WEAPON).put(3, Flow.LOOK_AROUND)
+      .put(1, Flow.MOVE_PLAYER).put(2, Flow.PICK_UP_WEAPON).put(3, Flow.LOOK_AROUND)
       .put(4, Flow.MOVE_PET).put(5, Flow.ATTACK_TARGET).build();
 
   @Override

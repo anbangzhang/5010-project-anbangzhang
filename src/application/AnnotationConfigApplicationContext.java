@@ -9,7 +9,6 @@ import java.util.Map;
 import application.annotation.Autowired;
 import application.annotation.Component;
 import application.annotation.Qualifier;
-import application.exception.CustomException;
 
 /**
  * AnnotationConfigApplicationContext.
@@ -60,12 +59,12 @@ public class AnnotationConfigApplicationContext implements ApplicationContext {
   }
 
   @Override
-  public Object getBean(Class clazz) {
+  public <T> T getBean(Class<T> clazz) {
     try {
       if (existComponentClassMap.get(clazz.getName()) != null) {
         return isAutowired(clazz);
       } else {
-        throw new CustomException("not found " + clazz.getName() + " mapping class");
+        throw new ClassNotFoundException("not found " + clazz.getName() + " mapping class");
       }
     } catch (Exception e) {
       e.printStackTrace();
@@ -86,8 +85,8 @@ public class AnnotationConfigApplicationContext implements ApplicationContext {
     }
   }
 
-  private Object isAutowired(Class clazz) throws Exception {
-    Object object = clazz.getDeclaredConstructor().newInstance();
+  private <T> T isAutowired(Class<T> clazz) throws Exception {
+    T object = clazz.getDeclaredConstructor().newInstance();
     Field fields[] = clazz.getDeclaredFields();
 
     for (Field field : fields) {
@@ -99,7 +98,7 @@ public class AnnotationConfigApplicationContext implements ApplicationContext {
             field.setAccessible(true);
             field.set(object, isAutowired(Tempclazz));
           } else {
-            throw new CustomException("not found " + qualifier.value() + " mapping class");
+            throw new ClassNotFoundException("not found " + qualifier.value() + " mapping class");
           }
         } else {
           Class fieldType = field.getType();
@@ -108,7 +107,7 @@ public class AnnotationConfigApplicationContext implements ApplicationContext {
             field.setAccessible(true);
             field.set(object, isAutowired(Tempclazz));
           } else {
-            throw new CustomException("not found " + fieldType.getName() + " mapping class");
+            throw new ClassNotFoundException("not found " + fieldType.getName() + " mapping class");
           }
         }
       }

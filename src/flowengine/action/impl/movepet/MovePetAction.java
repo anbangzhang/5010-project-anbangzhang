@@ -1,6 +1,6 @@
 package flowengine.action.impl.movepet;
 
-import application.annotation.Component;
+import org.springframework.stereotype.Component;
 import flowengine.action.Action;
 import flowengine.request.BaseRequest;
 import flowengine.result.BaseResult;
@@ -14,7 +14,7 @@ import world.model.Space;
  * @author anbang
  * @date 2023-03-15 20:31
  */
-@Component
+@Component(value = "movePetAction")
 public class MovePetAction implements Action {
 
   @Override

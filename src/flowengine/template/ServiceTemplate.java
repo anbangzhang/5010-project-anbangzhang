@@ -1,6 +1,5 @@
 package flowengine.template;
 
-import flowengine.process.ProcessTemplateCallBack;
 import flowengine.request.BaseRequest;
 import flowengine.result.BaseResult;
 
@@ -17,9 +16,8 @@ public interface ServiceTemplate<T extends BaseRequest> {
    * 
    * @param flowName flow name
    * @param request  request
-   * @param action   action
    * @return result
    */
-  BaseResult execute(String flowName, T request, ProcessTemplateCallBack action);
+  BaseResult execute(String flowName, T request);
 
 }

@@ -2,7 +2,7 @@ package flowengine.action.impl.attack;
 
 import java.util.List;
 import java.util.Objects;
-import application.annotation.Component;
+import org.springframework.stereotype.Component;
 import flowengine.action.Action;
 import flowengine.request.AttackRequest;
 import flowengine.result.BaseResult;
@@ -17,7 +17,7 @@ import world.model.Space;
  * @author anbang
  * @date 2023-03-15 19:59
  */
-@Component
+@Component(value = "attackAction")
 public class AttackAction implements Action {
 
   @Override

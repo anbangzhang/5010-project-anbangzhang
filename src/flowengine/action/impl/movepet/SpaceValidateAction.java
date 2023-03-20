@@ -1,7 +1,7 @@
 package flowengine.action.impl.movepet;
 
 import java.util.stream.Collectors;
-import application.annotation.Component;
+import org.springframework.stereotype.Component;
 import flowengine.action.Action;
 import flowengine.request.BaseRequest;
 import world.base.BaseSpace;
@@ -13,7 +13,7 @@ import world.context.Context;
  * @author anbang
  * @date 2023-03-18 11:12
  */
-@Component
+@Component(value = "spaceValidateAction")
 public class SpaceValidateAction implements Action {
 
   @Override

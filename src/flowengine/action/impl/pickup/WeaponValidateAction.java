@@ -2,7 +2,7 @@ package flowengine.action.impl.pickup;
 
 import java.util.Objects;
 import java.util.stream.Collectors;
-import application.annotation.Component;
+import org.springframework.stereotype.Component;
 import flowengine.action.Action;
 import flowengine.request.BaseRequest;
 import world.World;
@@ -16,7 +16,7 @@ import world.model.Space;
  * @author anbang
  * @date 2023-03-18 12:48
  */
-@Component
+@Component(value = "weaponValidateAction")
 public class WeaponValidateAction implements Action {
 
   @Override

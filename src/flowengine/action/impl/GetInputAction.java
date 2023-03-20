@@ -1,6 +1,6 @@
 package flowengine.action.impl;
 
-import application.annotation.Component;
+import org.springframework.stereotype.Component;
 import flowengine.action.Action;
 import world.context.Context;
 
@@ -10,7 +10,7 @@ import world.context.Context;
  * @author anbang
  * @date 2023-03-18 07:58
  */
-@Component
+@Component(value = "getInputAction")
 public class GetInputAction implements Action {
 
   @Override

@@ -1,6 +1,8 @@
 package flowengine.template.impl;
 
-import application.annotation.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 import flowengine.process.ProcessTemplateCallBack;
 import flowengine.request.BaseRequest;
 import flowengine.result.BaseResult;
@@ -14,11 +16,15 @@ import world.context.ContextHolder;
  * @author anbang
  * @date 2023-03-16 21:41
  */
-@Component("serviceTemplate")
+@Component(value = "serviceTemplate")
 public class ServiceTemplateImpl<T extends BaseRequest> implements ServiceTemplate<T> {
 
+  @Autowired
+  @Qualifier(value = "genericProcessTemplateCallBack")
+  private ProcessTemplateCallBack process;
+
   @Override
-  public BaseResult execute(String flowName, T request, ProcessTemplateCallBack process) {
+  public BaseResult execute(String flowName, T request) {
 
     Context context = ContextHolder.get();
     context.setFlow(flowName);

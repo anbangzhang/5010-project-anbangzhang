@@ -14,6 +14,6 @@ public interface ApplicationContext {
    * @param clazz class
    * @return bean
    */
-  Object getBean(Class clazz);
+  <T> T getBean(Class<T> clazz);
 
 }

@@ -8,9 +8,9 @@ package world.constant;
  */
 public class Flow {
   /**
-   * MOVE_TO_NEIGHBOR.
+   * MOVE_PLAYER.
    */
-  public static final String MOVE_TO_NEIGHBOR = "MOVE_TO_NEIGHBOR";
+  public static final String MOVE_PLAYER = "MOVE_PLAYER";
   /**
    * PICK_UP_WEAPON.
    */

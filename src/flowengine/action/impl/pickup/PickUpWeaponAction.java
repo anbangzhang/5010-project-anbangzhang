@@ -1,7 +1,7 @@
 package flowengine.action.impl.pickup;
 
 import java.util.Objects;
-import application.annotation.Component;
+import org.springframework.stereotype.Component;
 import flowengine.action.Action;
 import flowengine.request.BaseRequest;
 import flowengine.result.BaseResult;
@@ -16,7 +16,7 @@ import world.model.Player;
  * @author anbang
  * @date 2023-03-15 20:22
  */
-@Component
+@Component(value = "pickUpWeaponAction")
 public class PickUpWeaponAction implements Action {
 
   @Override

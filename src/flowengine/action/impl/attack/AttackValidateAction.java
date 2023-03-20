@@ -1,7 +1,7 @@
 package flowengine.action.impl.attack;
 
 import java.util.Objects;
-import application.annotation.Component;
+import org.springframework.stereotype.Component;
 import flowengine.action.Action;
 import world.context.Context;
 
@@ -11,7 +11,7 @@ import world.context.Context;
  * @author anbang
  * @date 2023-03-18 10:15
  */
-@Component
+@Component(value = "attackValidateAction")
 public class AttackValidateAction implements Action {
 
   @Override

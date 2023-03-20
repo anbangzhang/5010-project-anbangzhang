@@ -1,7 +1,7 @@
 package flowengine.action.impl.lookaround;
 
 import java.util.Objects;
-import application.annotation.Component;
+import org.springframework.stereotype.Component;
 import flowengine.action.Action;
 import flowengine.result.BaseResult;
 import world.World;
@@ -16,7 +16,7 @@ import world.model.Space;
  * @author anbang
  * @date 2023-03-15 20:21
  */
-@Component
+@Component(value = "lookAroundAction")
 public class LookAroundAction implements Action {
 
   @Override

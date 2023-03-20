@@ -4,8 +4,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import controller.ControllerApplication;
 import controller.WorldController;
 import controller.impl.WorldConsoleController;
+import flowengine.FlowEngineApplication;
 import world.context.Context;
 import world.context.ContextBuilder;
 import world.context.ContextHolder;
@@ -38,9 +42,10 @@ public class WorldDriver {
       ContextHolder.set(context);
 
       Readable in = new InputStreamReader(System.in);
-      ApplicationContext ctx = new AnnotationConfigApplicationContext("flowengine", "controller");
+      ApplicationContext ctx = new AnnotationConfigApplicationContext(FlowEngineApplication.class,
+          ControllerApplication.class);
 
-      WorldController controller = (WorldController) ctx.getBean(WorldConsoleController.class);
+      WorldController controller = ctx.getBean(WorldConsoleController.class);
       controller.setIn(in);
       controller.setOut(System.out);
       controller.setTurn(Integer.parseInt(args[1]));
