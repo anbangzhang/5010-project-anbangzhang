@@ -1,9 +1,9 @@
 package flowengine.action.impl.attack;
 
-import java.util.Objects;
-import org.springframework.stereotype.Component;
 import flowengine.action.Action;
 import flowengine.request.AttackRequest;
+import java.util.Objects;
+import org.springframework.stereotype.Component;
 import world.base.BaseWeapon;
 import world.context.Context;
 

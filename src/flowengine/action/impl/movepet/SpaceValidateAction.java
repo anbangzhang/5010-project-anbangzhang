@@ -1,9 +1,9 @@
 package flowengine.action.impl.movepet;
 
-import java.util.stream.Collectors;
-import org.springframework.stereotype.Component;
 import flowengine.action.Action;
 import flowengine.request.BaseRequest;
+import java.util.stream.Collectors;
+import org.springframework.stereotype.Component;
 import world.base.BaseSpace;
 import world.context.Context;
 

@@ -3,7 +3,7 @@ package flowengine.result;
 import java.io.Serializable;
 
 /**
- * BaseResult
+ * BaseResult.
  * 
  * @author anbang
  * @date 2023-03-15 16:48
@@ -30,7 +30,7 @@ public class BaseResult<T> implements Serializable {
   }
 
   /**
-   * Constructor
+   * Constructor.
    * 
    * @param builder builder
    */

@@ -1,9 +1,9 @@
 package flowengine.action.impl.lookaround;
 
-import java.util.Objects;
-import org.springframework.stereotype.Component;
 import flowengine.action.Action;
 import flowengine.result.BaseResult;
+import java.util.Objects;
+import org.springframework.stereotype.Component;
 import world.World;
 import world.context.Context;
 import world.model.Pet;

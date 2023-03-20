@@ -1,9 +1,9 @@
 package flowengine.action.impl.moveplayer;
 
-import org.springframework.stereotype.Component;
 import flowengine.action.Action;
 import flowengine.request.BaseRequest;
 import flowengine.result.BaseResult;
+import org.springframework.stereotype.Component;
 import world.World;
 import world.context.Context;
 import world.model.Player;

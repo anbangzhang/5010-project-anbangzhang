@@ -1,10 +1,10 @@
 package flowengine.action.impl.pickup;
 
-import java.util.Objects;
-import org.springframework.stereotype.Component;
 import flowengine.action.Action;
 import flowengine.request.BaseRequest;
 import flowengine.result.BaseResult;
+import java.util.Objects;
+import org.springframework.stereotype.Component;
 import world.World;
 import world.base.BaseWeapon;
 import world.context.Context;

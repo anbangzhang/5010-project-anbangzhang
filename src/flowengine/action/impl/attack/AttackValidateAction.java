@@ -1,8 +1,8 @@
 package flowengine.action.impl.attack;
 
+import flowengine.action.Action;
 import java.util.Objects;
 import org.springframework.stereotype.Component;
-import flowengine.action.Action;
 import world.context.Context;
 
 /**
