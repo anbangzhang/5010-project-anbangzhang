@@ -2,10 +2,11 @@ package flowengine.action.impl.movepet;
 
 import flowengine.action.Action;
 import flowengine.request.BaseRequest;
-import java.util.stream.Collectors;
+import java.util.Objects;
 import org.springframework.stereotype.Component;
-import world.base.BaseSpace;
+import world.World;
 import world.context.Context;
+import world.model.Space;
 
 /**
  * SpaceValidateAction.
@@ -20,10 +21,15 @@ public class SpaceValidateAction implements Action {
   public void execute(Context context) {
     BaseRequest request = context.getRequest();
 
-    if (!context.getSpaces().stream().map(BaseSpace::getName).collect(Collectors.toSet())
-        .contains(request.getInput())) {
+    Space space = World.getSpace(context, request.getInput());
+    if (Objects.isNull(space)) {
       throw new IllegalArgumentException(
           String.format("Space: [%s] is not in the world.", request.getInput()));
+    }
+
+    if (Objects.equals(space.getOrder(), context.getPet().getSpaceIndex())) {
+      throw new IllegalStateException(
+          String.format("The pet is already in Space: [%s].", request.getInput()));
     }
   }
 

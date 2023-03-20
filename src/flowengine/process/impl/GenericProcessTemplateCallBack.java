@@ -5,6 +5,7 @@ import flowengine.Flow;
 import flowengine.action.Action;
 import flowengine.process.ProcessTemplateCallBack;
 import flowengine.result.BaseResult;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import world.context.Context;
+import world.exception.BusinessException;
 
 /**
  * GenericProcessTemplateCallBack.
@@ -36,9 +38,10 @@ public class GenericProcessTemplateCallBack<T extends Context>
       .put(Flow.LOOK_AROUND.getDesc(), Collections.singletonList("lookAroundAction"))
       .put(Flow.MOVE_PET.getDesc(),
           Arrays.asList("getInputAction", "spaceValidateAction", "movePetAction"))
-      .put(Flow.ATTACK_TARGET.getDesc(), Arrays.asList("attackValidateAction",
-          "attackRequestAssembleAction", "dropWeaponAction", "attackAction"))
-      .build();
+      .put(Flow.ATTACK_TARGET.getDesc(),
+          Arrays.asList("attackValidateAction", "attackRequestAssembleAction", "dropWeaponAction",
+              "attackAction"))
+      .put(Flow.PET_DFS.getDesc(), Collections.singletonList("petTraverseAction")).build();
 
   /**
    * name - action map.
@@ -59,13 +62,17 @@ public class GenericProcessTemplateCallBack<T extends Context>
   }
 
   @Override
-  public void process(T context) {
+  public void process(T context) throws IOException {
     String flow = context.getFlow();
     List<String> actionNames = flowMap.getOrDefault(flow, new ArrayList<>());
     List<Action> actions = actionNames.stream().map(actionMap::get).collect(Collectors.toList());
 
-    for (Action action : actions) {
-      action.execute(context);
+    try {
+      for (Action action : actions) {
+        action.execute(context);
+      }
+    } catch (BusinessException e) {
+      context.setResult(BaseResult.newFailResult().errorMsg(e.getMessage()).build());
     }
   }
 

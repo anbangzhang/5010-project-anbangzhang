@@ -22,12 +22,12 @@ public class MovePlayerAction implements Action {
   public void execute(Context context) {
     BaseRequest request = context.getRequest();
     Player player = request.getPlayer();
-
     Space space = World.getSpace(context, request.getInput());
-    player.setSpaceIndex(space.getOrder());
 
+    World.movePlayer(player, space);
     context.setResult(
         BaseResult.newSuccessResult().result("Player move to the neighbor space succeed.").build());
+
   }
 
 }

@@ -349,7 +349,7 @@ public class Context {
    * @param key   key
    * @param value value
    */
-  public void set(String key, String value) {
+  public void setStr(String key, String value) {
     map.put(key, value);
   }
 
@@ -359,8 +359,28 @@ public class Context {
    * @param key key
    * @return value
    */
-  public String get(String key) {
+  public String getStr(String key) {
     return (String) map.get(key);
+  }
+
+  /**
+   * Set object.
+   * 
+   * @param key   key
+   * @param value value
+   */
+  public void set(String key, Object value) {
+    map.put(key, value);
+  }
+
+  /**
+   * Get object.
+   * 
+   * @param key key
+   * @return value
+   */
+  public Object get(String key) {
+    return map.get(key);
   }
 
 }

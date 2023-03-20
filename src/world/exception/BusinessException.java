@@ -6,7 +6,7 @@ package world.exception;
  * @author anbang
  * @date 2023-02-11 01:01
  */
-public class BusinessException extends Exception {
+public class BusinessException extends RuntimeException {
 
   /**
    * Constructor.

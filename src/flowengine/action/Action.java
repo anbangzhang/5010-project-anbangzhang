@@ -1,6 +1,8 @@
 package flowengine.action;
 
+import java.io.IOException;
 import world.context.Context;
+import world.exception.BusinessException;
 
 /**
  * Action.
@@ -14,7 +16,9 @@ public interface Action<T extends Context> {
    * execute.
    * 
    * @param context context
+   * @throws BusinessException business exception
+   * @throws IOException       io exception
    */
-  void execute(T context);
+  void execute(T context) throws  IOException;
 
 }

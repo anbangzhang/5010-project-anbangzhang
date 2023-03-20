@@ -51,4 +51,21 @@ public class Constants {
    * PLAYERS.
    */
   public static final String PLAYERS = "players";
+  /**
+   * SCANNER.
+   */
+  public static final String SCANNER = "scanner";
+  /**
+   * OUT.
+   */
+  public static final String OUT = "out";
+  /**
+   * COMPUTER_DEFAULT.
+   */
+  public static final String COMPUTER_DEFAULT = "##computer_default##";
+  /**
+   * WINNER.
+   */
+  public static final String WINNER = "##Winner##";
+
 }

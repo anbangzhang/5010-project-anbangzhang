@@ -1,3 +1,4 @@
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -155,14 +156,20 @@ public class WorldTest {
   }
 
   @Test
-  public void testShowGraphicalImage() {
+  public void testGenerateGraphicalImage() {
     try {
-      World.showGraphicalImage(context, "res/");
+      World.generateGraphicalImage(context, "res/");
       File file = new File("res/Doctor Lucky's Mansion.png");
       Assert.assertTrue(file.exists());
     } catch (IOException e) {
       System.out.println(e.getMessage());
     }
+  }
+
+  @Test
+  public void testShowGraphicalImage() {
+    BufferedImage image = World.getGraphicalImage(context);
+    Assert.assertNotNull(image);
   }
 
   @Test

@@ -1,12 +1,15 @@
 package controller.impl;
 
-import com.google.common.collect.ImmutableMap;
 import controller.WorldController;
 import flowengine.Flow;
+import flowengine.request.BaseRequest;
+import flowengine.result.BaseResult;
 import flowengine.template.ServiceTemplate;
+import java.awt.FlowLayout;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -16,11 +19,15 @@ import org.springframework.stereotype.Component;
 import world.World;
 import world.base.BasePlayer;
 import world.base.BaseWeapon;
+import world.constant.Constants;
 import world.context.Context;
 import world.enums.PlayerType;
-import world.exception.BusinessException;
 import world.model.Player;
 import world.model.Space;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 /**
  * WorldConsoleController class.
@@ -30,15 +37,6 @@ import world.model.Space;
  */
 @Component(value = "worldController")
 public class WorldConsoleController implements WorldController {
-  /**
-   * Action map.
-   */
-  private static final Map<Integer, String> ACTION_MAP = ImmutableMap.<Integer, String>builder()
-      .put(Flow.MOVE_PLAYER.getCode(), Flow.MOVE_PLAYER.getDesc())
-      .put(Flow.PICK_UP_WEAPON.getCode(), Flow.PICK_UP_WEAPON.getDesc())
-      .put(Flow.LOOK_AROUND.getCode(), Flow.LOOK_AROUND.getDesc())
-      .put(Flow.MOVE_PET.getCode(), Flow.MOVE_PET.getDesc())
-      .put(Flow.ATTACK_TARGET.getCode(), Flow.ATTACK_TARGET.getDesc()).build();
   /**
    * Input.
    */
@@ -93,25 +91,13 @@ public class WorldConsoleController implements WorldController {
       throw new IllegalArgumentException("invalid context model");
     }
     try {
-      int playerOrder = 0;
-      /* add players */
-      while (true) {
-        try {
-          if (createPlayer(context, playerOrder)) {
-            playerOrder++;
-          }
-        } catch (InterruptedException e) {
-          break;
-        }
-      }
-      List<Player> players = World.getAllPlayers(context);
-      this.out.append(String.format("All the players in the game: %s\n",
-          players.stream().map(Player::getName).collect(Collectors.toList())));
+
+      initPlayers(context);
 
       while (true) {
-        this.out.append("Please input the number below to select the function:\n"
-            + "\t1. displayAllSpaces\n" + "\t2. displaySpaceDetail\n"
-            + "\t3. displayGraphicalImage\n" + "\t4. startGame\n" + "\tq. exit\n");
+
+        printGeneralInstructions();
+
         try {
           String selection = getInput();
 
@@ -129,16 +115,18 @@ public class WorldConsoleController implements WorldController {
             } else {
               this.out.append("The space is null.\n");
             }
-            /* displayGraphicalImage */
+            /* generateGraphicalImage */
           } else if (select == 3) {
             this.out.append("Please input the output directory:\n");
             selection = this.scan.nextLine().trim();
-            World.showGraphicalImage(context, selection);
+            World.generateGraphicalImage(context, selection);
             this.out.append(String.format(
                 "Graphical Image generation succeed, please check %s directory\n", selection));
             /* startGame */
           } else if (select == 4) {
+
             start(context);
+
             break;
           } else {
             this.out.append("Invalid selection.\n");
@@ -160,61 +148,58 @@ public class WorldConsoleController implements WorldController {
    */
   private void start(Context ctx) throws IOException {
     this.out.append("\nGame start.\n");
-    List<Player> players = World.getAllPlayers(ctx);
-    String input = "";
-    for (int i = 0; i < this.turn; i++) {
-      this.out.append(String.format("\nThis is the %dth turn of game.\n", i + 1));
+    ctx.set(Constants.SCANNER, this.scan);
+    ctx.set(Constants.OUT, this.out);
+
+    List<Player> players = ctx.getPlayers();
+    boolean gameOver = false;
+    BufferedImage image = World.getGraphicalImage(ctx);
+    JFrame jFrame = new JFrame();
+    jFrame.setLayout(new FlowLayout());
+
+    jFrame.setSize(image.getWidth(), image.getHeight());
+    JLabel jLabel = new JLabel();
+
+    jLabel.setIcon(new ImageIcon(image));
+    jFrame.add(jLabel);
+    jFrame.setVisible(true);
+
+    jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+    for (int i = 0; i < this.turn && !gameOver; i++) {
+
+      resetExposedSpaces(ctx);
+
+      printGameInfo(ctx, i);
+
       for (Player player : players) {
+
+        jLabel.setIcon(new ImageIcon(World.getGraphicalImage(ctx)));
+
+        ctx.setFlow(null);
         this.out.append(
-            String.format("This is the %dth turn for player [%s].\n", i + 1, player.getName()));
+            String.format("\nThis is the %dth turn for player [%s].\n", i + 1, player.getName()));
+
         displayPlayerDetail(ctx, player);
 
+        // human-controlled player
         if (Objects.equals(PlayerType.HUMAN_CONTROLLED, player.getType())) {
-          while (true) {
-            this.out.append(String.format(
-                "Please use the number below to select thea flowengine for player [%s]\n"
-                    + "\t1. move to a neighbor space.\n"
-                    + "\t2. pick up a weapon in the space.\n\t3. look around the space.\n",
-                player.getName()));
-            input = this.scan.nextLine().trim();
-            int action = Integer.parseInt(input);
-            Space cur = World.getSpace(ctx, player.getSpaceIndex());
-            /* move the player */
-            if (action == 1) {
-              this.out.append(String.format(
-                  "Please input a neighbor space name from the neighbors: %s\n",
-                  cur.getNeighbors().stream().map(Space::getName).collect(Collectors.toList())));
-              input = this.scan.nextLine().trim();
-              try {
-                movePlayer(ctx, player, cur, input);
-                break;
-              } catch (BusinessException e) {
-                this.out.append(String.format("Player [%s] move to space [%s] failed, cause: %s\n",
-                    player.getName(), input, e.getMessage()));
-              }
-              /* pick up a weapon */
-            } else if (action == 2) {
-              this.out.append(String.format("Please input a weapon name from the weapons: %s\n",
-                  cur.getWeapons().stream().map(BaseWeapon::getName).collect(Collectors.toList())));
-              input = this.scan.nextLine().trim();
-              try {
-                pickUp(player, cur, input);
-                break;
-              } catch (BusinessException e) {
-                this.out.append(String.format("Player [%s] pick up weapon [%s] failed, cause: %s\n",
-                    player.getName(), input, e.getMessage()));
-              }
-              /* look around */
-            } else if (action == 3) {
-              displayPlayerSpaceDetail(ctx, player);
-              break;
-            }
-          }
+          handleHumanPlayer(player);
         } else {
-          /* show player's detail */
-          displayPlayerSpaceDetail(ctx, player);
+          // computer-controlled player
+          handlerComputerPlayer(ctx, player);
         }
+
+        if (Objects.nonNull(ctx.get(Constants.WINNER))) {
+          gameOver = true;
+          break;
+        }
+
       }
+
+      // #### Move Target and Pet ####
+      moveTargetAndPet(ctx);
+
     }
     this.out.append("\nGame end.\n");
     for (Player player : players) {
@@ -222,67 +207,81 @@ public class WorldConsoleController implements WorldController {
     }
   }
 
-  /**
-   * Move a player to a neighbor space.
-   * 
-   * @param ctx      context
-   * @param player   player
-   * @param cur      current space
-   * @param neighbor neighbor name
-   * @throws BusinessException move fail
-   * @throws IOException       output fail
-   */
-  private void movePlayer(Context ctx, Player player, Space cur, String neighbor)
-      throws BusinessException, IOException {
-    if (cur.getNeighbors().stream().noneMatch(item -> neighbor.equals(item.getName()))) {
-      throw new BusinessException(
-          String.format("Space %s is not a neighbor of player's current space.", neighbor));
-    } else {
-      Space next = World.getSpace(ctx, neighbor);
-      World.movePlayer(player, next);
-      this.out.append(
-          String.format("Player [%s] move to space [%s] succeed.\n", player.getName(), neighbor));
+  private void initPlayers(Context context) throws IOException {
+    int playerOrder = 0;
+    /* add players */
+    while (true) {
+      try {
+        if (createPlayer(context, playerOrder)) {
+          playerOrder++;
+        }
+      } catch (InterruptedException e) {
+        break;
+      }
     }
+    this.out.append(String.format("All the players in the game: %s\n",
+        context.getPlayers().stream().map(Player::getName).collect(Collectors.toList())));
   }
 
-  /**
-   * Player picks up a weapon.
-   * 
-   * @param player player
-   * @param cur    current space
-   * @param weapon weapon name
-   * @throws BusinessException pick up fail
-   * @throws IOException       output fail
-   */
-  private void pickUp(Player player, Space cur, String weapon)
-      throws BusinessException, IOException {
-    BaseWeapon w = cur.getWeapons().stream().filter(item -> weapon.equals(item.getName()))
-        .findFirst().orElse(null);
-    if (Objects.isNull(w)) {
-      throw new BusinessException(String.format("Weapon %s is not in current space.", weapon));
-    } else {
-      World.pickUp(player, w);
-      this.out.append(
-          String.format("Player [%s] pick up weapon [%s] succeed.\n", player.getName(), weapon));
-    }
+  private void printGeneralInstructions() throws IOException {
+    this.out.append("Please input the number below to select the function:\n"
+        + "\t1. displayAllSpaces\n" + "\t2. displaySpaceDetail\n" + "\t3. generateGraphicalImage\n"
+        + "\t4. startGame\n" + "\tq. exit\n");
   }
 
-  /**
-   * Display player's space detail.
-   * 
-   * @param ctx    context
-   * @param player player
-   * @throws IOException output fail
-   */
-  private void displayPlayerSpaceDetail(Context ctx, Player player) throws IOException {
-    Space space = World.getSpace(ctx, player.getSpaceIndex());
+  private void resetExposedSpaces(Context context) {
+    context.setExposedSpaces(new HashSet<>());
+  }
+
+  private void printGameInfo(Context context, int turn) throws IOException {
     this.out.append(String.format(
-        "Player: [%s] is in space: [%s], players inside this space: %s,"
-            + " its neighbors: %s, weapons inside this space: %s\n",
-        player.getName(), space.getName(),
-        space.getOccupiers().stream().map(Player::getName).collect(Collectors.toList()),
-        space.getNeighbors().stream().map(Space::getName).collect(Collectors.toList()),
-        space.getWeapons().stream().map(BaseWeapon::getName).collect(Collectors.toList())));
+        "\nThis is the %dth turn of game. The target is in space: [%s] health: [%d],"
+            + " the pet is in space: [%s]\n",
+        turn + 1, World.getSpace(context, context.getTarget().getPosition()).getName(),
+        context.getTarget().getHealth(),
+        World.getSpace(context, context.getPet().getSpaceIndex()).getName()));
+  }
+
+  private void handleHumanPlayer(Player player) throws IOException {
+    while (true) {
+      this.out
+          .append(String.format("Please use the number below to select the action for player [%s]\n"
+              + "\t1. move player to a neighbor space.\n" + "\t2. pick up a weapon in the space.\n"
+              + "\t3. look around the space.\n" + "\t4. move pet to a new space.\n"
+              + "\t5. attack target.\n", player.getName()));
+
+      String input = this.scan.nextLine().trim();
+      int actionIndex = Integer.parseInt(input);
+
+      Flow flow = Flow.getByCode(actionIndex);
+      if (Objects.isNull(flow) || Objects.equals(flow, Flow.PET_DFS)) {
+        this.out.append("Invalid number.\n");
+        continue;
+      }
+
+      BaseResult baseResult = serviceTemplate.execute(flow.getDesc(), new BaseRequest(player));
+      if (baseResult.isSuccess()) {
+        this.out.append((String) baseResult.getResult()).append("\n");
+        return;
+      } else {
+        this.out.append(baseResult.getErrorMsg()).append("\n");
+      }
+    }
+  }
+
+  private void handlerComputerPlayer(Context ctx, Player player) throws IOException {
+    BaseResult baseResult = serviceTemplate.execute(Flow.LOOK_AROUND.getDesc(),
+        new BaseRequest(player, Boolean.TRUE));
+    if (baseResult.isSuccess()) {
+      this.out.append((String) baseResult.getResult()).append("\n");
+    } else {
+      this.out.append(baseResult.getErrorMsg()).append("\n");
+    }
+  }
+
+  private void moveTargetAndPet(Context ctx) throws IOException {
+    World.moveTarget(ctx);
+    serviceTemplate.execute(Flow.PET_DFS.getDesc(), new BaseRequest(null));
   }
 
   /**

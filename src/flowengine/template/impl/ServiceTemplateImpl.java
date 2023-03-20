@@ -4,6 +4,7 @@ import flowengine.process.ProcessTemplateCallBack;
 import flowengine.request.BaseRequest;
 import flowengine.result.BaseResult;
 import flowengine.template.ServiceTemplate;
+import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -24,7 +25,7 @@ public class ServiceTemplateImpl<T extends BaseRequest> implements ServiceTempla
   private ProcessTemplateCallBack process;
 
   @Override
-  public BaseResult execute(String flowName, T request) {
+  public BaseResult execute(String flowName, T request) throws IOException {
 
     Context context = ContextHolder.get();
     context.setFlow(flowName);
@@ -68,7 +69,7 @@ public class ServiceTemplateImpl<T extends BaseRequest> implements ServiceTempla
     process.beforeProcess(ctx);
   }
 
-  private void processCallBack(Context ctx, ProcessTemplateCallBack process) {
+  private void processCallBack(Context ctx, ProcessTemplateCallBack process) throws IOException {
     process.process(ctx);
   }
 

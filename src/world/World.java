@@ -1,6 +1,7 @@
 package world;
 
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -14,6 +15,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
 import world.base.BaseSpace;
 import world.base.BaseWeapon;
 import world.context.Context;
@@ -207,13 +212,31 @@ public class World {
   }
 
   /**
-   * Show the world in image.
+   * Get image.
+   * 
+   * @param context context
+   */
+  public static BufferedImage getGraphicalImage(Context context) {
+    return generateBufferedImage(context);
+  }
+
+  /**
+   * Generate the world in image.
    *
    * @param context   context
    * @param directory directory of output
    * @throws IOException if write file fail
    */
-  public static void showGraphicalImage(Context context, String directory) throws IOException {
+  public static void generateGraphicalImage(Context context, String directory) throws IOException {
+    BufferedImage image = generateBufferedImage(context);
+    String fileName = (directory.endsWith("/"))
+        ? String.format("%s%s.png", directory, context.getWorldName())
+        : String.format("%s/%s.png", directory, context.getWorldName());
+    File outputFile = new File(fileName);
+    ImageIO.write(image, "png", outputFile);
+  }
+
+  private static BufferedImage generateBufferedImage(Context context) {
     int m = context.getM();
     int n = context.getN();
     BufferedImage image = new BufferedImage(n * SCALE_FACTOR, m * SCALE_FACTOR,
@@ -241,12 +264,9 @@ public class World {
         y = drawString(graphics, string, x, y, rowWidth);
       }
     }
-    String fileName = (directory.endsWith("/"))
-        ? String.format("%s%s.png", directory, context.getWorldName())
-        : String.format("%s/%s.png", directory, context.getWorldName());
-    File outputFile = new File(fileName);
     graphics.dispose();
-    ImageIO.write(image, "png", outputFile);
+
+    return image;
   }
 
   /**

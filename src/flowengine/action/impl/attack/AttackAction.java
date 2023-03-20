@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import org.springframework.stereotype.Component;
 import world.World;
+import world.constant.Constants;
 import world.context.Context;
 import world.model.Player;
 import world.model.Space;
@@ -39,7 +40,11 @@ public class AttackAction implements Action {
       context.setResult(buildAttackSeenResult());
       return;
     }
-    context.getTarget().decreaseHealth(damage);
+    int health = context.getTarget().decreaseHealth(damage);
+
+    if (health == 0) {
+      context.set(Constants.WINNER, player);
+    }
     context.setResult(buildSuccessResult());
   }
 

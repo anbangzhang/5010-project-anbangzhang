@@ -3,6 +3,8 @@ package flowengine.process;
 import flowengine.result.BaseResult;
 import world.context.Context;
 
+import java.io.IOException;
+
 /**
  * ProcessTemplateCallBack.
  * 
@@ -36,8 +38,9 @@ public interface ProcessTemplateCallBack<T extends Context> {
    * Execute the process.
    * 
    * @param context context
+   * @throws IOException io exception
    */
-  void process(T context);
+  void process(T context) throws IOException;
 
   /**
    * After action.

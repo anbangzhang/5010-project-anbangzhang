@@ -1,5 +1,7 @@
 package flowengine;
 
+import java.util.Objects;
+
 /**
  * Flow.
  * 
@@ -8,7 +10,7 @@ package flowengine;
  */
 public enum Flow {
   MOVE_PLAYER(1, "MOVE_PLAYER"), PICK_UP_WEAPON(2, "PICK_UP_WEAPON"), LOOK_AROUND(3, "LOOK_AROUND"),
-  MOVE_PET(4, "MOVE_PET"), ATTACK_TARGET(5, "ATTACK_TARGET"),;
+  MOVE_PET(4, "MOVE_PET"), ATTACK_TARGET(5, "ATTACK_TARGET"), PET_DFS(999, "PET_DFS");
 
   private int code;
   private String desc;
@@ -55,6 +57,21 @@ public enum Flow {
       }
     }
     throw new IllegalArgumentException("Code not Exist");
+  }
+
+  /**
+   * Get by desc.
+   *
+   * @param desc desc
+   * @return flow
+   */
+  public static Flow getByDesc(String desc) {
+    for (Flow flow : values()) {
+      if (Objects.equals(desc, flow.getDesc())) {
+        return flow;
+      }
+    }
+    throw new IllegalArgumentException("Desc not Exist");
   }
 
 }

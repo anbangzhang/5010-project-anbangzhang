@@ -29,13 +29,10 @@ public class PickUpWeaponAction implements Action {
         .stream().filter(item -> Objects.equals(item.getName(), request.getInput())).findFirst()
         .orElse(null);
 
-    Objects.requireNonNull(weapon);
-    if (!player.addWeapon(weapon)) {
-      throw new IllegalStateException("Player's weapon amount reaches limit.");
-    }
-    weapon.setHolder(String.format("player: %s", player.getName()));
+    World.pickUp(player, weapon);
     context
         .setResult(BaseResult.newSuccessResult().result("Player pick up weapon succeed.").build());
+
   }
 
 }

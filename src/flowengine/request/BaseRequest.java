@@ -13,11 +13,14 @@ public class BaseRequest {
    * Player.
    */
   protected Player player;
-
   /**
    * Input.
    */
   protected String input;
+  /**
+   * Skip input.
+   */
+  protected Boolean skipInput = Boolean.FALSE;
 
   /**
    * Constructor.
@@ -26,6 +29,17 @@ public class BaseRequest {
    */
   public BaseRequest(Player player) {
     this.player = player;
+  }
+
+  /**
+   * Constructor.
+   * 
+   * @param player    player
+   * @param skipInput skip input
+   */
+  public BaseRequest(Player player, Boolean skipInput) {
+    this.player = player;
+    this.skipInput = skipInput;
   }
 
   /**
@@ -64,4 +78,12 @@ public class BaseRequest {
     this.input = input;
   }
 
+  /**
+   * Get skip input.
+   * 
+   * @return skip input
+   */
+  public Boolean getSkipInput() {
+    return skipInput;
+  }
 }
