@@ -1,8 +1,8 @@
 package flowengine.process;
 
+import flowengine.context.FlowContext;
 import flowengine.result.BaseResult;
 import java.io.IOException;
-import world.context.Context;
 
 /**
  * ProcessTemplateCallBack.
@@ -10,7 +10,7 @@ import world.context.Context;
  * @author anbang
  * @date 2023-03-15 18:13
  */
-public interface ProcessTemplateCallBack<T extends Context> {
+public interface ProcessTemplateCallBack<T extends FlowContext> {
 
   /**
    * Validate parameters.

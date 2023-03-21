@@ -1,7 +1,5 @@
 package world.context;
 
-import flowengine.request.BaseRequest;
-import flowengine.result.BaseResult;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,37 +24,7 @@ public class Context {
   /**
    * map.
    */
-  private final Map<String, Object> map = new HashMap<>();
-  /**
-   * flow name.
-   */
-  private String flow;
-  /**
-   * Request.
-   */
-  private BaseRequest request;
-  /**
-   * result.
-   */
-  private BaseResult result;
-
-  /**
-   * Set flow.
-   * 
-   * @param flow flow
-   */
-  public void setFlow(String flow) {
-    this.flow = flow;
-  }
-
-  /**
-   * Get flow.
-   * 
-   * @return flow
-   */
-  public String getFlow() {
-    return this.flow;
-  }
+  protected final Map<String, Object> map = new HashMap<>();
 
   /**
    * Set m.
@@ -305,42 +273,6 @@ public class Context {
       map.put(Constants.PLAYERS, new ArrayList<>());
     }
     return (List<Player>) map.get(Constants.PLAYERS);
-  }
-
-  /**
-   * Set request.
-   * 
-   * @param request request
-   */
-  public void setRequest(BaseRequest request) {
-    this.request = request;
-  }
-
-  /**
-   * Get request.
-   * 
-   * @return request
-   */
-  public BaseRequest getRequest() {
-    return request;
-  }
-
-  /**
-   * Set result.
-   *
-   * @param result result
-   */
-  public void setResult(BaseResult result) {
-    this.result = result;
-  }
-
-  /**
-   * Get result.
-   * 
-   * @return result
-   */
-  public BaseResult getResult() {
-    return result;
   }
 
   /**

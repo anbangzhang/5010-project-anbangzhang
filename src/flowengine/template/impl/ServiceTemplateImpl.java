@@ -1,5 +1,7 @@
 package flowengine.template.impl;
 
+import flowengine.Flow;
+import flowengine.context.FlowContext;
 import flowengine.process.ProcessTemplateCallBack;
 import flowengine.request.BaseRequest;
 import flowengine.result.BaseResult;
@@ -27,7 +29,9 @@ public class ServiceTemplateImpl<T extends BaseRequest> implements ServiceTempla
   @Override
   public BaseResult execute(String flowName, T request) throws IOException {
 
-    Context context = ContextHolder.get();
+    Context ctx = ContextHolder.get();
+    FlowContext context = new FlowContext(ctx);
+
     context.setFlow(flowName);
     context.setRequest(request);
 
@@ -57,27 +61,28 @@ public class ServiceTemplateImpl<T extends BaseRequest> implements ServiceTempla
 
   }
 
-  private void paramValidate(Context ctx, ProcessTemplateCallBack process) {
+  private void paramValidate(FlowContext ctx, ProcessTemplateCallBack process) {
     process.paramValidate(ctx);
   }
 
-  private void bizValidate(Context ctx, ProcessTemplateCallBack process) {
+  private void bizValidate(FlowContext ctx, ProcessTemplateCallBack process) {
     process.bizValidate(ctx);
   }
 
-  private void beforeProcessCallBack(Context ctx, ProcessTemplateCallBack process) {
+  private void beforeProcessCallBack(FlowContext ctx, ProcessTemplateCallBack process) {
     process.beforeProcess(ctx);
   }
 
-  private void processCallBack(Context ctx, ProcessTemplateCallBack process) throws IOException {
+  private void processCallBack(FlowContext ctx, ProcessTemplateCallBack process)
+      throws IOException {
     process.process(ctx);
   }
 
-  private void afterProcessCallBack(Context ctx, ProcessTemplateCallBack process) {
+  private void afterProcessCallBack(FlowContext ctx, ProcessTemplateCallBack process) {
     process.afterProcess(ctx);
   }
 
-  private BaseResult assembleSuccessResult(Context ctx, ProcessTemplateCallBack process) {
+  private BaseResult assembleSuccessResult(FlowContext ctx, ProcessTemplateCallBack process) {
     return process.assemble(ctx);
   }
 

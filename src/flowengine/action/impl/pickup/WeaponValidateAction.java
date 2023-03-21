@@ -1,6 +1,7 @@
 package flowengine.action.impl.pickup;
 
 import flowengine.action.Action;
+import flowengine.context.FlowContext;
 import flowengine.request.BaseRequest;
 import java.util.List;
 import java.util.Objects;
@@ -22,18 +23,19 @@ import world.model.Space;
 public class WeaponValidateAction implements Action {
 
   @Override
-  public void execute(Context context) {
+  public void execute(FlowContext context) {
+    Context ctx = context.getContext();
     BaseRequest request = context.getRequest();
 
     if (!Objects.equals(Constants.COMPUTER_DEFAULT, request.getInput())) {
-      Space space = World.getSpace(context, request.getPlayer().getSpaceIndex());
+      Space space = World.getSpace(ctx, request.getPlayer().getSpaceIndex());
       if (!Objects.requireNonNull(space).getWeapons().stream().map(BaseWeapon::getName)
           .collect(Collectors.toSet()).contains(request.getInput())) {
         throw new IllegalArgumentException(
             String.format("Weapon: [%s] is not in the current space.", request.getInput()));
       }
     } else {
-      List<BaseWeapon> weapons = World.getSpace(context, request.getPlayer().getSpaceIndex())
+      List<BaseWeapon> weapons = World.getSpace(ctx, request.getPlayer().getSpaceIndex())
           .getWeapons();
       if (weapons.isEmpty()) {
         throw new IllegalStateException("There is no weapon in the space.");

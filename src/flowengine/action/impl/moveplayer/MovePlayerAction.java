@@ -1,6 +1,7 @@
 package flowengine.action.impl.moveplayer;
 
 import flowengine.action.Action;
+import flowengine.context.FlowContext;
 import flowengine.request.BaseRequest;
 import flowengine.result.BaseResult;
 import org.springframework.stereotype.Component;
@@ -19,10 +20,11 @@ import world.model.Space;
 public class MovePlayerAction implements Action {
 
   @Override
-  public void execute(Context context) {
+  public void execute(FlowContext context) {
+    Context ctx = context.getContext();
     BaseRequest request = context.getRequest();
     Player player = request.getPlayer();
-    Space space = World.getSpace(context, request.getInput());
+    Space space = World.getSpace(ctx, request.getInput());
 
     World.movePlayer(player, space);
     context.setResult(

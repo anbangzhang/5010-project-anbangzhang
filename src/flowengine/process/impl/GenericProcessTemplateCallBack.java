@@ -3,6 +3,7 @@ package flowengine.process.impl;
 import com.google.common.collect.ImmutableMap;
 import flowengine.Flow;
 import flowengine.action.Action;
+import flowengine.context.FlowContext;
 import flowengine.process.ProcessTemplateCallBack;
 import flowengine.result.BaseResult;
 import java.io.IOException;
@@ -14,7 +15,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import world.context.Context;
 import world.exception.BusinessException;
 
 /**
@@ -24,7 +24,7 @@ import world.exception.BusinessException;
  * @date 2023-03-16 21:30
  */
 @Component(value = "genericProcessTemplateCallBack")
-public class GenericProcessTemplateCallBack<T extends Context>
+public class GenericProcessTemplateCallBack<T extends FlowContext>
     implements ProcessTemplateCallBack<T> {
 
   /**

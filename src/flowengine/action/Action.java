@@ -1,7 +1,7 @@
 package flowengine.action;
 
+import flowengine.context.FlowContext;
 import java.io.IOException;
-import world.context.Context;
 import world.exception.BusinessException;
 
 /**
@@ -10,7 +10,7 @@ import world.exception.BusinessException;
  * @author anbang
  * @date 2023-03-18 06:51
  */
-public interface Action<T extends Context> {
+public interface Action<T extends FlowContext> {
 
   /**
    * execute.
@@ -19,6 +19,6 @@ public interface Action<T extends Context> {
    * @throws BusinessException business exception
    * @throws IOException       io exception
    */
-  void execute(T context) throws  IOException;
+  void execute(T context) throws IOException;
 
 }

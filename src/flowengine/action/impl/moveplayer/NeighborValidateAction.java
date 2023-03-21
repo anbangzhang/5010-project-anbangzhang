@@ -1,6 +1,7 @@
 package flowengine.action.impl.moveplayer;
 
 import flowengine.action.Action;
+import flowengine.context.FlowContext;
 import flowengine.request.BaseRequest;
 import java.util.List;
 import java.util.Objects;
@@ -20,17 +21,18 @@ import world.model.Space;
 public class NeighborValidateAction implements Action {
 
   @Override
-  public void execute(Context context) {
+  public void execute(FlowContext context) {
     BaseRequest request = context.getRequest();
+    Context ctx = context.getContext();
 
     if (!Objects.equals(Constants.COMPUTER_DEFAULT, request.getInput())) {
-      if (!World.getNeighbors(context, request.getPlayer().getSpaceIndex())
+      if (!World.getNeighbors(ctx, request.getPlayer().getSpaceIndex())
           .contains(request.getInput())) {
         throw new IllegalArgumentException(String
             .format("Space: [%s] is not the neighbor of the current space.", request.getInput()));
       }
     } else {
-      List<Space> neighbors = World.getSpace(context, request.getPlayer().getSpaceIndex())
+      List<Space> neighbors = World.getSpace(ctx, request.getPlayer().getSpaceIndex())
           .getNeighbors();
       if (neighbors.isEmpty()) {
         throw new IllegalStateException("The current space has no neighbor spaces.");

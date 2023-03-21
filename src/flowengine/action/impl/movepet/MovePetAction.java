@@ -1,6 +1,7 @@
 package flowengine.action.impl.movepet;
 
 import flowengine.action.Action;
+import flowengine.context.FlowContext;
 import flowengine.request.BaseRequest;
 import flowengine.result.BaseResult;
 import org.springframework.stereotype.Component;
@@ -18,11 +19,12 @@ import world.model.Space;
 public class MovePetAction implements Action {
 
   @Override
-  public void execute(Context context) {
+  public void execute(FlowContext context) {
+    Context ctx = context.getContext();
     BaseRequest request = context.getRequest();
-    Space space = World.getSpace(context, request.getInput());
+    Space space = World.getSpace(ctx, request.getInput());
 
-    context.getPet().setSpaceIndex(space.getOrder());
+    ctx.getPet().setSpaceIndex(space.getOrder());
 
     context.setResult(BaseResult.newSuccessResult().result("Player move the pet succeed.").build());
   }

@@ -67,5 +67,9 @@ public class Constants {
    * WINNER.
    */
   public static final String WINNER = "##Winner##";
+  /**
+   * CONTEXT.
+   */
+  public static final String CONTEXT = "##Context##";
 
 }

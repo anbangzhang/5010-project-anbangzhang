@@ -1,6 +1,7 @@
 package flowengine.action.impl.attack;
 
 import flowengine.action.Action;
+import flowengine.context.FlowContext;
 import flowengine.request.AttackRequest;
 import flowengine.result.BaseResult;
 import java.util.List;
@@ -22,10 +23,11 @@ import world.model.Space;
 public class AttackAction implements Action {
 
   @Override
-  public void execute(Context context) {
+  public void execute(FlowContext context) {
     AttackRequest request = (AttackRequest) context.getRequest();
+    Context ctx = context.getContext();
     Player player = request.getPlayer();
-    Space space = World.getSpace(context, player.getSpaceIndex());
+    Space space = World.getSpace(ctx, player.getSpaceIndex());
 
     int damage = Objects.isNull(request.getWeapon()) ? 1 : request.getWeapon().getDamage();
     List<Player> players = Objects.requireNonNull(space).getOccupiers();
@@ -35,15 +37,15 @@ public class AttackAction implements Action {
       context.setResult(buildAttackSeenResult());
       return;
       // the pet is not in the space, and the space is exposed
-    } else if (!Objects.equals(context.getPet().getSpaceIndex(), player.getSpaceIndex())
-        && context.getExposedSpaces().contains(space)) {
+    } else if (!Objects.equals(ctx.getPet().getSpaceIndex(), player.getSpaceIndex())
+        && ctx.getExposedSpaces().contains(space)) {
       context.setResult(buildAttackSeenResult());
       return;
     }
-    int health = context.getTarget().decreaseHealth(damage);
+    int health = ctx.getTarget().decreaseHealth(damage);
 
     if (health == 0) {
-      context.set(Constants.WINNER, player);
+      ctx.set(Constants.WINNER, player);
     }
     context.setResult(buildSuccessResult());
   }

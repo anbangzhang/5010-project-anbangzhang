@@ -1,6 +1,7 @@
 package flowengine.action.impl;
 
 import flowengine.action.Action;
+import flowengine.context.FlowContext;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
@@ -23,11 +24,12 @@ public class PetTraverseAction implements Action {
   private final Set<Space> visited = new HashSet<>();
 
   @Override
-  public void execute(Context context) {
-    if (this.visited.size() == context.getSpaces().size()) {
+  public void execute(FlowContext context) {
+    Context ctx = context.getContext();
+    if (this.visited.size() == ctx.getSpaces().size()) {
       this.visited.clear();
     }
-    Space space = World.getSpace(context, context.getPet().getSpaceIndex());
+    Space space = World.getSpace(ctx, ctx.getPet().getSpaceIndex());
     if (this.stack.isEmpty()) {
       this.stack.push(space);
       this.visited.add(space);
@@ -38,7 +40,7 @@ public class PetTraverseAction implements Action {
     }
 
     Space current = this.stack.pop();
-    Set<Space> neighbors = new HashSet<>(context.getNeighborMap().get(current));
+    Set<Space> neighbors = new HashSet<>(ctx.getNeighborMap().get(current));
     neighbors.removeAll(this.visited);
     for (Space s : neighbors) {
       if (!this.stack.contains(s)) {
@@ -46,7 +48,7 @@ public class PetTraverseAction implements Action {
       }
     }
 
-    context.getPet().setSpaceIndex(this.stack.peek().getOrder());
+    ctx.getPet().setSpaceIndex(this.stack.peek().getOrder());
     this.visited.add(this.stack.peek());
   }
 

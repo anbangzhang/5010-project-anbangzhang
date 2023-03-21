@@ -1,12 +1,12 @@
 package flowengine.action.impl.attack;
 
 import flowengine.action.Action;
+import flowengine.context.FlowContext;
 import flowengine.request.AttackRequest;
 import flowengine.request.BaseRequest;
 import java.util.List;
 import org.springframework.stereotype.Component;
 import world.base.BaseWeapon;
-import world.context.Context;
 import world.model.Player;
 
 /**
@@ -19,7 +19,7 @@ import world.model.Player;
 public class AttackRequestAssembleAction implements Action {
 
   @Override
-  public void execute(Context context) {
+  public void execute(FlowContext context) {
     BaseRequest request = context.getRequest();
     Player player = request.getPlayer();
 

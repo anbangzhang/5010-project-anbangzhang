@@ -1,6 +1,7 @@
 package flowengine.action.impl.attack;
 
 import flowengine.action.Action;
+import flowengine.context.FlowContext;
 import flowengine.request.AttackRequest;
 import java.util.Objects;
 import org.springframework.stereotype.Component;
@@ -17,12 +18,13 @@ import world.context.Context;
 public class DropWeaponAction implements Action {
 
   @Override
-  public void execute(Context context) {
+  public void execute(FlowContext context) {
     AttackRequest request = (AttackRequest) context.getRequest();
+    Context ctx = context.getContext();
     BaseWeapon weapon = request.getWeapon();
     if (Objects.nonNull(weapon)) {
-      context.getWeapons().remove(weapon);
-      context.getEvidences().add(weapon);
+      ctx.getWeapons().remove(weapon);
+      ctx.getEvidences().add(weapon);
     }
   }
 

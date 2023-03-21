@@ -165,46 +165,51 @@ public class WorldConsoleController implements WorldController {
 
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-    for (int i = 0; i < this.turn && !gameOver; i++) {
+    try {
+      for (int i = 0; i < this.turn && !gameOver; i++) {
 
-      resetExposedSpaces(ctx);
+        resetExposedSpaces(ctx);
 
-      printGameInfo(ctx, i);
+        printGameInfo(ctx, i);
 
-      for (Player player : players) {
+        for (Player player : players) {
 
-        label.setIcon(new ImageIcon(World.getGraphicalImage(ctx)));
+          label.setIcon(new ImageIcon(World.getGraphicalImage(ctx)));
 
-        ctx.setFlow(null);
-        this.out.append(
-            String.format("\nThis is the %dth turn for player [%s].\n", i + 1, player.getName()));
+          this.out.append(
+              String.format("\nThis is the %dth turn for player [%s].\n", i + 1, player.getName()));
 
-        displayPlayerDetail(ctx, player);
+          displayPlayerDetail(ctx, player);
 
-        // human-controlled player
-        if (Objects.equals(PlayerType.HUMAN_CONTROLLED, player.getType())) {
-          handleHumanPlayer(player);
-        } else {
-          // computer-controlled player
-          handlerComputerPlayer(ctx, player);
+          // human-controlled player
+          if (Objects.equals(PlayerType.HUMAN_CONTROLLED, player.getType())) {
+
+            handleHumanPlayer(player);
+
+          } else {
+            // computer-controlled player
+            handlerComputerPlayer(ctx, player);
+          }
+
+          if (Objects.nonNull(ctx.get(Constants.WINNER))) {
+            gameOver = true;
+            break;
+          }
+
         }
 
-        if (Objects.nonNull(ctx.get(Constants.WINNER))) {
-          gameOver = true;
-          break;
-        }
-
+        // #### Move Target and Pet ####
+        moveTargetAndPet(ctx);
       }
 
-      // #### Move Target and Pet ####
-      moveTargetAndPet(ctx);
+      displayGameResult(ctx, gameOver);
 
-    }
-
-    displayGameResult(ctx, gameOver);
-
-    for (Player player : players) {
-      displayPlayerDetail(ctx, player);
+      for (Player player : players) {
+        displayPlayerDetail(ctx, player);
+      }
+    } finally {
+      // close image
+      frame.dispose();
     }
   }
 
@@ -261,6 +266,7 @@ public class WorldConsoleController implements WorldController {
       }
 
       BaseResult baseResult = serviceTemplate.execute(flow.getDesc(), new BaseRequest(player));
+
       if (baseResult.isSuccess()) {
         this.out.append((String) baseResult.getResult()).append("\n");
         return;
@@ -271,13 +277,28 @@ public class WorldConsoleController implements WorldController {
   }
 
   private void handlerComputerPlayer(Context ctx, Player player) throws IOException {
-    BaseResult baseResult = serviceTemplate.execute(Flow.LOOK_AROUND.getDesc(),
+    Flow flow = determineFlowForComputer(ctx, player);
+
+    BaseResult baseResult = serviceTemplate.execute(flow.getDesc(),
         new BaseRequest(player, Boolean.TRUE));
+
     if (baseResult.isSuccess()) {
       this.out.append((String) baseResult.getResult()).append("\n");
     } else {
       this.out.append(baseResult.getErrorMsg()).append("\n");
     }
+  }
+
+  private Flow determineFlowForComputer(Context ctx, Player player) {
+    Space space = World.getSpace(ctx, player.getSpaceIndex());
+
+    if (Objects.equals(ctx.getTarget().getPosition(), player.getSpaceIndex())) {
+      return Flow.ATTACK_TARGET;
+    } else if (space.getWeapons().size() > 0
+        && player.getWeapons().size() < player.getWeaponLimit()) {
+      return Flow.PICK_UP_WEAPON;
+    }
+    return Flow.LOOK_AROUND;
   }
 
   private void moveTargetAndPet(Context ctx) throws IOException {
