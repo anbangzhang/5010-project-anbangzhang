@@ -152,10 +152,10 @@ public class WorldConsoleController implements WorldController {
 
     List<Player> players = ctx.getPlayers();
     boolean gameOver = false;
+
     BufferedImage image = World.getGraphicalImage(ctx);
     JFrame frame = new JFrame();
     frame.setLayout(new FlowLayout());
-
     frame.setSize(image.getWidth(), image.getHeight());
     JLabel label = new JLabel();
 
@@ -200,7 +200,9 @@ public class WorldConsoleController implements WorldController {
       moveTargetAndPet(ctx);
 
     }
-    this.out.append("\nGame end.\n");
+
+    displayGameResult(ctx, gameOver);
+
     for (Player player : players) {
       displayPlayerDetail(ctx, player);
     }
@@ -281,6 +283,17 @@ public class WorldConsoleController implements WorldController {
   private void moveTargetAndPet(Context ctx) throws IOException {
     World.moveTarget(ctx);
     serviceTemplate.execute(Flow.PET_DFS.getDesc(), new BaseRequest(null));
+  }
+
+  private void displayGameResult(Context context, boolean gameOver) throws IOException {
+    this.out.append("\nGame end.\n");
+    if (gameOver) {
+      this.out.append(String.format("Winner is player: [%s]. The target is dead.\n",
+          ((Player) context.get(Constants.WINNER)).getName()));
+    } else {
+      this.out.append(String.format("The target escaped with health: [%d].\n",
+          context.getTarget().getHealth()));
+    }
   }
 
   /**

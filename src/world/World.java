@@ -254,7 +254,7 @@ public class World {
       int x = start[1] * SCALE_FACTOR + 3;
       int y = start[0] * SCALE_FACTOR + 10;
       int rowWidth = (end[1] - start[1]) * SCALE_FACTOR + 8;
-      List<String> strings = composeString(space);
+      List<String> strings = composeString(space, context);
       for (String string : strings) {
         y = drawString(graphics, string, x, y, rowWidth);
       }
@@ -267,15 +267,24 @@ public class World {
   /**
    * Compose string.
    * 
-   * @param space space
+   * @param space   space
+   * @param context context
    * @return string
    */
-  private static List<String> composeString(Space space) {
-    if (space.getOccupiers().isEmpty()) {
-      return Arrays.asList(space.getName());
+  private static List<String> composeString(Space space, Context context) {
+    List<String> strings = new ArrayList<>();
+    strings.add(space.getName());
+    if (!space.getOccupiers().isEmpty()) {
+      strings.add(String.format("players: %s",
+          space.getOccupiers().stream().map(Player::getName).collect(Collectors.toList())));
     }
-    return Arrays.asList(space.getName(), String.format("players: %s",
-        space.getOccupiers().stream().map(Player::getName).collect(Collectors.toList())));
+    if (Objects.equals(context.getTarget().getPosition(), space.getOrder())) {
+      strings.add(String.format("target: [%s]", context.getTarget().getName()));
+    }
+    if (Objects.equals(context.getPet().getSpaceIndex(), space.getOrder())) {
+      strings.add(String.format("pet: [%s]", context.getTarget().getName()));
+    }
+    return strings;
   }
 
   /**
