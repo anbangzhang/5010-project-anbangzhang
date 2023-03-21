@@ -44,6 +44,9 @@ public class GetInputAction implements Action {
         case MOVE_PET:
           out.append(String.format("Please input a space name from the spaces: %s\n",
               World.getAllSpaces(context)));
+          break;
+        default:
+          break;
       }
 
       request.setInput(scanner.nextLine().trim());

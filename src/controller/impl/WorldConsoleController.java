@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -24,10 +27,6 @@ import world.context.Context;
 import world.enums.PlayerType;
 import world.model.Player;
 import world.model.Space;
-
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 /**
  * WorldConsoleController class.
@@ -154,17 +153,17 @@ public class WorldConsoleController implements WorldController {
     List<Player> players = ctx.getPlayers();
     boolean gameOver = false;
     BufferedImage image = World.getGraphicalImage(ctx);
-    JFrame jFrame = new JFrame();
-    jFrame.setLayout(new FlowLayout());
+    JFrame frame = new JFrame();
+    frame.setLayout(new FlowLayout());
 
-    jFrame.setSize(image.getWidth(), image.getHeight());
-    JLabel jLabel = new JLabel();
+    frame.setSize(image.getWidth(), image.getHeight());
+    JLabel label = new JLabel();
 
-    jLabel.setIcon(new ImageIcon(image));
-    jFrame.add(jLabel);
-    jFrame.setVisible(true);
+    label.setIcon(new ImageIcon(image));
+    frame.add(label);
+    frame.setVisible(true);
 
-    jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     for (int i = 0; i < this.turn && !gameOver; i++) {
 
@@ -174,7 +173,7 @@ public class WorldConsoleController implements WorldController {
 
       for (Player player : players) {
 
-        jLabel.setIcon(new ImageIcon(World.getGraphicalImage(ctx)));
+        label.setIcon(new ImageIcon(World.getGraphicalImage(ctx)));
 
         ctx.setFlow(null);
         this.out.append(
