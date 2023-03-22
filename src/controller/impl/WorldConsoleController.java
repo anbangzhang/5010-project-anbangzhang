@@ -163,7 +163,7 @@ public class WorldConsoleController implements WorldController {
     frame.add(label);
     frame.setVisible(true);
 
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
     try {
       for (int i = 0; i < this.turn && !gameOver; i++) {

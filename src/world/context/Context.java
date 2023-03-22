@@ -149,9 +149,7 @@ public class Context {
    * @return spaces
    */
   public List<BaseSpace> getSpaces() {
-    if (null == map.get(Constants.SPACES)) {
-      map.put(Constants.SPACES, new ArrayList<>());
-    }
+    map.computeIfAbsent(Constants.SPACES, k -> new ArrayList<>());
     return (List<BaseSpace>) map.get(Constants.SPACES);
   }
 
@@ -173,9 +171,7 @@ public class Context {
    * @return neighborMap
    */
   public Map<BaseSpace, List<BaseSpace>> getNeighborMap() {
-    if (null == map.get(Constants.NEIGHBOR_MAP)) {
-      map.put(Constants.NEIGHBOR_MAP, new HashMap<>());
-    }
+    map.computeIfAbsent(Constants.NEIGHBOR_MAP, k -> new HashMap<>());
     return (Map<BaseSpace, List<BaseSpace>>) map.get(Constants.NEIGHBOR_MAP);
   }
 
@@ -197,9 +193,7 @@ public class Context {
    * @return exposed spaces
    */
   public Set<Space> getExposedSpaces() {
-    if (null == map.get(Constants.EXPOSED_SPACES)) {
-      map.put(Constants.EXPOSED_SPACES, new HashSet<>());
-    }
+    map.computeIfAbsent(Constants.EXPOSED_SPACES, k -> new HashSet<>());
     return (Set<Space>) map.get(Constants.EXPOSED_SPACES);
   }
 
@@ -221,9 +215,7 @@ public class Context {
    * @return weapons
    */
   public List<BaseWeapon> getWeapons() {
-    if (null == map.get(Constants.WEAPONS)) {
-      map.put(Constants.WEAPONS, new ArrayList<>());
-    }
+    map.computeIfAbsent(Constants.WEAPONS, k -> new ArrayList<>());
     return (List<BaseWeapon>) map.get(Constants.WEAPONS);
   }
 
@@ -245,9 +237,7 @@ public class Context {
    * @return evidences
    */
   public List<BaseWeapon> getEvidences() {
-    if (null == map.get(Constants.EVIDENCES)) {
-      map.put(Constants.EVIDENCES, new ArrayList<>());
-    }
+    map.computeIfAbsent(Constants.EVIDENCES, k -> new ArrayList<>());
     return (List<BaseWeapon>) map.get(Constants.EVIDENCES);
   }
 
@@ -269,9 +259,7 @@ public class Context {
    * @return players
    */
   public List<Player> getPlayers() {
-    if (null == map.get(Constants.PLAYERS)) {
-      map.put(Constants.PLAYERS, new ArrayList<>());
-    }
+    map.computeIfAbsent(Constants.PLAYERS, k -> new ArrayList<>());
     return (List<Player>) map.get(Constants.PLAYERS);
   }
 

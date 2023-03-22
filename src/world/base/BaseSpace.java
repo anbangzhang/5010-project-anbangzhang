@@ -116,6 +116,9 @@ public class BaseSpace implements Space {
   @Override
   public List<Player> getOccupiers() {
     Context context = ContextHolder.get();
+    if (Objects.isNull(context)) {
+      return new ArrayList<>();
+    }
     return context.getPlayers().stream()
         .filter(player -> Objects.equals(player.getSpaceIndex(), this.order))
         .collect(Collectors.toList());
@@ -124,6 +127,9 @@ public class BaseSpace implements Space {
   @Override
   public List<BaseWeapon> getWeapons() {
     Context context = ContextHolder.get();
+    if (Objects.isNull(context)) {
+      return new ArrayList<>();
+    }
     return context.getWeapons().stream()
         .filter(weapon -> Objects.equals(weapon.getHolder(), String.format("space: %s", this.name)))
         .collect(Collectors.toList());
@@ -132,6 +138,9 @@ public class BaseSpace implements Space {
   @Override
   public Boolean isExposed() {
     Context context = ContextHolder.get();
+    if (Objects.isNull(context)) {
+      return false;
+    }
     return context.getExposedSpaces().contains(this);
   }
 

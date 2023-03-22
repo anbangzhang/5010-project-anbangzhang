@@ -1,5 +1,6 @@
 package world.base;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -117,12 +118,6 @@ public class BasePlayer implements Player {
     return this.type;
   }
 
-  /**
-   * Add weapon.
-   *
-   * @param weapon weapon
-   * @return success or fail
-   */
   @Override
   public Boolean addWeapon(BaseWeapon weapon) {
     List<BaseWeapon> weapons = getWeapons();
@@ -132,14 +127,12 @@ public class BasePlayer implements Player {
     return true;
   }
 
-  /**
-   * Get weapons.
-   *
-   * @return weapons
-   */
   @Override
   public List<BaseWeapon> getWeapons() {
     Context ctx = ContextHolder.get();
+    if (Objects.isNull(ctx) || ctx.getWeapons().isEmpty()) {
+      return new ArrayList<>();
+    }
     return ctx.getWeapons().stream()
         .filter(
             weapon -> Objects.equals(weapon.getHolder(), String.format("player: %s", this.name)))
