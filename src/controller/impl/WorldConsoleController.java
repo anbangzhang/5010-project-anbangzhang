@@ -1,7 +1,7 @@
 package controller.impl;
 
 import controller.WorldController;
-import flowengine.Flow;
+import flowengine.enums.Flow;
 import flowengine.request.BaseRequest;
 import flowengine.result.BaseResult;
 import flowengine.template.ServiceTemplate;

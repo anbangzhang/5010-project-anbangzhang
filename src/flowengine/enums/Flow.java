@@ -1,4 +1,4 @@
-package flowengine;
+package flowengine.enums;
 
 import java.util.Objects;
 

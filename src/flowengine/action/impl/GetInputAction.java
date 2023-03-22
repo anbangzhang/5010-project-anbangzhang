@@ -1,6 +1,6 @@
 package flowengine.action.impl;
 
-import flowengine.Flow;
+import flowengine.enums.Flow;
 import flowengine.action.Action;
 import flowengine.context.FlowContext;
 import flowengine.request.BaseRequest;

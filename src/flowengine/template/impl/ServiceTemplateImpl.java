@@ -1,6 +1,5 @@
 package flowengine.template.impl;
 
-import flowengine.Flow;
 import flowengine.context.FlowContext;
 import flowengine.process.ProcessTemplateCallBack;
 import flowengine.request.BaseRequest;
