@@ -33,6 +33,11 @@ public class FlowContext {
    */
   private BaseResult result;
 
+  /**
+   * Constructor.
+   * 
+   * @param ctx context
+   */
   public FlowContext(Context ctx) {
     this.map.put(Constants.CONTEXT, ctx);
   }
