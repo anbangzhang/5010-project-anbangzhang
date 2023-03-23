@@ -1,3 +1,5 @@
+package controller;
+
 import static org.mockito.ArgumentMatchers.eq;
 
 import controller.WorldController;
