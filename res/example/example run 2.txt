@@ -80,6 +80,6 @@ Player: [Human] choose to ATTACK_TARGET.
 Attack succeed.
 
 Game end.
-Winner is player: [Human]. The pet is in space: [Wine Cellar]. The target is dead. Evidences: [Billiard Cue]
+Winner is player: [Human]. The pet is in space: [Drawing Room]. The target is dead. Evidences: [Billiard Cue]
 Player: [Computer] is in space: [Armory], carrying weapons: [Revolver]
 Player: [Human] is in space: [Billiard Room], carrying weapons: []

@@ -80,9 +80,4 @@ public class GenericProcessTemplateCallBack<T extends FlowContext>
   public void afterProcess(T context) {
   }
 
-  @Override
-  public BaseResult assemble(T context) {
-    return context.getResult();
-  }
-
 }

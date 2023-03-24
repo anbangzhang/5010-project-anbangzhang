@@ -166,7 +166,7 @@ public class WorldConsoleController implements WorldController {
     frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
     try {
-      for (int i = 0; i < this.turn && !gameOver; i++) {
+      for (int i = 0; i < this.turn; i++) {
 
         resetExposedSpaces(ctx);
 
@@ -196,6 +196,9 @@ public class WorldConsoleController implements WorldController {
             break;
           }
 
+        }
+        if (gameOver) {
+          break;
         }
 
         // #### Move Target and Pet ####

@@ -14,11 +14,12 @@
 
  # Input File Format
 
- The input file specifies the world map in the following three sections, you can refer to the sample _/res/mansion.txt_.
+ The input file specifies the world map in the following four sections, you can refer to the sample _/res/world specification/mansion.txt_.
   
   1. World description including the size, the name, and the target character.
-  2. A detailed list of all of the spaces or rooms that make up the world
-  3. A detailed list of all of the items that can be found in the world
+  2. The pet name.
+  3. A detailed list of all of the spaces or rooms that make up the world.
+  4. A detailed list of all of the items that can be found in the world.
   
  Each section is specified as follows:
   
@@ -49,9 +50,9 @@
 
     Sample:
 
-        java -jar WorldDriver.jar mansion.txt 3
+        java -jar WorldDriver.jar "./world specification/mansion.txt" 2
 
- The above command is going to take `mansion.txt` file as input world specification, and specify that there are `3` rounds in the game.
+ The above command is going to take `mansion.txt` file as input world specification, and specify that there are `2` rounds in the game.
 
  # Example Run
  
@@ -59,59 +60,137 @@
  
  **Run 1**
 
- * Start the program with `mansion.txt` as the world specification and `3` as the turn amount.
+ * Start the program with `./world specification/mansion.txt` as the world specification and `2` as the turn amount.
  
- * Create a human-controlled player, its name is `Adam`, its starting space index is `8`, it has unlimited weapon limit.
+ * Create a human-controlled player, its name is `Human`, its starting space index is `0`, its weapon limit is `4`.
  
- * Create a computer-controlled player, its name is `Eve`, its starting space index is `6`, its weapon limit is `2`.
- 
- * Creating a computer-controlled player failed due to repeated name, its name is `Eve`, its starting space index is `4`, its weapon limit is `2`.
+ * Create a computer-controlled player, its name is `Computer`, its starting space index is `1`, its weapon limit is `2`.
  
  * Quit player creation process.
  
- * Display all the spaces in the world.
+ * Start the game.
  
- * Display the details of 2nd space in the world.
+ * At the start of each turn of the game, the target's detail, the pet and evidences are displayed.
  
- * Generate a graphical image at `res/` directory.
+ * In the 1st turn, human-controlled player `Human` attacks the target without a weapon, causing `1` damage.
  
- * Quit the program.
+ * In the 1st turn, computer-controlled player `Computer` picks up the weapon `Billiard Cue`.
+ 
+ * The target moves to `Billiard Room` and the pet moves to `Drawing Room`.
+ 
+ * At the start of each turn of the game, the target's detail, the pet and evidences are displayed.
+  
+ * In the 2nd turn, human-controlled player `Human` picks up the weapon `Revolver`.
+  
+ * In the 2nd turn, computer-controlled player `Computer` attacks the target with weapon `Billiard Cue`, causing `2` damage, the target died.
+ 
+ * The game ends, display the winner computer-controlled player `Computer`, the pet position and evidences. Each player's detail is displayed.
  
  **Run 2**
 
- * Start the program with `mansion.txt` as the world specification and `3` as the turn amount.
+ * Start the program with `./world specification/mansion.txt` as the world specification and `2` as the turn amount.
  
- * Create a human-controlled player, its name is `Adam`, its starting space index is `8`, it has unlimited weapon limit.
+ * Create a computer-controlled player, its name is `Computer`, its starting space index is `0`, its weapon limit is `2`.
  
- * Create a human-controlled player, its name is `Eve`, its starting space index is `4`, its weapon limit is `2`.
- 
- * Create a computer-controlled player, its name is `Arthur`, its starting space index is `1`, its weapon limit is `4`.
+ * Create a human-controlled player, its name is `Human`, its starting space index is `0`, its weapon limit is `3`.
 
  * Quit player creation process.
  
  * Start the game.
  
- * At each turn for the player, the player's detail is displayed.
+ * At the start of each turn of the game, the target's detail, the pet and evidences are displayed.
  
- * In the 1st turn, human-controlled player `Adam` picks up the weapon `Crepe Pan`.
+ * In the 1st turn, computer-controlled player `Computer` attacks the target without a weapon, causing `1` damage.
  
- * In the 1st turn, human-controlled player `Eve` fails to pick up the weapon `Trowel`, then picks up the weapon `Letter Opener`.
+ * In the 1st turn, human-controlled player `Human` picks up the weapon `Billiard Cue`.
  
- * In the 1st turn, computer-controlled player `Arthur` looks around the space.
+ * The target moves to `Billiard Room` and the pet moves to `Drawing Room`.
  
- * In the 2nd turn, human-controlled player `Adam` moves to a neighbor space `Wine Cellar`.
+ * At the start of each turn of the game, the target's detail, the pet and evidences are displayed.
+  
+ * In the 2nd turn, computer-controlled player `Computer` picks up the weapon `Revolver`.
+  
+ * In the 2nd turn, human-controlled player `Human` attacks the target with weapon `Billiard Cue`, causing `2` damage, the target died.
  
- * In the 2nd turn, human-controlled player `Eve` moves to a neighbor space `Wine Cellar`.
+ * The game ends, display the winner human-controlled player `Human`, the pet position and evidences. Each player's detail is displayed.
  
- * In the 2nd turn, computer-controlled player `Arthur` looks around the space.
+ **Run 3**
  
- * In the 3rd turn, human-controlled player `Adam` looks around the space.
+ * Start the program with `./world specification/mansion.txt` as the world specification and `2` as the turn amount.
+
+ * Create a human-controlled player, its name is `Human1`, its starting space index is `0`, its weapon limit is `5`.
  
- * In the 3rd turn, human-controlled player `Eve` picks up the weapon `Rat Poison`.
+ * Create a human-controlled player, its name is `Human2`, its starting space index is `0`, its weapon limit is `6`.
+
+ * Create a computer-controlled player, its name is `Computer1`, its starting space index is `1`, its weapon limit is `4`.
  
- * In the 3rd turn, computer-controlled player `Arthur` looks around the space.
+ * Create a computer-controlled player, its name is `Computer2`, its starting space index is `1`, its weapon limit is `2`.
  
- * The game ends, each player's detail is displayed.
+ * Quit player creation process.
+ 
+ * Start the game.
+ 
+ * At the start of each turn of the game, the target's detail, the pet and evidences are displayed.
+ 
+ * In the 1st turn, human-controlled player `Human1` fails to attack the target without a weapon, because the attack is seen by player `Human2` in the same space.
+ 
+ * In the 1st turn, human-controlled player `Human2` looks around the space, the information of current space and its neighbors are displayed.
+ 
+ * In the 1st turn, computer-controlled player `Computer1` picks up the weapon `Billiard Cue`.
+ 
+ * In the 1st turn, computer-controlled player `Computer2` looks around the space, the information of current space and its neighbors are displayed, but the space `Armory` is not visible because the pet is in it.
+ 
+ * The target moves to `Billiard Room` and the pet moves to `Drawing Room`.
+ 
+ * At the start of each turn of the game, the target's detail, the pet and evidences are displayed.
+ 
+ * In the 2nd turn, human-controlled player `Human1` moves the pet to space `Dining Hall`.
+ 
+ * In the 2nd turn, human-controlled player `Human2` moves to space `Drawing Room`.
+ 
+ * In the 2nd turn, computer-controlled player `Computer1` fails to attack the target with weapon `Billiard Cue`, because the attack is seen by player `Computer2` in the same space.
+ 
+ * In the 2nd turn, computer-controlled player `Computer2` fails to attack the target without a weapon, because the attack is seen by player `Computer1` in the same space.
+
+ * The target moves to `Carriage House` and the pet moves to `Wine Cellar`.
+ 
+ * The game ends, the target escaped with health `3`, no winner, the pet position and evidences are displayed. Each player's detail is displayed.
+ 
+ **Run 4**
+ 
+ * Start the program with `./world specification/mansion.txt` as the world specification and `2` as the turn amount.
+
+ * Create a computer-controlled player, its name is `Computer1`, its starting space index is `3`, its weapon limit is `4`.
+
+ * Create a computer-controlled player, its name is `Computer2`, its starting space index is `1`, its weapon limit is `2`.
+
+ * Create a human-controlled player, its name is `Human`, its starting space index is `0`, its weapon limit is `2`.
+ 
+ * Quit player creation process.
+ 
+ * Start the game.
+ 
+ * At the start of each turn of the game, the target's detail, the pet and evidences are displayed.
+ 
+ * In the 1st turn, computer-controlled player `Computer1` looks around the space, the information of current space and its neighbors are displayed, but the space `Armory` is not visible because the pet is in it. 
+ 
+ * In the 1st turn, computer-controlled player `Computer2` picks up the weapon `Billiard Cue`.
+
+ * In the 1st turn, human-controlled player `Human1` moves the pet to space `Winter Garden`.
+
+ * The target moves to `Billiard Room` and the pet moves to `Piazza`.
+ 
+ * At the start of each turn of the game, the target's detail, the pet and evidences are displayed.
+ 
+ * In the 2nd turn, computer-controlled player `Computer1` looks around the space, the information of current space and its neighbors are displayed.
+ 
+ * In the 2nd turn, computer-controlled player `Computer2` fails to attack the target with weapon `Billiard Cue`, because the attack is seen by player `Computer1` from the neighbor space.
+ 
+ * In the 2nd turn, human-controlled player `Human` moves to space `Drawing Room`.
+ 
+ * The target moves to `Carriage House` and the pet moves to `Hedge Maze`.
+ 
+ * The game ends, the target escaped with health `3`, no winner, the pet position and evidences are displayed. Each player's detail is displayed.
  
  # Game Instructions
 
@@ -143,7 +222,7 @@
     Please input the number below to select the function:
             1. displayAllSpaces
             2. displaySpaceDetail
-            3. displayGraphicalImage
+            3. generateGraphicalImage
             4. startGame
             q. exit
 
@@ -157,10 +236,12 @@
  
  Player action selection:
  
-    Please use the number below to select thea action for player [Adam]
-            1. move to a neighbor space.
+    Please use the number below to select the action for player [Human]
+            1. move player to a neighbor space.
             2. pick up a weapon in the space.
             3. look around the space.
+            4. move pet to a new space.
+            5. attack target.
  
  Input neighbor name:
  
@@ -169,3 +250,7 @@
  Input weapon name:
  
     Please input a weapon name from the weapons: [Rat Poison, Piece of Rope]
+ 
+ Input the space name:
+ 
+    Please input a space name from the spaces: [Armory, Billiard Room, Carriage House, Dining Hall, Drawing Room, Foyer, Green House, Hedge Maze, Kitchen, Lancaster Room, Library, Lilac Room, Master Suite, Nursery, Parlor, Piazza, Servants' Quarters, Tennessee Room, Trophy Room, Wine Cellar, Winter Garden]

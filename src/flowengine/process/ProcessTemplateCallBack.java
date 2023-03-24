@@ -48,12 +48,4 @@ public interface ProcessTemplateCallBack<T extends FlowContext> {
    */
   void afterProcess(T context);
 
-  /**
-   * Assemble result.
-   * 
-   * @param context context
-   * @return result
-   */
-  BaseResult assemble(T context);
-
 }

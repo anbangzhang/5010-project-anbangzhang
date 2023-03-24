@@ -274,7 +274,7 @@ public class WorldControllerTest {
         + "\t3. look around the space.\n" + "\t4. move pet to a new space.\n"
         + "\t5. attack target.\n" + "Player: [Player0] choose to ATTACK_TARGET.\n"
         + "Attack succeed.\n" + "\n" + "Game end.\n"
-        + "Winner is player: [Player0]. The pet is in space: [Wine Cellar]. The target is dead. "
+        + "Winner is player: [Player0]. The pet is in space: [Drawing Room]. The target is dead. "
         + "Evidences: [Billiard Cue]\n"
         + "Player: [Player0] is in space: [Billiard Room], carrying weapons: []\n"
         + "Player: [Player1] is in space: [Armory], carrying weapons: []\n", log.toString());
@@ -330,7 +330,7 @@ public class WorldControllerTest {
         + "Player pick up weapon succeed.\n" + "\n" + "This is the 2th turn for player [Player1].\n"
         + "Player: [Player1] is in space: [Billiard Room], carrying weapons: [Billiard Cue]\n"
         + "Player: [Player1] choose to ATTACK_TARGET.\n" + "Attack succeed.\n" + "\n"
-        + "Game end.\n" + "Winner is player: [Player1]. The pet is in space: [Wine Cellar]. "
+        + "Game end.\n" + "Winner is player: [Player1]. The pet is in space: [Drawing Room]. "
         + "The target is dead. Evidences: [Billiard Cue]\n"
         + "Player: [Player0] is in space: [Armory], carrying weapons: [Revolver]\n"
         + "Player: [Player1] is in space: [Billiard Room], carrying weapons: []\n", log.toString());
