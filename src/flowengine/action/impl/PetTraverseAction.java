@@ -2,6 +2,7 @@ package flowengine.action.impl;
 
 import flowengine.action.Action;
 import flowengine.context.FlowContext;
+import flowengine.result.BaseResult;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
@@ -50,6 +51,8 @@ public class PetTraverseAction implements Action {
 
     ctx.getPet().setSpaceIndex(this.stack.peek().getOrder());
     this.visited.add(this.stack.peek());
+
+    context.setResult(BaseResult.newSuccessResult().build());
   }
 
 }

@@ -242,10 +242,11 @@ public class WorldConsoleController implements WorldController {
   private void printGameInfo(Context context, int turn) throws IOException {
     this.out.append(String.format(
         "\nThis is the %dth turn of game. The target is in space: [%s] health: [%d],"
-            + " the pet is in space: [%s]\n",
+            + " the pet is in space: [%s], evidence: [%s]\n",
         turn + 1, World.getSpace(context, context.getTarget().getPosition()).getName(),
         context.getTarget().getHealth(),
-        World.getSpace(context, context.getPet().getSpaceIndex()).getName()));
+        World.getSpace(context, context.getPet().getSpaceIndex()).getName(),
+        context.getEvidences().stream().map(BaseWeapon::getName).collect(Collectors.toList())));
   }
 
   private void handleHumanPlayer(Player player) throws IOException {
