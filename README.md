@@ -17,7 +17,7 @@
  The input file specifies the world map in the following four sections, you can refer to the sample _/res/world specification/mansion.txt_.
   
   1. World description including the size, the name, and the target character.
-  2. The pet name.
+  2. The pet information.
   3. A detailed list of all of the spaces or rooms that make up the world.
   4. A detailed list of all of the items that can be found in the world.
   
@@ -27,6 +27,8 @@
   
      - the first line contains the number of rows, the number columns, and the name of the world
      - the second line contains the health and name of the target character
+  
+  * The pet name is listed
   
   * Spaces or rooms are specified in an ordered, 0-indexed list. The first line of this section contains a single number that represents the number of spaces or rooms that make up the world. Then each space or room is specified on its own line containing:
   
