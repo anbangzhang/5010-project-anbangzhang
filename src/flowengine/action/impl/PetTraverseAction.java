@@ -3,9 +3,11 @@ package flowengine.action.impl;
 import flowengine.action.Action;
 import flowengine.context.FlowContext;
 import flowengine.result.BaseResult;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
+import java.util.TreeSet;
 import org.springframework.stereotype.Component;
 import world.World;
 import world.context.Context;
@@ -41,7 +43,8 @@ public class PetTraverseAction implements Action {
     }
 
     Space current = this.stack.pop();
-    Set<Space> neighbors = new HashSet<>(ctx.getNeighborMap().get(current));
+    Set<Space> neighbors = new TreeSet<>(Comparator.comparingInt(Space::getOrder));
+    neighbors.addAll(ctx.getNeighborMap().get(current));
     neighbors.removeAll(this.visited);
     for (Space s : neighbors) {
       if (!this.stack.contains(s)) {

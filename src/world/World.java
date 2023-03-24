@@ -281,7 +281,7 @@ public class World {
       strings.add(String.format("target: [%s]", context.getTarget().getName()));
     }
     if (Objects.equals(context.getPet().getSpaceIndex(), space.getOrder())) {
-      strings.add(String.format("pet: [%s]", context.getTarget().getName()));
+      strings.add(String.format("pet: [%s]", context.getPet().getName()));
     }
     return strings;
   }

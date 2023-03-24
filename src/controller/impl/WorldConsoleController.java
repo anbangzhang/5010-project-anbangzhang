@@ -242,7 +242,7 @@ public class WorldConsoleController implements WorldController {
   private void printGameInfo(Context context, int turn) throws IOException {
     this.out.append(String.format(
         "\nThis is the %dth turn of game. The target is in space: [%s] health: [%d],"
-            + " the pet is in space: [%s], evidence: [%s]\n",
+            + " the pet is in space: [%s], evidence: %s\n",
         turn + 1, World.getSpace(context, context.getTarget().getPosition()).getName(),
         context.getTarget().getHealth(),
         World.getSpace(context, context.getPet().getSpaceIndex()).getName(),
@@ -309,12 +309,15 @@ public class WorldConsoleController implements WorldController {
 
   private void displayGameResult(Context context, boolean gameOver) throws IOException {
     this.out.append("\nGame end.\n");
+    Space petPos = World.getSpace(context, context.getPet().getSpaceIndex());
     if (gameOver) {
-      this.out.append(String.format("Winner is player: [%s]. The target is dead.\n",
-          ((Player) context.get(Constants.WINNER)).getName()));
+      this.out.append(
+          String.format("Winner is player: [%s]. The pet is in space: [%s]. The target is dead.\n",
+              ((Player) context.get(Constants.WINNER)).getName(), petPos.getName()));
     } else {
-      this.out.append(String.format("The target escaped with health: [%d].\n",
-          context.getTarget().getHealth()));
+      this.out.append(String.format(
+          "The target escaped with health: [%d]. The pet is in space: [%s]. No winner.\n",
+          context.getTarget().getHealth(), petPos.getName()));
     }
   }
 
