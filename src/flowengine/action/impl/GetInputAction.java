@@ -1,8 +1,8 @@
 package flowengine.action.impl;
 
-import flowengine.enums.Flow;
 import flowengine.action.Action;
 import flowengine.context.FlowContext;
+import flowengine.enums.Flow;
 import flowengine.request.BaseRequest;
 import java.io.IOException;
 import java.util.Scanner;

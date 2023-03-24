@@ -191,8 +191,8 @@ public class ServiceTemplateTest {
 
     Assert.assertTrue(result.isSuccess());
     Assert.assertEquals(
-        "Space: [Armory], occupiers: [humanPlayer, samplePlayer], weapons: [Revolver], Target: [Doctor Lucky], Pet: [Fortune the Cat]\n"
-            + "Neighbors: [\n"
+        "Space: [Armory], occupiers: [humanPlayer, samplePlayer], weapons: [Revolver], "
+            + "Target: [Doctor Lucky], Pet: [Fortune the Cat]\n" + "Neighbors: [\n"
             + "Space: [Billiard Room], occupiers: [computerPlayer], weapons: [Billiard Cue]\n"
             + "Space: [Dining Hall], occupiers: [], weapons: []\n"
             + "Space: [Drawing Room], occupiers: [], weapons: [Letter Opener]]",
@@ -378,7 +378,7 @@ public class ServiceTemplateTest {
      * around in the neighbor space. [computerPlayer] win the game.
      */
     result = template.execute(Flow.ATTACK_TARGET.getDesc(),
-            new BaseRequest(ctx.getPlayers().get(1), Boolean.TRUE));
+        new BaseRequest(ctx.getPlayers().get(1), Boolean.TRUE));
 
     Assert.assertTrue(result.isSuccess());
     Assert.assertEquals("Attack succeed.", result.getResult());
@@ -450,7 +450,7 @@ public class ServiceTemplateTest {
   }
 
   @Test
-  public void testPetDFS() throws IOException {
+  public void testPetDfs() throws IOException {
     StringReader input = new StringReader("");
     Scanner scan = new Scanner(input);
     StringBuilder log = new StringBuilder();

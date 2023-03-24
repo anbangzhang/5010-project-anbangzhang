@@ -323,9 +323,11 @@ public class WorldConsoleController implements WorldController {
           "Winner is player: [%s]. The pet is in space: [%s]. The target is dead. Evidences: %s\n",
           ((Player) context.get(Constants.WINNER)).getName(), petPos.getName(), evidences));
     } else {
-      this.out.append(String.format(
-          "The target escaped with health: [%d]. The pet is in space: [%s]. No winner. Evidences: %s\n",
-          context.getTarget().getHealth(), petPos.getName(), evidences));
+      this.out
+          .append(String.format(
+              "The target escaped with health: [%d]. The pet is in space: [%s]. No winner. "
+                  + "Evidences: %s\n",
+              context.getTarget().getHealth(), petPos.getName(), evidences));
     }
   }
 

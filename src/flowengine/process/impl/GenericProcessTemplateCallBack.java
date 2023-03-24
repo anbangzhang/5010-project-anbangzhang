@@ -1,9 +1,9 @@
 package flowengine.process.impl;
 
 import com.google.common.collect.ImmutableMap;
-import flowengine.enums.Flow;
 import flowengine.action.Action;
 import flowengine.context.FlowContext;
+import flowengine.enums.Flow;
 import flowengine.process.ProcessTemplateCallBack;
 import flowengine.result.BaseResult;
 import java.io.IOException;
