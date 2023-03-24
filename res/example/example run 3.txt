@@ -1,0 +1,155 @@
+$ java -jar WorldDriver.jar "./world specification/mansion.txt" 2
+Please input the type of player to create:
+        1. human-controlled
+        2. computer-controlled
+        q. quit creating
+1
+Please input the name of player:
+Human1
+Please input the space index that the player created at:
+0
+Please input the weapon limit of player, -1 indicates no limit:
+5
+Add player [Human1] succeed.
+Please input the type of player to create:
+        1. human-controlled
+        2. computer-controlled
+        q. quit creating
+1
+Please input the name of player:
+Human2
+Please input the space index that the player created at:
+0
+Please input the weapon limit of player, -1 indicates no limit:
+6
+Add player [Human2] succeed.
+Please input the type of player to create:
+        1. human-controlled
+        2. computer-controlled
+        q. quit creating
+2
+Please input the name of player:
+Computer1
+Please input the space index that the player created at:
+1
+Please input the weapon limit of player, -1 indicates no limit:
+4
+Add player [Computer1] succeed.
+Please input the type of player to create:
+        1. human-controlled
+        2. computer-controlled
+        q. quit creating
+2
+Please input the name of player:
+Computer2
+Please input the space index that the player created at:
+1
+Please input the weapon limit of player, -1 indicates no limit:
+2
+Add player [Computer2] succeed.
+Please input the type of player to create:
+        1. human-controlled
+        2. computer-controlled
+        q. quit creating
+q
+All the players in the game: [Human1, Human2, Computer1, Computer2]
+Please input the number below to select the function:
+        1. displayAllSpaces
+        2. displaySpaceDetail
+        3. generateGraphicalImage
+        4. startGame
+        q. exit
+4
+
+Game start.
+
+This is the 1th turn of game. The target is in space: [Armory] health: [3], the pet is in space: [Armory], evidence: []
+
+This is the 1th turn for player [Human1].
+Player: [Human1] is in space: [Armory], carrying weapons: []
+Please use the number below to select the action for player [Human1]
+        1. move player to a neighbor space.
+        2. pick up a weapon in the space.
+        3. look around the space.
+        4. move pet to a new space.
+        5. attack target.
+5
+Player: [Human1] choose to ATTACK_TARGET.
+Attack failed, the attack is seen.
+
+This is the 1th turn for player [Human2].
+Player: [Human2] is in space: [Armory], carrying weapons: []
+Please use the number below to select the action for player [Human2]
+        1. move player to a neighbor space.
+        2. pick up a weapon in the space.
+        3. look around the space.
+        4. move pet to a new space.
+        5. attack target.
+3
+Player: [Human2] choose to LOOK_AROUND.
+Space: [Armory], occupiers: [Human1, Human2], weapons: [Revolver], Target: [Doctor Lucky], Pet: [Fortune the Cat]
+Neighbors: [
+Space: [Billiard Room], occupiers: [Computer1, Computer2], weapons: [Billiard Cue]
+Space: [Dining Hall], occupiers: [], weapons: []
+Space: [Drawing Room], occupiers: [], weapons: [Letter Opener]]
+
+This is the 1th turn for player [Computer1].
+Player: [Computer1] is in space: [Billiard Room], carrying weapons: []
+Player: [Computer1] choose to PICK_UP_WEAPON.
+Player pick up weapon succeed.
+
+This is the 1th turn for player [Computer2].
+Player: [Computer2] is in space: [Billiard Room], carrying weapons: []
+Player: [Computer2] choose to LOOK_AROUND.
+Space: [Billiard Room], occupiers: [Computer1, Computer2], weapons: []
+Neighbors: [
+Space: [Armory], Pet: [Fortune the Cat]
+Space: [Dining Hall], occupiers: [], weapons: []
+Space: [Trophy Room], occupiers: [], weapons: [Duck Decoy, Monkey Hand]]
+
+This is the 2th turn of game. The target is in space: [Billiard Room] health: [3], the pet is in space: [Drawing Room], evidence: []
+
+This is the 2th turn for player [Human1].
+Player: [Human1] is in space: [Armory], carrying weapons: []
+Please use the number below to select the action for player [Human1]
+        1. move player to a neighbor space.
+        2. pick up a weapon in the space.
+        3. look around the space.
+        4. move pet to a new space.
+        5. attack target.
+4
+Player: [Human1] choose to MOVE_PET.
+Please input a space name from the spaces: [Armory, Billiard Room, Carriage House, Dining Hall, Drawing Room, Foyer, Green House, Hedge Maze, Kitchen, Lancaster Room, Library, Lilac Room, Master Suite, Nursery, Parlor, Piazza, Servants' Quarters, Tennessee Room, Trophy Room, Wine Cellar, Winter Garden]
+Dining Hall
+Player move the pet succeed.
+
+This is the 2th turn for player [Human2].
+Player: [Human2] is in space: [Armory], carrying weapons: []
+Please use the number below to select the action for player [Human2]
+        1. move player to a neighbor space.
+        2. pick up a weapon in the space.
+        3. look around the space.
+        4. move pet to a new space.
+        5. attack target.
+1
+Player: [Human2] choose to MOVE_PLAYER.
+Please input a neighbor space name from the neighbors: [Billiard Room, Dining Hall, Drawing Room]
+Drawing Room
+Player move to the neighbor space succeed.
+
+This is the 2th turn for player [Computer1].
+Player: [Computer1] is in space: [Billiard Room], carrying weapons: [Billiard Cue]
+Player: [Computer1] choose to ATTACK_TARGET.
+Attack failed, the attack is seen.
+
+This is the 2th turn for player [Computer2].
+Player: [Computer2] is in space: [Billiard Room], carrying weapons: []
+Player: [Computer2] choose to ATTACK_TARGET.
+Attack failed, the attack is seen.
+
+Game end.
+The target escaped with health: [3]. The pet is in space: [Wine Cellar]. No winner. Evidences: [Billiard Cue]
+Player: [Human1] is in space: [Armory], carrying weapons: []
+Player: [Human2] is in space: [Drawing Room], carrying weapons: []
+Player: [Computer1] is in space: [Billiard Room], carrying weapons: []
+Player: [Computer2] is in space: [Billiard Room], carrying weapons: []

@@ -266,6 +266,9 @@ public class WorldConsoleController implements WorldController {
         continue;
       }
 
+      this.out
+          .append(String.format("Player: [%s] choose to %s.\n", player.getName(), flow.getDesc()));
+
       BaseResult baseResult = serviceTemplate.execute(flow.getDesc(), new BaseRequest(player));
 
       if (baseResult.isSuccess()) {
@@ -279,6 +282,9 @@ public class WorldConsoleController implements WorldController {
 
   private void handlerComputerPlayer(Context ctx, Player player) throws IOException {
     Flow flow = determineFlowForComputer(ctx, player);
+
+    this.out
+        .append(String.format("Player: [%s] choose to %s.\n", player.getName(), flow.getDesc()));
 
     BaseResult baseResult = serviceTemplate.execute(flow.getDesc(),
         new BaseRequest(player, Boolean.TRUE));
@@ -310,14 +316,16 @@ public class WorldConsoleController implements WorldController {
   private void displayGameResult(Context context, boolean gameOver) throws IOException {
     this.out.append("\nGame end.\n");
     Space petPos = World.getSpace(context, context.getPet().getSpaceIndex());
+    List<String> evidences = context.getEvidences().stream().map(BaseWeapon::getName)
+        .collect(Collectors.toList());
     if (gameOver) {
-      this.out.append(
-          String.format("Winner is player: [%s]. The pet is in space: [%s]. The target is dead.\n",
-              ((Player) context.get(Constants.WINNER)).getName(), petPos.getName()));
+      this.out.append(String.format(
+          "Winner is player: [%s]. The pet is in space: [%s]. The target is dead. Evidences: %s\n",
+          ((Player) context.get(Constants.WINNER)).getName(), petPos.getName(), evidences));
     } else {
       this.out.append(String.format(
-          "The target escaped with health: [%d]. The pet is in space: [%s]. No winner.\n",
-          context.getTarget().getHealth(), petPos.getName()));
+          "The target escaped with health: [%d]. The pet is in space: [%s]. No winner. Evidences: %s\n",
+          context.getTarget().getHealth(), petPos.getName(), evidences));
     }
   }
 

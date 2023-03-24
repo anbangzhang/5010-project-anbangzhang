@@ -1,78 +1,85 @@
-$ java -jar WorldDriver.jar mansion.txt 3
+$ java -jar WorldDriver.jar "./world specification/mansion.txt" 2
 Please input the type of player to create:
         1. human-controlled
         2. computer-controlled
         q. quit creating
 1
 Please input the name of player:
-Adam
+Human
 Please input the space index that the player created at:
-8
+0
 Please input the weapon limit of player, -1 indicates no limit:
--1
-Add player [Adam] succeed.
-Please input the type of player to create:
-        1. human-controlled
-        2. computer-controlled
-        q. quit creating
-2
-Please input the name of player:
-Eve
-Please input the space index that the player created at:
-6
-Please input the weapon limit of player, -1 indicates no limit:
-2
-Add player [Eve] succeed.
-Please input the type of player to create:
-        1. human-controlled
-        2. computer-controlled
-        q. quit creating
-2
-Please input the name of player:
-Eve
-Please input the space index that the player created at:
 4
+Add player [Human] succeed.
+Please input the type of player to create:
+        1. human-controlled
+        2. computer-controlled
+        q. quit creating
+2
+Please input the name of player:
+Computer
+Please input the space index that the player created at:
+1
 Please input the weapon limit of player, -1 indicates no limit:
 2
-The name of player is repeated or the space index is invalid.
+Add player [Computer] succeed.
 Please input the type of player to create:
         1. human-controlled
         2. computer-controlled
         q. quit creating
 q
-All the players in the game: [Adam, Eve]
+All the players in the game: [Human, Computer]
 Please input the number below to select the function:
         1. displayAllSpaces
         2. displaySpaceDetail
-        3. displayGraphicalImage
+        3. generateGraphicalImage
         4. startGame
         q. exit
-1
-The spaces: [Armory, Billiard Room, Carriage House, Dining Hall, Drawing Room, Foyer, Green House, Hedge Maze, Kitchen, Lancaster Room, Library, Lilac Room, Master Suite, Nursery, Parlor, Piazza, Servants' Quarters, Tennessee Room, Trophy Room, Wine Cellar, Winter Garden]
-Please input the number below to select the function:
-        1. displayAllSpaces
-        2. displaySpaceDetail
-        3. displayGraphicalImage
-        4. startGame
-        q. exit
+4
+
+Game start.
+
+This is the 1th turn of game. The target is in space: [Armory] health: [3], the pet is in space: [Armory], evidence: []
+
+This is the 1th turn for player [Human].
+Player: [Human] is in space: [Armory], carrying weapons: []
+Please use the number below to select the action for player [Human]
+        1. move player to a neighbor space.
+        2. pick up a weapon in the space.
+        3. look around the space.
+        4. move pet to a new space.
+        5. attack target.
+5
+Player: [Human] choose to ATTACK_TARGET.
+Attack succeed.
+
+This is the 1th turn for player [Computer].
+Player: [Computer] is in space: [Billiard Room], carrying weapons: []
+Player: [Computer] choose to PICK_UP_WEAPON.
+Player pick up weapon succeed.
+
+This is the 2th turn of game. The target is in space: [Billiard Room] health: [2], the pet is in space: [Drawing Room], evidence: []
+
+This is the 2th turn for player [Human].
+Player: [Human] is in space: [Armory], carrying weapons: []
+Please use the number below to select the action for player [Human]
+        1. move player to a neighbor space.
+        2. pick up a weapon in the space.
+        3. look around the space.
+        4. move pet to a new space.
+        5. attack target.
 2
-Please input the space index:
-8
-Space: [Kitchen], neighbors: [Dining Hall, Parlor, Wine Cellar], weapons: [Crepe Pan, Sharp Knife], occupies: [Adam]
-Please input the number below to select the function:
-        1. displayAllSpaces
-        2. displaySpaceDetail
-        3. displayGraphicalImage
-        4. startGame
-        q. exit
-3
-Please input the output directory:
-./
-Graphical Image generation succeed, please check ./ directory
-Please input the number below to select the function:
-        1. displayAllSpaces
-        2. displaySpaceDetail
-        3. displayGraphicalImage
-        4. startGame
-        q. exit
-q
+Player: [Human] choose to PICK_UP_WEAPON.
+Please input a weapon name from the weapons: [Revolver]
+Revolver
+Player pick up weapon succeed.
+
+This is the 2th turn for player [Computer].
+Player: [Computer] is in space: [Billiard Room], carrying weapons: [Billiard Cue]
+Player: [Computer] choose to ATTACK_TARGET.
+Attack succeed.
+
+Game end.
+Winner is player: [Computer]. The pet is in space: [Wine Cellar]. The target is dead. Evidences: [Billiard Cue]
+Player: [Human] is in space: [Armory], carrying weapons: [Revolver]
+Player: [Computer] is in space: [Billiard Room], carrying weapons: []
