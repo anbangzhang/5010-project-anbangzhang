@@ -10,15 +10,15 @@ import world.exception.BusinessException;
  * @author anbang
  * @date 2023-03-18 06:51
  */
-public interface Action<T extends FlowContext> {
+public interface Action {
 
   /**
-   * execute.
+   * startProcess.
    * 
    * @param context context
    * @throws BusinessException business exception
    * @throws IOException       io exception
    */
-  void execute(T context) throws IOException;
+  void execute(FlowContext context) throws IOException;
 
 }

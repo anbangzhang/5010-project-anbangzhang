@@ -1,6 +1,8 @@
 package flowengine;
 
+import flowengine.context.FlowContext;
 import flowengine.enums.Flow;
+import flowengine.process.BaseProcessCallBack;
 import flowengine.request.BaseRequest;
 import flowengine.result.BaseResult;
 import flowengine.template.ServiceTemplate;
@@ -71,7 +73,13 @@ public class ServiceTemplateTest {
     ctx.set(Constants.SCANNER, scan);
     ctx.set(Constants.OUT, log);
 
-    BaseResult result = template.execute(Flow.MOVE_PLAYER.getDesc(), new BaseRequest(player));
+    BaseResult result = template.execute(new BaseRequest(player), Flow.MOVE_PLAYER.getDesc(),
+        new BaseProcessCallBack() {
+          @Override
+          public void enrichContext(BaseRequest request, FlowContext context) {
+            context.setContext(ContextHolder.get());
+          }
+        });
 
     Assert.assertTrue(result.isSuccess());
     Assert.assertEquals("Player move to the neighbor space succeed.", result.getResult());
@@ -88,8 +96,13 @@ public class ServiceTemplateTest {
     ctx.set(Constants.SCANNER, scan);
     ctx.set(Constants.OUT, log);
 
-    BaseResult result = template.execute(Flow.MOVE_PLAYER.getDesc(),
-        new BaseRequest(ctx.getPlayers().get(1), Boolean.TRUE));
+    BaseResult result = template.execute(new BaseRequest(ctx.getPlayers().get(1), Boolean.TRUE),
+        Flow.MOVE_PLAYER.getDesc(), new BaseProcessCallBack() {
+          @Override
+          public void enrichContext(BaseRequest request, FlowContext context) {
+            context.setContext(ContextHolder.get());
+          }
+        });
 
     Assert.assertTrue(result.isSuccess());
     Assert.assertEquals("Player move to the neighbor space succeed.", result.getResult());
@@ -106,7 +119,13 @@ public class ServiceTemplateTest {
     ctx.set(Constants.SCANNER, scan);
     ctx.set(Constants.OUT, log);
 
-    BaseResult result = template.execute(Flow.MOVE_PLAYER.getDesc(), new BaseRequest(player));
+    BaseResult result = template.execute(new BaseRequest(player), Flow.MOVE_PLAYER.getDesc(),
+        new BaseProcessCallBack() {
+          @Override
+          public void enrichContext(BaseRequest request, FlowContext context) {
+            context.setContext(ContextHolder.get());
+          }
+        });
 
     Assert.assertFalse(result.isSuccess());
     Assert.assertEquals("Space: [Parlor] is not the neighbor of the current space.",
@@ -125,7 +144,13 @@ public class ServiceTemplateTest {
     ctx.set(Constants.OUT, log);
     player.setSpaceIndex(8);
 
-    BaseResult result = template.execute(Flow.PICK_UP_WEAPON.getDesc(), new BaseRequest(player));
+    BaseResult result = template.execute(new BaseRequest(player), Flow.PICK_UP_WEAPON.getDesc(),
+        new BaseProcessCallBack() {
+          @Override
+          public void enrichContext(BaseRequest request, FlowContext context) {
+            context.setContext(ContextHolder.get());
+          }
+        });
 
     Assert.assertTrue(result.isSuccess());
     Assert.assertEquals(1, player.getWeapons().size());
@@ -133,7 +158,13 @@ public class ServiceTemplateTest {
         log.toString());
 
     // pick up fail due to no such weapon
-    result = template.execute(Flow.PICK_UP_WEAPON.getDesc(), new BaseRequest(player));
+    result = template.execute(new BaseRequest(player), Flow.PICK_UP_WEAPON.getDesc(),
+        new BaseProcessCallBack() {
+          @Override
+          public void enrichContext(BaseRequest request, FlowContext context) {
+            context.setContext(ContextHolder.get());
+          }
+        });
 
     Assert.assertFalse(result.isSuccess());
     Assert.assertEquals("Weapon: [Gun] is not in the current space.", result.getErrorMsg());
@@ -142,7 +173,13 @@ public class ServiceTemplateTest {
         + "Please input a weapon name from the weapons: [Sharp Knife]\n", log.toString());
 
     // pick up fail due to limit
-    result = template.execute(Flow.PICK_UP_WEAPON.getDesc(), new BaseRequest(player));
+    result = template.execute(new BaseRequest(player), Flow.PICK_UP_WEAPON.getDesc(),
+        new BaseProcessCallBack() {
+          @Override
+          public void enrichContext(BaseRequest request, FlowContext context) {
+            context.setContext(ContextHolder.get());
+          }
+        });
 
     Assert.assertFalse(result.isSuccess());
     Assert.assertEquals("Player's weapons reach limit.", result.getErrorMsg());
@@ -160,16 +197,26 @@ public class ServiceTemplateTest {
     ctx.set(Constants.SCANNER, scan);
     ctx.set(Constants.OUT, log);
 
-    BaseResult result = template.execute(Flow.PICK_UP_WEAPON.getDesc(),
-        new BaseRequest(ctx.getPlayers().get(1), Boolean.TRUE));
+    BaseResult result = template.execute(new BaseRequest(ctx.getPlayers().get(1), Boolean.TRUE),
+        Flow.PICK_UP_WEAPON.getDesc(), new BaseProcessCallBack() {
+          @Override
+          public void enrichContext(BaseRequest request, FlowContext context) {
+            context.setContext(ContextHolder.get());
+          }
+        });
 
     Assert.assertTrue(result.isSuccess());
     Assert.assertEquals(1, ctx.getPlayers().get(1).getWeapons().size());
     Assert.assertEquals("", log.toString());
 
     // fail due to no weapon in the space
-    result = template.execute(Flow.PICK_UP_WEAPON.getDesc(),
-        new BaseRequest(ctx.getPlayers().get(1), Boolean.TRUE));
+    result = template.execute(new BaseRequest(ctx.getPlayers().get(1), Boolean.TRUE),
+        Flow.PICK_UP_WEAPON.getDesc(), new BaseProcessCallBack() {
+          @Override
+          public void enrichContext(BaseRequest request, FlowContext context) {
+            context.setContext(ContextHolder.get());
+          }
+        });
 
     Assert.assertFalse(result.isSuccess());
     Assert.assertEquals("There is no weapon in the space.", result.getErrorMsg());
@@ -187,7 +234,13 @@ public class ServiceTemplateTest {
 
     ctx.getPlayers().add(new BasePlayer(2, "samplePlayer", 0, PlayerType.HUMAN_CONTROLLED, 2));
 
-    BaseResult result = template.execute(Flow.LOOK_AROUND.getDesc(), new BaseRequest(player));
+    BaseResult result = template.execute(new BaseRequest(player), Flow.LOOK_AROUND.getDesc(),
+        new BaseProcessCallBack() {
+          @Override
+          public void enrichContext(BaseRequest request, FlowContext context) {
+            context.setContext(ContextHolder.get());
+          }
+        });
 
     Assert.assertTrue(result.isSuccess());
     Assert.assertEquals(
@@ -200,8 +253,13 @@ public class ServiceTemplateTest {
     Assert.assertEquals("", log.toString());
 
     // the pet blocks the visibility of Armory
-    result = template.execute(Flow.LOOK_AROUND.getDesc(),
-        new BaseRequest(ctx.getPlayers().get(1), Boolean.TRUE));
+    result = template.execute(new BaseRequest(ctx.getPlayers().get(1), Boolean.TRUE),
+        Flow.LOOK_AROUND.getDesc(), new BaseProcessCallBack() {
+          @Override
+          public void enrichContext(BaseRequest request, FlowContext context) {
+            context.setContext(ContextHolder.get());
+          }
+        });
 
     Assert.assertTrue(result.isSuccess());
     Assert.assertEquals(
@@ -222,7 +280,13 @@ public class ServiceTemplateTest {
     ctx.set(Constants.OUT, log);
 
     // fail due to the space not exist
-    BaseResult result = template.execute(Flow.MOVE_PET.getDesc(), new BaseRequest(player));
+    BaseResult result = template.execute(new BaseRequest(player), Flow.MOVE_PET.getDesc(),
+        new BaseProcessCallBack() {
+          @Override
+          public void enrichContext(BaseRequest request, FlowContext context) {
+            context.setContext(ContextHolder.get());
+          }
+        });
 
     Assert.assertFalse(result.isSuccess());
     Assert.assertEquals("Space: [Spa Room] is not in the world.", result.getErrorMsg());
@@ -235,7 +299,13 @@ public class ServiceTemplateTest {
         log.toString());
 
     // fail due to moving to the current space
-    result = template.execute(Flow.MOVE_PET.getDesc(), new BaseRequest(player));
+    result = template.execute(new BaseRequest(player), Flow.MOVE_PET.getDesc(),
+        new BaseProcessCallBack() {
+          @Override
+          public void enrichContext(BaseRequest request, FlowContext context) {
+            context.setContext(ContextHolder.get());
+          }
+        });
 
     Assert.assertFalse(result.isSuccess());
     Assert.assertEquals("The pet is already in Space: [Armory].", result.getErrorMsg());
@@ -251,7 +321,13 @@ public class ServiceTemplateTest {
             + "Tennessee Room, Trophy Room, Wine Cellar, Winter Garden]\n",
         log.toString());
 
-    result = template.execute(Flow.MOVE_PET.getDesc(), new BaseRequest(player));
+    result = template.execute(new BaseRequest(player), Flow.MOVE_PET.getDesc(),
+        new BaseProcessCallBack() {
+          @Override
+          public void enrichContext(BaseRequest request, FlowContext context) {
+            context.setContext(ContextHolder.get());
+          }
+        });
 
     Assert.assertTrue(result.isSuccess());
     Assert.assertEquals("Player move the pet succeed.", result.getResult());
@@ -286,15 +362,26 @@ public class ServiceTemplateTest {
      * Attack without weapon when there's a pet in the space and no player looking
      * around in the neighbor space
      */
-    BaseResult result = template.execute(Flow.ATTACK_TARGET.getDesc(), new BaseRequest(player));
+    BaseResult result = template.execute(new BaseRequest(player), Flow.ATTACK_TARGET.getDesc(),
+        new BaseProcessCallBack() {
+          @Override
+          public void enrichContext(BaseRequest request, FlowContext context) {
+            context.setContext(ContextHolder.get());
+          }
+        });
 
     Assert.assertTrue(result.isSuccess());
     Assert.assertEquals("Attack succeed.", result.getResult());
     Assert.assertEquals(5, ctx.getTarget().getHealth());
 
     // [computerPlayer] look around, but the pet block the visibility
-    result = template.execute(Flow.LOOK_AROUND.getDesc(),
-        new BaseRequest(ctx.getPlayers().get(1), Boolean.TRUE));
+    result = template.execute(new BaseRequest(ctx.getPlayers().get(1), Boolean.TRUE),
+        Flow.LOOK_AROUND.getDesc(), new BaseProcessCallBack() {
+          @Override
+          public void enrichContext(BaseRequest request, FlowContext context) {
+            context.setContext(ContextHolder.get());
+          }
+        });
     Assert.assertTrue(result.isSuccess());
     Assert.assertEquals(
         "Space: [Billiard Room], occupiers: [computerPlayer], weapons: [Billiard Cue]\n"
@@ -307,7 +394,13 @@ public class ServiceTemplateTest {
      * Attack without weapon when there's a pet in the space and a player looking
      * around in the neighbor space
      */
-    result = template.execute(Flow.ATTACK_TARGET.getDesc(), new BaseRequest(player));
+    result = template.execute(new BaseRequest(player), Flow.ATTACK_TARGET.getDesc(),
+        new BaseProcessCallBack() {
+          @Override
+          public void enrichContext(BaseRequest request, FlowContext context) {
+            context.setContext(ContextHolder.get());
+          }
+        });
     Assert.assertTrue(result.isSuccess());
     Assert.assertEquals("Attack succeed.", result.getResult());
     Assert.assertEquals(4, ctx.getTarget().getHealth());
@@ -324,7 +417,13 @@ public class ServiceTemplateTest {
      * Attack with weapon when there's a pet in the space and a player looking
      * around in the neighbor space
      */
-    result = template.execute(Flow.ATTACK_TARGET.getDesc(), new BaseRequest(player));
+    result = template.execute(new BaseRequest(player), Flow.ATTACK_TARGET.getDesc(),
+        new BaseProcessCallBack() {
+          @Override
+          public void enrichContext(BaseRequest request, FlowContext context) {
+            context.setContext(ContextHolder.get());
+          }
+        });
     Assert.assertTrue(result.isSuccess());
     Assert.assertEquals("Attack succeed.", result.getResult());
     Assert.assertEquals(1, ctx.getTarget().getHealth());
@@ -340,7 +439,13 @@ public class ServiceTemplateTest {
      * Attack without weapon when there's no player looking round and no pet in the
      * space. [humanPlayer] win the game.
      */
-    result = template.execute(Flow.ATTACK_TARGET.getDesc(), new BaseRequest(player));
+    result = template.execute(new BaseRequest(player), Flow.ATTACK_TARGET.getDesc(),
+        new BaseProcessCallBack() {
+          @Override
+          public void enrichContext(BaseRequest request, FlowContext context) {
+            context.setContext(ContextHolder.get());
+          }
+        });
     Assert.assertTrue(result.isSuccess());
     Assert.assertEquals("Attack succeed.", result.getResult());
     Assert.assertEquals(0, ctx.getTarget().getHealth());
@@ -360,16 +465,26 @@ public class ServiceTemplateTest {
      * Attack without weapon when there's no pet in the space and no player looking
      * around in the neighbor space
      */
-    BaseResult result = template.execute(Flow.ATTACK_TARGET.getDesc(),
-        new BaseRequest(ctx.getPlayers().get(1), Boolean.TRUE));
+    BaseResult result = template.execute(new BaseRequest(ctx.getPlayers().get(1), Boolean.TRUE),
+        Flow.ATTACK_TARGET.getDesc(), new BaseProcessCallBack() {
+          @Override
+          public void enrichContext(BaseRequest request, FlowContext context) {
+            context.setContext(ContextHolder.get());
+          }
+        });
 
     Assert.assertTrue(result.isSuccess());
     Assert.assertEquals("Attack succeed.", result.getResult());
     Assert.assertEquals(2, ctx.getTarget().getHealth());
 
     // [computerPlayer] pick up weapon [Billiard Cue]
-    result = template.execute(Flow.PICK_UP_WEAPON.getDesc(),
-        new BaseRequest(ctx.getPlayers().get(1), Boolean.TRUE));
+    result = template.execute(new BaseRequest(ctx.getPlayers().get(1), Boolean.TRUE),
+        Flow.PICK_UP_WEAPON.getDesc(), new BaseProcessCallBack() {
+          @Override
+          public void enrichContext(BaseRequest request, FlowContext context) {
+            context.setContext(ContextHolder.get());
+          }
+        });
     Assert.assertTrue(result.isSuccess());
     Assert.assertEquals(1, ctx.getPlayers().get(1).getWeapons().size());
 
@@ -377,8 +492,13 @@ public class ServiceTemplateTest {
      * Attack with weapon when there's no pet in the space and no player looking
      * around in the neighbor space. [computerPlayer] win the game.
      */
-    result = template.execute(Flow.ATTACK_TARGET.getDesc(),
-        new BaseRequest(ctx.getPlayers().get(1), Boolean.TRUE));
+    result = template.execute(new BaseRequest(ctx.getPlayers().get(1), Boolean.TRUE),
+        Flow.ATTACK_TARGET.getDesc(), new BaseProcessCallBack() {
+          @Override
+          public void enrichContext(BaseRequest request, FlowContext context) {
+            context.setContext(ContextHolder.get());
+          }
+        });
 
     Assert.assertTrue(result.isSuccess());
     Assert.assertEquals("Attack succeed.", result.getResult());
@@ -399,7 +519,13 @@ public class ServiceTemplateTest {
     /*
      * Attack seen by other player in the same space
      */
-    BaseResult result = template.execute(Flow.ATTACK_TARGET.getDesc(), new BaseRequest(player));
+    BaseResult result = template.execute(new BaseRequest(player), Flow.ATTACK_TARGET.getDesc(),
+        new BaseProcessCallBack() {
+          @Override
+          public void enrichContext(BaseRequest request, FlowContext context) {
+            context.setContext(ContextHolder.get());
+          }
+        });
 
     Assert.assertTrue(result.isSuccess());
     Assert.assertEquals("Attack failed, the attack is seen.", result.getResult());
@@ -418,8 +544,13 @@ public class ServiceTemplateTest {
       }
     }
     // [computerPlayer] look around and see humanPlayer
-    result = template.execute(Flow.LOOK_AROUND.getDesc(),
-        new BaseRequest(ctx.getPlayers().get(1), Boolean.TRUE));
+    result = template.execute(new BaseRequest(ctx.getPlayers().get(1), Boolean.TRUE),
+        Flow.LOOK_AROUND.getDesc(), new BaseProcessCallBack() {
+          @Override
+          public void enrichContext(BaseRequest request, FlowContext context) {
+            context.setContext(ContextHolder.get());
+          }
+        });
     Assert.assertTrue(result.isSuccess());
     Assert.assertEquals(
         "Space: [Billiard Room], occupiers: [computerPlayer], weapons: [Billiard Cue]\n"
@@ -430,7 +561,13 @@ public class ServiceTemplateTest {
     /*
      * Attack seen by player in the neighbor space
      */
-    result = template.execute(Flow.ATTACK_TARGET.getDesc(), new BaseRequest(player));
+    result = template.execute(new BaseRequest(player), Flow.ATTACK_TARGET.getDesc(),
+        new BaseProcessCallBack() {
+          @Override
+          public void enrichContext(BaseRequest request, FlowContext context) {
+            context.setContext(ContextHolder.get());
+          }
+        });
     Assert.assertTrue(result.isSuccess());
     Assert.assertEquals("Attack failed, the attack is seen.", result.getResult());
     Assert.assertEquals(3, ctx.getTarget().getHealth());
@@ -441,8 +578,13 @@ public class ServiceTemplateTest {
     /*
      * The target and the player are not in the same space
      */
-    result = template.execute(Flow.ATTACK_TARGET.getDesc(),
-        new BaseRequest(ctx.getPlayers().get(2)));
+    result = template.execute(new BaseRequest(ctx.getPlayers().get(2)),
+        Flow.ATTACK_TARGET.getDesc(), new BaseProcessCallBack() {
+          @Override
+          public void enrichContext(BaseRequest request, FlowContext context) {
+            context.setContext(ContextHolder.get());
+          }
+        });
     Assert.assertFalse(result.isSuccess());
     Assert.assertEquals("The target and the player are not in the same space.",
         result.getErrorMsg());
@@ -460,7 +602,13 @@ public class ServiceTemplateTest {
     Set<Integer> set = new HashSet<>();
     set.add(ctx.getPet().getSpaceIndex());
     for (int i = 0; i < ctx.getSpaces().size(); i++) {
-      BaseResult result = template.execute(Flow.PET_DFS.getDesc(), new BaseRequest(null));
+      BaseResult result = template.execute(new BaseRequest(null), Flow.PET_DFS.getDesc(),
+          new BaseProcessCallBack() {
+            @Override
+            public void enrichContext(BaseRequest request, FlowContext context) {
+              context.setContext(ContextHolder.get());
+            }
+          });
 
       Assert.assertTrue(result.isSuccess());
       set.add(ctx.getPet().getSpaceIndex());

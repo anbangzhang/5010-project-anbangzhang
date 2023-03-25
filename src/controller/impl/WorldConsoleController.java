@@ -1,7 +1,9 @@
 package controller.impl;
 
 import controller.WorldController;
+import flowengine.context.FlowContext;
 import flowengine.enums.Flow;
+import flowengine.process.BaseProcessCallBack;
 import flowengine.request.BaseRequest;
 import flowengine.result.BaseResult;
 import flowengine.template.ServiceTemplate;
@@ -24,6 +26,7 @@ import world.base.BasePlayer;
 import world.base.BaseWeapon;
 import world.constant.Constants;
 import world.context.Context;
+import world.context.ContextHolder;
 import world.enums.PlayerType;
 import world.model.Player;
 import world.model.Space;
@@ -272,7 +275,13 @@ public class WorldConsoleController implements WorldController {
       this.out
           .append(String.format("Player: [%s] choose to %s.\n", player.getName(), flow.getDesc()));
 
-      BaseResult baseResult = serviceTemplate.execute(flow.getDesc(), new BaseRequest(player));
+      BaseResult baseResult = serviceTemplate.execute(new BaseRequest(player), flow.getDesc(),
+          new BaseProcessCallBack() {
+            @Override
+            public void enrichContext(BaseRequest request, FlowContext context) {
+              context.setContext(ContextHolder.get());
+            }
+          });
 
       if (baseResult.isSuccess()) {
         this.out.append((String) baseResult.getResult()).append("\n");
@@ -289,8 +298,13 @@ public class WorldConsoleController implements WorldController {
     this.out
         .append(String.format("Player: [%s] choose to %s.\n", player.getName(), flow.getDesc()));
 
-    BaseResult baseResult = serviceTemplate.execute(flow.getDesc(),
-        new BaseRequest(player, Boolean.TRUE));
+    BaseResult baseResult = serviceTemplate.execute(new BaseRequest(player, Boolean.TRUE),
+        flow.getDesc(), new BaseProcessCallBack() {
+          @Override
+          public void enrichContext(BaseRequest request, FlowContext context) {
+            context.setContext(ContextHolder.get());
+          }
+        });
 
     if (baseResult.isSuccess()) {
       this.out.append((String) baseResult.getResult()).append("\n");
@@ -313,7 +327,13 @@ public class WorldConsoleController implements WorldController {
 
   private void moveTargetAndPet(Context ctx) throws IOException {
     World.moveTarget(ctx);
-    serviceTemplate.execute(Flow.PET_DFS.getDesc(), new BaseRequest(null));
+    serviceTemplate.execute(new BaseRequest(null), Flow.PET_DFS.getDesc(),
+        new BaseProcessCallBack() {
+          @Override
+          public void enrichContext(BaseRequest request, FlowContext context) {
+            context.setContext(ContextHolder.get());
+          }
+        });
   }
 
   private void displayGameResult(Context context, boolean gameOver) throws IOException {
