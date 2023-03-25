@@ -1,7 +1,6 @@
 package flowengine.enricher;
 
 import flowengine.context.FlowContext;
-
 import java.io.IOException;
 
 /**
