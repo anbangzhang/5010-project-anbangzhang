@@ -281,6 +281,11 @@ public class WorldConsoleController implements WorldController {
             public void enrichContext(BaseRequest request, FlowContext context) {
               context.setContext(ContextHolder.get());
             }
+
+            @Override
+            public BaseResult createDefaultResult() {
+              return BaseResult.newSuccessResult().build();
+            }
           });
 
       if (baseResult.isSuccess()) {
@@ -303,6 +308,11 @@ public class WorldConsoleController implements WorldController {
           @Override
           public void enrichContext(BaseRequest request, FlowContext context) {
             context.setContext(ContextHolder.get());
+          }
+
+          @Override
+          public BaseResult createDefaultResult() {
+            return BaseResult.newSuccessResult().build();
           }
         });
 
@@ -332,6 +342,11 @@ public class WorldConsoleController implements WorldController {
           @Override
           public void enrichContext(BaseRequest request, FlowContext context) {
             context.setContext(ContextHolder.get());
+          }
+
+          @Override
+          public BaseResult createDefaultResult() {
+            return BaseResult.newSuccessResult().build();
           }
         });
   }

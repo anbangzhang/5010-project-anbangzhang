@@ -47,8 +47,6 @@ public abstract class BaseProcessCallBack<T extends BaseRequest, R extends BaseR
    * @param <R> result type
    * @return result
    */
-  public <R extends BaseResult> R createDefaultResult() {
-    return (R) BaseResult.newSuccessResult().build();
-  }
+  public abstract <R extends BaseResult> R createDefaultResult();
 
 }

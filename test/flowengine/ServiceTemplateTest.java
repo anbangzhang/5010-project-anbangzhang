@@ -79,6 +79,11 @@ public class ServiceTemplateTest {
           public void enrichContext(BaseRequest request, FlowContext context) {
             context.setContext(ContextHolder.get());
           }
+
+          @Override
+          public BaseResult createDefaultResult() {
+            return BaseResult.newSuccessResult().build();
+          }
         });
 
     Assert.assertTrue(result.isSuccess());
@@ -102,6 +107,11 @@ public class ServiceTemplateTest {
           public void enrichContext(BaseRequest request, FlowContext context) {
             context.setContext(ContextHolder.get());
           }
+
+          @Override
+          public BaseResult createDefaultResult() {
+            return BaseResult.newSuccessResult().build();
+          }
         });
 
     Assert.assertTrue(result.isSuccess());
@@ -124,6 +134,11 @@ public class ServiceTemplateTest {
           @Override
           public void enrichContext(BaseRequest request, FlowContext context) {
             context.setContext(ContextHolder.get());
+          }
+
+          @Override
+          public BaseResult createDefaultResult() {
+            return BaseResult.newSuccessResult().build();
           }
         });
 
@@ -150,6 +165,11 @@ public class ServiceTemplateTest {
           public void enrichContext(BaseRequest request, FlowContext context) {
             context.setContext(ContextHolder.get());
           }
+
+          @Override
+          public BaseResult createDefaultResult() {
+            return BaseResult.newSuccessResult().build();
+          }
         });
 
     Assert.assertTrue(result.isSuccess());
@@ -163,6 +183,11 @@ public class ServiceTemplateTest {
           @Override
           public void enrichContext(BaseRequest request, FlowContext context) {
             context.setContext(ContextHolder.get());
+          }
+
+          @Override
+          public BaseResult createDefaultResult() {
+            return BaseResult.newSuccessResult().build();
           }
         });
 
@@ -178,6 +203,11 @@ public class ServiceTemplateTest {
           @Override
           public void enrichContext(BaseRequest request, FlowContext context) {
             context.setContext(ContextHolder.get());
+          }
+
+          @Override
+          public BaseResult createDefaultResult() {
+            return BaseResult.newSuccessResult().build();
           }
         });
 
@@ -203,6 +233,11 @@ public class ServiceTemplateTest {
           public void enrichContext(BaseRequest request, FlowContext context) {
             context.setContext(ContextHolder.get());
           }
+
+          @Override
+          public BaseResult createDefaultResult() {
+            return BaseResult.newSuccessResult().build();
+          }
         });
 
     Assert.assertTrue(result.isSuccess());
@@ -215,6 +250,11 @@ public class ServiceTemplateTest {
           @Override
           public void enrichContext(BaseRequest request, FlowContext context) {
             context.setContext(ContextHolder.get());
+          }
+
+          @Override
+          public BaseResult createDefaultResult() {
+            return BaseResult.newSuccessResult().build();
           }
         });
 
@@ -240,6 +280,11 @@ public class ServiceTemplateTest {
           public void enrichContext(BaseRequest request, FlowContext context) {
             context.setContext(ContextHolder.get());
           }
+
+          @Override
+          public BaseResult createDefaultResult() {
+            return BaseResult.newSuccessResult().build();
+          }
         });
 
     Assert.assertTrue(result.isSuccess());
@@ -258,6 +303,11 @@ public class ServiceTemplateTest {
           @Override
           public void enrichContext(BaseRequest request, FlowContext context) {
             context.setContext(ContextHolder.get());
+          }
+
+          @Override
+          public BaseResult createDefaultResult() {
+            return BaseResult.newSuccessResult().build();
           }
         });
 
@@ -286,6 +336,11 @@ public class ServiceTemplateTest {
           public void enrichContext(BaseRequest request, FlowContext context) {
             context.setContext(ContextHolder.get());
           }
+
+          @Override
+          public BaseResult createDefaultResult() {
+            return BaseResult.newSuccessResult().build();
+          }
         });
 
     Assert.assertFalse(result.isSuccess());
@@ -304,6 +359,11 @@ public class ServiceTemplateTest {
           @Override
           public void enrichContext(BaseRequest request, FlowContext context) {
             context.setContext(ContextHolder.get());
+          }
+
+          @Override
+          public BaseResult createDefaultResult() {
+            return BaseResult.newSuccessResult().build();
           }
         });
 
@@ -326,6 +386,11 @@ public class ServiceTemplateTest {
           @Override
           public void enrichContext(BaseRequest request, FlowContext context) {
             context.setContext(ContextHolder.get());
+          }
+
+          @Override
+          public BaseResult createDefaultResult() {
+            return null;
           }
         });
 
@@ -368,6 +433,11 @@ public class ServiceTemplateTest {
           public void enrichContext(BaseRequest request, FlowContext context) {
             context.setContext(ContextHolder.get());
           }
+
+          @Override
+          public BaseResult createDefaultResult() {
+            return BaseResult.newSuccessResult().build();
+          }
         });
 
     Assert.assertTrue(result.isSuccess());
@@ -380,6 +450,11 @@ public class ServiceTemplateTest {
           @Override
           public void enrichContext(BaseRequest request, FlowContext context) {
             context.setContext(ContextHolder.get());
+          }
+
+          @Override
+          public BaseResult createDefaultResult() {
+            return BaseResult.newSuccessResult().build();
           }
         });
     Assert.assertTrue(result.isSuccess());
@@ -399,6 +474,11 @@ public class ServiceTemplateTest {
           @Override
           public void enrichContext(BaseRequest request, FlowContext context) {
             context.setContext(ContextHolder.get());
+          }
+
+          @Override
+          public BaseResult createDefaultResult() {
+            return BaseResult.newSuccessResult().build();
           }
         });
     Assert.assertTrue(result.isSuccess());
@@ -423,6 +503,11 @@ public class ServiceTemplateTest {
           public void enrichContext(BaseRequest request, FlowContext context) {
             context.setContext(ContextHolder.get());
           }
+
+          @Override
+          public BaseResult createDefaultResult() {
+            return BaseResult.newSuccessResult().build();
+          }
         });
     Assert.assertTrue(result.isSuccess());
     Assert.assertEquals("Attack succeed.", result.getResult());
@@ -444,6 +529,11 @@ public class ServiceTemplateTest {
           @Override
           public void enrichContext(BaseRequest request, FlowContext context) {
             context.setContext(ContextHolder.get());
+          }
+
+          @Override
+          public BaseResult createDefaultResult() {
+            return BaseResult.newSuccessResult().build();
           }
         });
     Assert.assertTrue(result.isSuccess());
@@ -471,6 +561,11 @@ public class ServiceTemplateTest {
           public void enrichContext(BaseRequest request, FlowContext context) {
             context.setContext(ContextHolder.get());
           }
+
+          @Override
+          public BaseResult createDefaultResult() {
+            return BaseResult.newSuccessResult().build();
+          }
         });
 
     Assert.assertTrue(result.isSuccess());
@@ -483,6 +578,11 @@ public class ServiceTemplateTest {
           @Override
           public void enrichContext(BaseRequest request, FlowContext context) {
             context.setContext(ContextHolder.get());
+          }
+
+          @Override
+          public BaseResult createDefaultResult() {
+            return BaseResult.newSuccessResult().build();
           }
         });
     Assert.assertTrue(result.isSuccess());
@@ -497,6 +597,11 @@ public class ServiceTemplateTest {
           @Override
           public void enrichContext(BaseRequest request, FlowContext context) {
             context.setContext(ContextHolder.get());
+          }
+
+          @Override
+          public BaseResult createDefaultResult() {
+            return BaseResult.newSuccessResult().build();
           }
         });
 
@@ -525,6 +630,11 @@ public class ServiceTemplateTest {
           public void enrichContext(BaseRequest request, FlowContext context) {
             context.setContext(ContextHolder.get());
           }
+
+          @Override
+          public BaseResult createDefaultResult() {
+            return BaseResult.newSuccessResult().build();
+          }
         });
 
     Assert.assertTrue(result.isSuccess());
@@ -550,6 +660,11 @@ public class ServiceTemplateTest {
           public void enrichContext(BaseRequest request, FlowContext context) {
             context.setContext(ContextHolder.get());
           }
+
+          @Override
+          public BaseResult createDefaultResult() {
+            return BaseResult.newSuccessResult().build();
+          }
         });
     Assert.assertTrue(result.isSuccess());
     Assert.assertEquals(
@@ -567,6 +682,11 @@ public class ServiceTemplateTest {
           public void enrichContext(BaseRequest request, FlowContext context) {
             context.setContext(ContextHolder.get());
           }
+
+          @Override
+          public BaseResult createDefaultResult() {
+            return BaseResult.newSuccessResult().build();
+          }
         });
     Assert.assertTrue(result.isSuccess());
     Assert.assertEquals("Attack failed, the attack is seen.", result.getResult());
@@ -583,6 +703,11 @@ public class ServiceTemplateTest {
           @Override
           public void enrichContext(BaseRequest request, FlowContext context) {
             context.setContext(ContextHolder.get());
+          }
+
+          @Override
+          public BaseResult createDefaultResult() {
+            return BaseResult.newSuccessResult().build();
           }
         });
     Assert.assertFalse(result.isSuccess());
@@ -607,6 +732,11 @@ public class ServiceTemplateTest {
             @Override
             public void enrichContext(BaseRequest request, FlowContext context) {
               context.setContext(ContextHolder.get());
+            }
+
+            @Override
+            public BaseResult createDefaultResult() {
+              return BaseResult.newSuccessResult().build();
             }
           });
 
