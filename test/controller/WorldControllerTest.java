@@ -2,6 +2,7 @@ package controller;
 
 import static org.mockito.ArgumentMatchers.eq;
 
+import controller.impl.WorldConsoleController;
 import flowengine.FlowEngineApplication;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
@@ -47,7 +48,7 @@ public class WorldControllerTest {
   private Context context;
 
   @Autowired
-  private WorldController controller;
+  private WorldConsoleController controller;
 
   /**
    * Set up world and mocks.

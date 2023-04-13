@@ -11,20 +11,6 @@ import world.context.Context;
 public interface WorldController {
 
   /**
-   * Set input.
-   *
-   * @param in input
-   */
-  void setIn(Readable in);
-
-  /**
-   * Set output.
-   *
-   * @param out output
-   */
-  void setOut(Appendable out);
-
-  /**
    * Set limit.
    *
    * @param turn turn
@@ -32,9 +18,31 @@ public interface WorldController {
   void setTurn(Integer turn);
 
   /**
+   * Set max players.
+   * 
+   * @param amount amount
+   */
+  void setMaxPlayerAmount(Integer amount);
+
+  /**
    * Play the game.
    * 
    * @param context context
    */
   void playGame(Context context);
+
+  /**
+   * Create a new game.
+   */
+  void createNewGame();
+
+  /**
+   * Restart the game.
+   */
+  void restartGame();
+
+  /**
+   * Quit game.
+   */
+  void quitGame();
 }

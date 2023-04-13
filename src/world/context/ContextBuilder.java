@@ -88,6 +88,8 @@ public class ContextBuilder {
     context.setExposedSpaces(new HashSet<>());
     context.setEvidences(new ArrayList<>());
 
+    context.setGameOver(Boolean.FALSE);
+
     return context;
   }
 

@@ -9,21 +9,25 @@ import java.util.Objects;
  * @date 2023-03-20 06:40
  */
 public enum Flow {
-  MOVE_PLAYER(1, "MOVE_PLAYER"), PICK_UP_WEAPON(2, "PICK_UP_WEAPON"), LOOK_AROUND(3, "LOOK_AROUND"),
-  MOVE_PET(4, "MOVE_PET"), ATTACK_TARGET(5, "ATTACK_TARGET"), PET_DFS(999, "PET_DFS");
+  MOVE_PLAYER(1, "MOVE_PLAYER", "move to"), PICK_UP_WEAPON(2, "PICK_UP_WEAPON", "pick up"),
+  LOOK_AROUND(3, "LOOK_AROUND", "look around"), MOVE_PET(4, "MOVE_PET", "move the pet to"),
+  ATTACK_TARGET(5, "ATTACK_TARGET", "attack the target with"), PET_DFS(999, "PET_DFS", "move to");
 
   private int code;
   private String desc;
+  private String action;
 
   /**
    * Constructor.
    * 
-   * @param code code
-   * @param desc desc
+   * @param code   code
+   * @param desc   desc
+   * @param action action
    */
-  Flow(int code, String desc) {
+  Flow(int code, String desc, String action) {
     this.code = code;
     this.desc = desc;
+    this.action = action;
   }
 
   /**
@@ -42,6 +46,15 @@ public enum Flow {
    */
   public String getDesc() {
     return this.desc;
+  }
+
+  /**
+   * Get action.
+   * 
+   * @return action
+   */
+  public String getAction() {
+    return this.action;
   }
 
   /**

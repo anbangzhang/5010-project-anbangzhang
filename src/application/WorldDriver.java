@@ -3,6 +3,7 @@ package application;
 import controller.ControllerApplication;
 import controller.WorldController;
 import controller.impl.WorldConsoleController;
+import controller.impl.WorldGuiController;
 import flowengine.FlowEngineApplication;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -11,6 +12,7 @@ import java.io.InputStreamReader;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Import;
+import world.constant.Constants;
 import world.context.Context;
 import world.context.ContextBuilder;
 import world.context.ContextHolder;
@@ -30,26 +32,49 @@ public class WorldDriver {
    * @param args arguments
    */
   public static void main(String[] args) {
-    if (args.length == 0) {
-      System.out.println("Please input valid world specification file address.");
-      return;
-    }
-    if (args.length == 1) {
-      System.out.println("Please input valid turn amount.");
-      return;
+    switch (args.length) {
+      case 0:
+        System.out.println("Please input valid world specification file address.");
+        return;
+      case 1:
+        System.out.println("Please input valid turn amount.");
+        return;
+      case 2:
+        System.out.println("Please input valid maximum player amount.");
+        return;
+      case 3:
+        System.out.println("Please input valid mode.");
+        return;
+      default:
+        break;
     }
     try (FileReader fileReader = new FileReader(args[0])) {
 
       Context context = ContextBuilder.build(fileReader);
       ContextHolder.set(context);
 
-      Readable in = new InputStreamReader(System.in);
+      WorldController controller;
       ApplicationContext ctx = new AnnotationConfigApplicationContext(WorldDriver.class);
+      if (Constants.GUI.equalsIgnoreCase(args[3])) {
 
-      WorldController controller = ctx.getBean(WorldConsoleController.class);
-      controller.setIn(in);
-      controller.setOut(System.out);
+        WorldGuiController guiController = ctx.getBean(WorldGuiController.class);
+        guiController.setUp(context, args[0]);
+
+        controller = guiController;
+
+      } else if (Constants.TEXT.equalsIgnoreCase(args[3])) {
+
+        WorldConsoleController consoleController = ctx.getBean(WorldConsoleController.class);
+        consoleController.setIn(new InputStreamReader(System.in));
+        consoleController.setOut(System.out);
+
+        controller = consoleController;
+      } else {
+        throw new IllegalArgumentException("Invalid Game Mode.");
+      }
+
       controller.setTurn(Integer.parseInt(args[1]));
+      controller.setMaxPlayerAmount(Integer.parseInt(args[2]));
 
       controller.playGame(context);
 

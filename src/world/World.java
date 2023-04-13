@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
 import world.base.BaseSpace;
 import world.base.BaseWeapon;
+import world.constant.Constants;
 import world.context.Context;
 import world.exception.BusinessException;
 import world.model.Player;
@@ -203,6 +204,30 @@ public class World {
       throw new BusinessException("Player's weapons reach limit.");
     }
     weapon.setHolder(String.format("player: %s", player.getName()));
+  }
+
+  /**
+   * Set current player.
+   * 
+   * @param context context
+   * @param player  player
+   */
+  public static void setCurrentPlayer(Context context, Player player) {
+    context.set(Constants.CURRENT_PLAYER, player);
+  }
+
+  /**
+   * Get current player.
+   * 
+   * @param context context
+   * @return currentPlayer
+   */
+  public static Player getCurrentPlayer(Context context) {
+    Object object = context.get(Constants.CURRENT_PLAYER);
+    if (Objects.isNull(object)) {
+      throw new BusinessException("No players in the game.");
+    }
+    return (Player) object;
   }
 
   /**

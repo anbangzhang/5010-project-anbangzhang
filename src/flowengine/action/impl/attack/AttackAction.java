@@ -46,6 +46,7 @@ public class AttackAction implements Action {
 
     if (health == 0) {
       ctx.set(Constants.WINNER, player);
+      ctx.setGameOver(Boolean.TRUE);
     }
     context.setResult(buildSuccessResult());
   }

@@ -1,12 +1,10 @@
 package controller.impl;
 
-import controller.WorldController;
 import flowengine.context.FlowContext;
 import flowengine.enums.Flow;
 import flowengine.process.BaseProcessCallBack;
 import flowengine.request.BaseRequest;
 import flowengine.result.BaseResult;
-import flowengine.template.ServiceTemplate;
 import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -18,8 +16,6 @@ import java.util.stream.Collectors;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import world.World;
 import world.base.BasePlayer;
@@ -38,7 +34,7 @@ import world.model.Space;
  * @date 2023-02-10 22:30
  */
 @Component(value = "worldController")
-public class WorldConsoleController implements WorldController {
+public class WorldConsoleController extends AbstractWorldController {
   /**
    * Input.
    */
@@ -48,21 +44,15 @@ public class WorldConsoleController implements WorldController {
    */
   private Appendable out;
   /**
-   * Turn limit.
-   */
-  private Integer turn;
-  /**
    * Scanner.
    */
   private Scanner scan;
-  /**
-   * ServiceTemplate.
-   */
-  @Autowired
-  @Qualifier(value = "serviceTemplate")
-  private ServiceTemplate serviceTemplate;
 
-  @Override
+  /**
+   * Set input.
+   *
+   * @param in input
+   */
   public void setIn(Readable in) {
     if (Objects.isNull(in)) {
       throw new IllegalArgumentException("Invalid input source.");
@@ -71,20 +61,16 @@ public class WorldConsoleController implements WorldController {
     this.scan = new Scanner(this.in);
   }
 
-  @Override
+  /**
+   * Set output.
+   *
+   * @param out output
+   */
   public void setOut(Appendable out) {
     if (Objects.isNull(out)) {
       throw new IllegalArgumentException("Invalid output source.");
     }
     this.out = out;
-  }
-
-  @Override
-  public void setTurn(Integer turn) {
-    if (Objects.isNull(turn)) {
-      throw new IllegalArgumentException("Invalid turn.");
-    }
-    this.turn = turn;
   }
 
   @Override
@@ -154,7 +140,6 @@ public class WorldConsoleController implements WorldController {
     ctx.set(Constants.OUT, this.out);
 
     List<Player> players = ctx.getPlayers();
-    boolean gameOver = false;
 
     BufferedImage image = World.getGraphicalImage(ctx);
     JFrame frame = new JFrame();
@@ -194,13 +179,12 @@ public class WorldConsoleController implements WorldController {
             handlerComputerPlayer(ctx, player);
           }
 
-          if (Objects.nonNull(ctx.get(Constants.WINNER))) {
-            gameOver = true;
+          if (Boolean.TRUE.equals(ctx.getGameOver())) {
             break;
           }
 
         }
-        if (gameOver) {
+        if (Boolean.TRUE.equals(ctx.getGameOver())) {
           break;
         }
 
@@ -208,7 +192,7 @@ public class WorldConsoleController implements WorldController {
         moveTargetAndPet(ctx);
       }
 
-      displayGameResult(ctx, gameOver);
+      displayGameResult(ctx, ctx.getGameOver());
 
       for (Player player : players) {
         displayPlayerDetail(ctx, player);
@@ -220,13 +204,13 @@ public class WorldConsoleController implements WorldController {
   }
 
   private void initPlayers(Context context) throws IOException {
-    int playerOrder = 0;
     /* add players */
     while (true) {
+      if (Objects.equals(context.getPlayers().size(), this.maxPlayerAmount)) {
+        break;
+      }
       try {
-        if (createPlayer(context, playerOrder)) {
-          playerOrder++;
-        }
+        createPlayer(context, context.getPlayers().size());
       } catch (InterruptedException e) {
         break;
       }
@@ -392,7 +376,7 @@ public class WorldConsoleController implements WorldController {
    * @throws InterruptedException quit game
    * @throws IOException          fail to write out stream
    */
-  private Boolean createPlayer(Context ctx, int order) throws InterruptedException, IOException {
+  private void createPlayer(Context ctx, int order) throws InterruptedException, IOException {
     this.out.append("Please input the type of player to create:\n"
         + "\t1. human-controlled\n\t2. computer-controlled\n\tq. quit creating\n");
     String input = getInput();
@@ -408,10 +392,8 @@ public class WorldConsoleController implements WorldController {
     Integer limit = Integer.parseInt(input) == -1 ? null : Integer.parseInt(input);
     if (!World.addPlayer(ctx, new BasePlayer(order, name, spaceIndex, type, limit))) {
       this.out.append("The name of player is repeated or the space index is invalid.\n");
-      return Boolean.FALSE;
     } else {
       this.out.append(String.format("Add player [%s] succeed.\n", name));
-      return Boolean.TRUE;
     }
   }
 
@@ -478,5 +460,20 @@ public class WorldConsoleController implements WorldController {
     } catch (NumberFormatException e) {
       return true;
     }
+  }
+
+  @Override
+  public void createNewGame() {
+    throw new UnsupportedOperationException("Unsupported method");
+  }
+
+  @Override
+  public void restartGame() {
+    throw new UnsupportedOperationException("Unsupported method");
+  }
+
+  @Override
+  public void quitGame() {
+    throw new UnsupportedOperationException("Unsupported method");
   }
 }

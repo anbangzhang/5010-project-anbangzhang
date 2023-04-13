@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import world.World;
 import world.base.BasePlayer;
 import world.base.BaseSpace;
 import world.base.BaseWeapon;

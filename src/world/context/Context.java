@@ -264,6 +264,48 @@ public class Context {
   }
 
   /**
+   * Set game over.
+   * 
+   * @param gameOver gameOver
+   */
+  public void setGameOver(Boolean gameOver) {
+    if (null == gameOver) {
+      return;
+    }
+    map.put(Constants.GAME_OVER, gameOver);
+  }
+
+  /**
+   * Get game over.
+   * 
+   * @return gameOver
+   */
+  public Boolean getGameOver() {
+    return (Boolean) map.get(Constants.GAME_OVER);
+  }
+
+  /**
+   * Set current turn.
+   * 
+   * @param cur
+   */
+  public void setCurrentTurn(Integer cur) {
+    if (null == cur) {
+      return;
+    }
+    map.put(Constants.CURRENT_TURN, cur);
+  }
+
+  /**
+   * Get current turn.
+   * 
+   * @return current turn
+   */
+  public Integer getCurrentTurn() {
+    return (Integer) map.get(Constants.CURRENT_TURN);
+  }
+
+  /**
    * Set key and value.
    * 
    * @param key   key
