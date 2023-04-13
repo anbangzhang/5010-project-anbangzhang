@@ -1,7 +1,6 @@
 package controller;
 
 import static org.mockito.ArgumentMatchers.eq;
-
 import controller.impl.WorldConsoleController;
 import flowengine.FlowEngineApplication;
 import java.awt.image.BufferedImage;

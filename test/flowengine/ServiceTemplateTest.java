@@ -14,13 +14,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import model.World;
 import model.base.BasePlayer;
 import model.base.BaseWeapon;
@@ -30,6 +23,13 @@ import model.context.ContextBuilder;
 import model.context.ContextHolder;
 import model.enums.PlayerType;
 import model.model.Player;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * ServiceTemplateTest.

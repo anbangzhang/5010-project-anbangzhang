@@ -5,9 +5,9 @@ import flowengine.context.FlowContext;
 import flowengine.request.AttackRequest;
 import flowengine.request.BaseRequest;
 import java.util.List;
-import org.springframework.stereotype.Component;
 import model.base.BaseWeapon;
 import model.model.Player;
+import org.springframework.stereotype.Component;
 
 /**
  * AttackRequestAssembleAction.

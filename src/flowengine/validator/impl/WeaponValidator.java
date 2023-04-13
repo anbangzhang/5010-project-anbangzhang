@@ -6,12 +6,12 @@ import flowengine.validator.Validator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import org.springframework.stereotype.Component;
 import model.World;
 import model.base.BaseWeapon;
 import model.constant.Constants;
 import model.context.Context;
 import model.model.Space;
+import org.springframework.stereotype.Component;
 
 /**
  * WeaponValidator.

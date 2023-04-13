@@ -9,9 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 import model.base.BasePlayer;
 import model.base.BaseSpace;
 import model.base.BaseWeapon;
@@ -22,6 +19,9 @@ import model.enums.PlayerType;
 import model.exception.BusinessException;
 import model.model.Player;
 import model.model.Space;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Test class of model.

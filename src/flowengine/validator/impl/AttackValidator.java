@@ -3,8 +3,8 @@ package flowengine.validator.impl;
 import flowengine.context.FlowContext;
 import flowengine.validator.Validator;
 import java.util.Objects;
-import org.springframework.stereotype.Component;
 import model.context.Context;
+import org.springframework.stereotype.Component;
 
 /**
  * AttackValidator.

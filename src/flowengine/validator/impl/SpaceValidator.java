@@ -4,10 +4,10 @@ import flowengine.context.FlowContext;
 import flowengine.request.BaseRequest;
 import flowengine.validator.Validator;
 import java.util.Objects;
-import org.springframework.stereotype.Component;
 import model.World;
 import model.context.Context;
 import model.model.Space;
+import org.springframework.stereotype.Component;
 
 /**
  * SpaceValidator.

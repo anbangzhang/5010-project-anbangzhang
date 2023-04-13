@@ -1,9 +1,9 @@
 package model;
 
+import model.model.Target;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import model.model.Target;
 
 /**
  * Test class for Target.

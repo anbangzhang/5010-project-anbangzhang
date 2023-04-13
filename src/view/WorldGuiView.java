@@ -342,7 +342,7 @@ public class WorldGuiView extends JFrame implements WorldView {
     this.refresh();
   }
 
-  private void addLabel(String text, GridBagConstraints gbc, JPanel jPanel) {
+  private void addLabel(String text, GridBagConstraints gbc, JPanel panel) {
     JLabel top = new JLabel(text, SwingConstants.CENTER);
     top.setFont(new Font("Courier", Font.PLAIN, 25));
     top.setForeground(Color.BLUE);
@@ -351,7 +351,7 @@ public class WorldGuiView extends JFrame implements WorldView {
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.ipadx = 200;
     gbc.ipady = 20;
-    jPanel.add(top, gbc);
+    panel.add(top, gbc);
   }
 
   @Override

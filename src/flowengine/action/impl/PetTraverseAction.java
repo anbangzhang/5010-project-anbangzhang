@@ -8,10 +8,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 import java.util.TreeSet;
-import org.springframework.stereotype.Component;
 import model.World;
 import model.context.Context;
 import model.model.Space;
+import org.springframework.stereotype.Component;
 
 /**
  * PetTraverseAction.

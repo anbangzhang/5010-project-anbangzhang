@@ -21,7 +21,6 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
-
 import model.World;
 import model.base.BasePlayer;
 import model.base.BaseWeapon;

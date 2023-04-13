@@ -1,15 +1,15 @@
 package model;
 
 import java.util.ArrayList;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 import model.base.BasePlayer;
 import model.base.BaseWeapon;
 import model.context.Context;
 import model.context.ContextHolder;
 import model.enums.PlayerType;
 import model.model.Player;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Test class for player.

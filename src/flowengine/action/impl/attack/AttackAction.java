@@ -6,12 +6,12 @@ import flowengine.request.AttackRequest;
 import flowengine.result.BaseResult;
 import java.util.List;
 import java.util.Objects;
-import org.springframework.stereotype.Component;
 import model.World;
 import model.constant.Constants;
 import model.context.Context;
 import model.model.Player;
 import model.model.Space;
+import org.springframework.stereotype.Component;
 
 /**
  * AttackAction.

@@ -1,9 +1,9 @@
 package model;
 
+import model.base.BaseWeapon;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import model.base.BaseWeapon;
 
 /**
  * Test class for BaseWeapon and Weapon.

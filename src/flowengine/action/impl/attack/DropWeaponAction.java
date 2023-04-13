@@ -4,9 +4,9 @@ import flowengine.action.Action;
 import flowengine.context.FlowContext;
 import flowengine.request.AttackRequest;
 import java.util.Objects;
-import org.springframework.stereotype.Component;
 import model.base.BaseWeapon;
 import model.context.Context;
+import org.springframework.stereotype.Component;
 
 /**
  * DropWeaponAction.

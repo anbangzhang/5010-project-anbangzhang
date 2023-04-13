@@ -4,11 +4,11 @@ import flowengine.action.Action;
 import flowengine.context.FlowContext;
 import flowengine.request.BaseRequest;
 import flowengine.result.BaseResult;
-import org.springframework.stereotype.Component;
 import model.World;
 import model.context.Context;
 import model.model.Player;
 import model.model.Space;
+import org.springframework.stereotype.Component;
 
 /**
  * MovePlayerAction.

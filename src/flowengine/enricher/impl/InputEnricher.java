@@ -8,11 +8,11 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.stream.Collectors;
-import org.springframework.stereotype.Component;
 import model.World;
 import model.base.BaseWeapon;
 import model.constant.Constants;
 import model.context.Context;
+import org.springframework.stereotype.Component;
 
 /**
  * InputEnricher.

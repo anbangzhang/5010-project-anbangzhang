@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 import model.base.BasePlayer;
 import model.base.BaseSpace;
 import model.base.BaseWeapon;
@@ -15,6 +12,9 @@ import model.context.ContextHolder;
 import model.enums.PlayerType;
 import model.model.Player;
 import model.model.Space;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Test class for BaseSpace and Space.

@@ -5,7 +5,6 @@ import controller.gameengine.GameEngine;
 import flowengine.enums.Flow;
 import flowengine.template.ServiceTemplate;
 import java.util.Objects;
-
 import model.World;
 import model.context.Context;
 import model.model.Player;
@@ -47,6 +46,13 @@ public abstract class AbstractWorldController implements WorldController {
     this.maxPlayerAmount = amount;
   }
 
+  /**
+   * Determine flow for computer.
+   * 
+   * @param ctx    context
+   * @param player player
+   * @return flow
+   */
   protected Flow determineFlowForComputer(Context ctx, Player player) {
     Space space = World.getSpace(ctx, player.getSpaceIndex());
 
