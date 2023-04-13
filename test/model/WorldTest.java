@@ -43,7 +43,7 @@ public class WorldTest {
     baseSpaces = initSpaces();
     try {
       /* Construct model with file */
-      Readable fileReader = new FileReader("./res/model specification/mansion.txt");
+      Readable fileReader = new FileReader("./res/world specification/mansion.txt");
       context = ContextBuilder.build(fileReader);
       ContextHolder.set(context);
     } catch (FileNotFoundException e) {

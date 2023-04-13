@@ -51,7 +51,7 @@ public class ServiceTemplateTest {
   @Before
   public void setUp() {
     try {
-      Readable fileReader = new FileReader("./res/model specification/mansion.txt");
+      Readable fileReader = new FileReader("./res/world specification/mansion.txt");
       ctx = ContextBuilder.build(fileReader);
 
       player = new BasePlayer(0, "humanPlayer", 0, PlayerType.HUMAN_CONTROLLED, 1);

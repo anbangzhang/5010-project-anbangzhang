@@ -1,6 +1,7 @@
 package controller;
 
 import static org.mockito.ArgumentMatchers.eq;
+
 import controller.impl.WorldConsoleController;
 import flowengine.FlowEngineApplication;
 import java.awt.image.BufferedImage;
@@ -11,16 +12,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import model.World;
 import model.base.BasePet;
 import model.base.BasePlayer;
@@ -33,6 +24,16 @@ import model.enums.PlayerType;
 import model.model.Pet;
 import model.model.Player;
 import model.model.Target;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * Test class for WorldController.
@@ -57,7 +58,7 @@ public class WorldControllerTest {
     MockitoAnnotations.openMocks(this);
     try {
       /* Construct model with file */
-      Readable fileReader = new FileReader("./res/model specification/mansion.txt");
+      Readable fileReader = new FileReader("./res/world specification/mansion.txt");
       context = ContextBuilder.build(fileReader);
       ContextHolder.set(context);
     } catch (FileNotFoundException e) {
