@@ -96,7 +96,7 @@ public class WorldGuiView extends JFrame implements WorldView {
    */
   public WorldGuiView(String head) {
     super(head);
-    ImageIcon icon = new ImageIcon("res/images/logo.jpg");
+    ImageIcon icon = new ImageIcon(this.getClass().getResource("/images/logo.jpg"));
     this.setIconImage(icon.getImage());
     this.setLayout(new BorderLayout());
     this.setSize(1000, 1000);
@@ -155,7 +155,7 @@ public class WorldGuiView extends JFrame implements WorldView {
 
   @Override
   public void displayInfo(String message) {
-    ImageIcon icon = new ImageIcon("res/images/logo.jpg");
+    ImageIcon icon = new ImageIcon(this.getClass().getResource("/images/logo.jpg"));
     JOptionPane.showMessageDialog(this, message, "Info", JOptionPane.INFORMATION_MESSAGE, icon);
   }
 
@@ -380,7 +380,7 @@ public class WorldGuiView extends JFrame implements WorldView {
 
     JLabel logo = new JLabel();
     logo.setVisible(true);
-    ImageIcon icon = new ImageIcon("res/images/game-logo.jpg");
+    ImageIcon icon = new ImageIcon(this.getClass().getResource("/images/game-logo.jpg"));
     logo.setIcon(icon);
     logo.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 
@@ -515,7 +515,7 @@ public class WorldGuiView extends JFrame implements WorldView {
 
     JLabel logo = new JLabel();
     logo.setVisible(true);
-    ImageIcon icon = new ImageIcon("res/images/logo.jpg");
+    ImageIcon icon = new ImageIcon(this.getClass().getResource("/images/logo.jpg"));
     logo.setIcon(icon);
     logo.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 

@@ -6,7 +6,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.io.File;
+import java.net.URL;
 import java.util.Map;
 import java.util.Objects;
 import javax.swing.BorderFactory;
@@ -119,9 +119,11 @@ public class SidePanel extends JPanel {
     head.setFont(new Font(head.getFont().getFontName(), Font.BOLD, head.getFont().getSize()));
     this.playersPanel.add(head, constraint);
     this.playersPanel.add(Box.createVerticalStrut(50));
+    URL url = this.getClass().getResource("/images/player.png");
     for (Player player : context.getPlayers()) {
       JLabel p = new JLabel(player.getName());
-      Icon img = new Icon(new File("res/images/player.png"));
+      Icon img = new Icon(url);
+
       ImageIcon playerIcon = img.setIconColor(playersColor.get(player.getName()));
       p.setIcon(playerIcon);
       p.setHorizontalAlignment(JLabel.LEFT);
@@ -146,7 +148,7 @@ public class SidePanel extends JPanel {
     this.targetPanel.removeAll();
     JLabel head = new JLabel("Target Details");
     head.setFont(new Font(head.getFont().getFontName(), Font.BOLD, head.getFont().getSize()));
-    ImageIcon img = new ImageIcon("res/images/target.png");
+    ImageIcon img = new ImageIcon(this.getClass().getResource("/images/target.png"));
     StringBuilder sb = new StringBuilder();
     sb.append("<html>").append("Target Name = ").append(context.getTarget().getName())
         .append("<br/>");

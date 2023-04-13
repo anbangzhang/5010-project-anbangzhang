@@ -2,8 +2,8 @@ package view.component;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
@@ -15,15 +15,15 @@ import javax.swing.ImageIcon;
  */
 public class Icon extends ImageIcon {
 
-  private File file;
+  private URL url;
 
   /**
    * Constructor.
    *
-   * @param file file.
+   * @param url url.
    */
-  public Icon(File file) {
-    this.file = file;
+  public Icon(URL url) {
+    this.url = url;
   }
 
   /**
@@ -35,7 +35,7 @@ public class Icon extends ImageIcon {
   public ImageIcon setIconColor(Color newColor) {
     BufferedImage image = null;
     try {
-      image = ImageIO.read(this.file);
+      image = ImageIO.read(this.url);
     } catch (IOException e) {
       e.printStackTrace();
     }

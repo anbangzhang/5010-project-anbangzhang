@@ -2,7 +2,7 @@ package view.component;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.io.File;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -90,10 +90,11 @@ public class GamePlayPanel extends JScrollPane {
   public void displayPlayers(Context context, Map<String, Color> playersColor,
       MouseClickListener listener) {
 
+    URL url = this.getClass().getResource("/images/player.png");
     for (Player player : context.getPlayers()) {
       JLabel playerLabel = new JLabel();
       Color playerColor = playersColor.get(player.getName());
-      Icon img = new Icon(new File("res/images/player.png"));
+      Icon img = new Icon(url);
       ImageIcon playerIcon = img.setIconColor(playerColor);
       playerLabel.setIcon(playerIcon);
       playerLabel.setName(player.getName());
@@ -111,7 +112,7 @@ public class GamePlayPanel extends JScrollPane {
    */
   public void displayTarget(Context context, MouseClickListener listener) {
     JLabel targetLabel = new JLabel();
-    ImageIcon targetIcon = new ImageIcon("res/images/target.png");
+    ImageIcon targetIcon = new ImageIcon(this.getClass().getResource("/images/target.png"));
     targetLabel.setIcon(targetIcon);
     targetLabel.addMouseListener(listener);
     roomPanels.get(World.getSpace(context, context.getTarget().getPosition()).getName())
