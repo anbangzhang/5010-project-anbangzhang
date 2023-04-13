@@ -1,6 +1,6 @@
 package controller;
 
-import world.context.Context;
+import model.context.Context;
 
 /**
  * WorldController interface.

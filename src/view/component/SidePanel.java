@@ -8,6 +8,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.io.File;
 import java.util.Map;
+import java.util.Objects;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
@@ -15,9 +16,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import world.World;
-import world.context.Context;
-import world.model.Player;
+import model.World;
+import model.context.Context;
+import model.model.Player;
 
 /**
  * SidePanel.
@@ -106,27 +107,29 @@ public class SidePanel extends JPanel {
   /**
    * Display players.
    * 
+   * @param context       context
    * @param currentPlayer currentPlayer
    * @param playersColor  playerColor
    */
-  public void displayPlayers(Player currentPlayer, Map<String, Color> playersColor) {
+  public void displayPlayers(Context context, Player currentPlayer,
+      Map<String, Color> playersColor) {
     this.playersPanel.removeAll();
 
     JLabel head = new JLabel("Players");
     head.setFont(new Font(head.getFont().getFontName(), Font.BOLD, head.getFont().getSize()));
     this.playersPanel.add(head, constraint);
     this.playersPanel.add(Box.createVerticalStrut(50));
-    for (String player : playersColor.keySet()) {
-      JLabel p = new JLabel(player);
+    for (Player player : context.getPlayers()) {
+      JLabel p = new JLabel(player.getName());
       Icon img = new Icon(new File("res/images/player.png"));
-      ImageIcon playerIcon = img.setIconColor(playersColor.get(player));
+      ImageIcon playerIcon = img.setIconColor(playersColor.get(player.getName()));
       p.setIcon(playerIcon);
       p.setHorizontalAlignment(JLabel.LEFT);
       p.setVerticalAlignment(JLabel.TOP);
       p.setPreferredSize(new Dimension(200, 35));
       this.playersPanel.add(p, constraint);
       this.playersPanel.add(Box.createVerticalStrut(40));
-      if (player.equals(currentPlayer.getName())) {
+      if (Objects.equals(player, currentPlayer)) {
         p.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
       }
     }

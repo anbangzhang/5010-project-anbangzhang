@@ -31,6 +31,10 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import model.base.BaseWeapon;
+import model.constant.Constants;
+import model.context.Context;
+import model.model.Player;
 import view.component.GameMenu;
 import view.component.GamePlayPanel;
 import view.component.SidePanel;
@@ -38,10 +42,6 @@ import view.listener.ButtonListener;
 import view.listener.KeyboardListener;
 import view.listener.MouseClickListener;
 import view.utils.CommonUtils;
-import world.base.BaseWeapon;
-import world.constant.Constants;
-import world.context.Context;
-import world.model.Player;
 
 /**
  * WorldGuiView.
@@ -363,7 +363,7 @@ public class WorldGuiView extends JFrame implements WorldView {
     }
     this.getContentPane().removeAll();
     this.add(sp);
-    this.sidePanel.displayPlayers(currentPlayer, playersColor);
+    this.sidePanel.displayPlayers(context, currentPlayer, playersColor);
     this.sidePanel.displayTargetDetails(context);
     this.sidePanel.displayLogs(message);
     this.sidePanel.displayTurns(turns);

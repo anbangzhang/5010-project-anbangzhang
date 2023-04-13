@@ -22,18 +22,18 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import world.World;
-import world.base.BasePet;
-import world.base.BasePlayer;
-import world.base.BaseSpace;
-import world.base.BaseWeapon;
-import world.context.Context;
-import world.context.ContextBuilder;
-import world.context.ContextHolder;
-import world.enums.PlayerType;
-import world.model.Pet;
-import world.model.Player;
-import world.model.Target;
+import model.World;
+import model.base.BasePet;
+import model.base.BasePlayer;
+import model.base.BaseSpace;
+import model.base.BaseWeapon;
+import model.context.Context;
+import model.context.ContextBuilder;
+import model.context.ContextHolder;
+import model.enums.PlayerType;
+import model.model.Pet;
+import model.model.Player;
+import model.model.Target;
 
 /**
  * Test class for WorldController.
@@ -51,14 +51,14 @@ public class WorldControllerTest {
   private WorldConsoleController controller;
 
   /**
-   * Set up world and mocks.
+   * Set up model and mocks.
    */
   @Before
   public void setUp() {
     MockitoAnnotations.openMocks(this);
     try {
-      /* Construct world with file */
-      Readable fileReader = new FileReader("./res/world specification/mansion.txt");
+      /* Construct model with file */
+      Readable fileReader = new FileReader("./res/model specification/mansion.txt");
       context = ContextBuilder.build(fileReader);
       ContextHolder.set(context);
     } catch (FileNotFoundException e) {

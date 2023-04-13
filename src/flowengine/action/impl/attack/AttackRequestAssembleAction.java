@@ -6,8 +6,8 @@ import flowengine.request.AttackRequest;
 import flowengine.request.BaseRequest;
 import java.util.List;
 import org.springframework.stereotype.Component;
-import world.base.BaseWeapon;
-import world.model.Player;
+import model.base.BaseWeapon;
+import model.model.Player;
 
 /**
  * AttackRequestAssembleAction.

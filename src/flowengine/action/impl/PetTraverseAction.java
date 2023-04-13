@@ -9,9 +9,9 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.TreeSet;
 import org.springframework.stereotype.Component;
-import world.World;
-import world.context.Context;
-import world.model.Space;
+import model.World;
+import model.context.Context;
+import model.model.Space;
 
 /**
  * PetTraverseAction.

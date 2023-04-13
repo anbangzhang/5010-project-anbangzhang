@@ -1,6 +1,6 @@
 package flowengine.request;
 
-import world.model.Player;
+import model.model.Player;
 
 /**
  * BaseRequest.

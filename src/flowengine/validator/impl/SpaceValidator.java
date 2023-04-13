@@ -5,9 +5,9 @@ import flowengine.request.BaseRequest;
 import flowengine.validator.Validator;
 import java.util.Objects;
 import org.springframework.stereotype.Component;
-import world.World;
-import world.context.Context;
-import world.model.Space;
+import model.World;
+import model.context.Context;
+import model.model.Space;
 
 /**
  * SpaceValidator.
@@ -26,7 +26,7 @@ public class SpaceValidator implements Validator {
     Space space = World.getSpace(ctx, request.getInput());
     if (Objects.isNull(space)) {
       throw new IllegalArgumentException(
-          String.format("Space: [%s] is not in the world.", request.getInput()));
+          String.format("Space: [%s] is not in the model.", request.getInput()));
     }
 
     if (Objects.equals(space.getOrder(), ctx.getPet().getSpaceIndex())) {

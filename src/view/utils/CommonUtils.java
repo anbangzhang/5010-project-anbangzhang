@@ -1,7 +1,7 @@
 package view.utils;
 
 import java.util.Objects;
-import world.constant.Constants;
+import model.constant.Constants;
 
 /**
  * CommonUtils.

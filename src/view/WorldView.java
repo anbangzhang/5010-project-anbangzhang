@@ -1,12 +1,12 @@
 package view;
 
 import java.util.List;
+import model.base.BaseWeapon;
+import model.context.Context;
+import model.model.Player;
 import view.listener.ButtonListener;
 import view.listener.KeyboardListener;
 import view.listener.MouseClickListener;
-import world.base.BaseWeapon;
-import world.context.Context;
-import world.model.Player;
 
 /**
  * WorldView.
@@ -53,7 +53,7 @@ public interface WorldView {
   void addPlayerScreen(List<String> spaceNames);
 
   /**
-   * Displays the screen to setup a new game with a new world specification.
+   * Displays the screen to setup a new game with a new model specification.
    */
   void setupScreen();
 

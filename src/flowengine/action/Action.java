@@ -2,7 +2,7 @@ package flowengine.action;
 
 import flowengine.context.FlowContext;
 import java.io.IOException;
-import world.exception.BusinessException;
+import model.exception.BusinessException;
 
 /**
  * Action.

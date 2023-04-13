@@ -6,10 +6,10 @@ import flowengine.validator.Validator;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.stereotype.Component;
-import world.World;
-import world.constant.Constants;
-import world.context.Context;
-import world.model.Space;
+import model.World;
+import model.constant.Constants;
+import model.context.Context;
+import model.model.Space;
 
 /**
  * NeighborValidator.

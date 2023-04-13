@@ -9,13 +9,13 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import model.constant.Constants;
+import model.context.Context;
+import model.context.ContextBuilder;
+import model.context.ContextHolder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Import;
-import world.constant.Constants;
-import world.context.Context;
-import world.context.ContextBuilder;
-import world.context.ContextHolder;
 
 /**
  * WorldDriver class.
@@ -34,7 +34,7 @@ public class WorldDriver {
   public static void main(String[] args) {
     switch (args.length) {
       case 0:
-        System.out.println("Please input valid world specification file address.");
+        System.out.println("Please input valid model specification file address.");
         return;
       case 1:
         System.out.println("Please input valid turn amount.");
@@ -58,6 +58,7 @@ public class WorldDriver {
       if (Constants.GUI.equalsIgnoreCase(args[3])) {
 
         WorldGuiController guiController = ctx.getBean(WorldGuiController.class);
+        guiController.setTurn(Integer.parseInt(args[1]));
         guiController.setUp(context, args[0]);
 
         controller = guiController;
@@ -67,13 +68,13 @@ public class WorldDriver {
         WorldConsoleController consoleController = ctx.getBean(WorldConsoleController.class);
         consoleController.setIn(new InputStreamReader(System.in));
         consoleController.setOut(System.out);
+        consoleController.setTurn(Integer.parseInt(args[1]));
 
         controller = consoleController;
       } else {
         throw new IllegalArgumentException("Invalid Game Mode.");
       }
 
-      controller.setTurn(Integer.parseInt(args[1]));
       controller.setMaxPlayerAmount(Integer.parseInt(args[2]));
 
       controller.playGame(context);

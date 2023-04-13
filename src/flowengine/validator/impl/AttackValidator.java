@@ -4,7 +4,7 @@ import flowengine.context.FlowContext;
 import flowengine.validator.Validator;
 import java.util.Objects;
 import org.springframework.stereotype.Component;
-import world.context.Context;
+import model.context.Context;
 
 /**
  * AttackValidator.

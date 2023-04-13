@@ -16,16 +16,16 @@ import java.util.stream.Collectors;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import model.World;
+import model.base.BasePlayer;
+import model.base.BaseWeapon;
+import model.constant.Constants;
+import model.context.Context;
+import model.context.ContextHolder;
+import model.enums.PlayerType;
+import model.model.Player;
+import model.model.Space;
 import org.springframework.stereotype.Component;
-import world.World;
-import world.base.BasePlayer;
-import world.base.BaseWeapon;
-import world.constant.Constants;
-import world.context.Context;
-import world.context.ContextHolder;
-import world.enums.PlayerType;
-import world.model.Player;
-import world.model.Space;
 
 /**
  * WorldConsoleController class.
@@ -140,6 +140,7 @@ public class WorldConsoleController extends AbstractWorldController {
     ctx.set(Constants.OUT, this.out);
 
     List<Player> players = ctx.getPlayers();
+    boolean gameOver = false;
 
     BufferedImage image = World.getGraphicalImage(ctx);
     JFrame frame = new JFrame();
@@ -179,12 +180,13 @@ public class WorldConsoleController extends AbstractWorldController {
             handlerComputerPlayer(ctx, player);
           }
 
-          if (Boolean.TRUE.equals(ctx.getGameOver())) {
+          if (Objects.nonNull(ctx.get(Constants.WINNER))) {
+            gameOver = true;
             break;
           }
 
         }
-        if (Boolean.TRUE.equals(ctx.getGameOver())) {
+        if (gameOver) {
           break;
         }
 
@@ -192,7 +194,7 @@ public class WorldConsoleController extends AbstractWorldController {
         moveTargetAndPet(ctx);
       }
 
-      displayGameResult(ctx, ctx.getGameOver());
+      displayGameResult(ctx, gameOver);
 
       for (Player player : players) {
         displayPlayerDetail(ctx, player);
@@ -305,18 +307,6 @@ public class WorldConsoleController extends AbstractWorldController {
     } else {
       this.out.append(baseResult.getErrorMsg()).append("\n");
     }
-  }
-
-  private Flow determineFlowForComputer(Context ctx, Player player) {
-    Space space = World.getSpace(ctx, player.getSpaceIndex());
-
-    if (Objects.equals(ctx.getTarget().getPosition(), player.getSpaceIndex())) {
-      return Flow.ATTACK_TARGET;
-    } else if (space.getWeapons().size() > 0
-        && player.getWeapons().size() < player.getWeaponLimit()) {
-      return Flow.PICK_UP_WEAPON;
-    }
-    return Flow.LOOK_AROUND;
   }
 
   private void moveTargetAndPet(Context ctx) throws IOException {

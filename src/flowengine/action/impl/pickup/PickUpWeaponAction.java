@@ -6,10 +6,10 @@ import flowengine.request.BaseRequest;
 import flowengine.result.BaseResult;
 import java.util.Objects;
 import org.springframework.stereotype.Component;
-import world.World;
-import world.base.BaseWeapon;
-import world.context.Context;
-import world.model.Player;
+import model.World;
+import model.base.BaseWeapon;
+import model.context.Context;
+import model.model.Player;
 
 /**
  * PickUpWeaponAction.

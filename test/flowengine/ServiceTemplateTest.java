@@ -21,15 +21,15 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import world.World;
-import world.base.BasePlayer;
-import world.base.BaseWeapon;
-import world.constant.Constants;
-import world.context.Context;
-import world.context.ContextBuilder;
-import world.context.ContextHolder;
-import world.enums.PlayerType;
-import world.model.Player;
+import model.World;
+import model.base.BasePlayer;
+import model.base.BaseWeapon;
+import model.constant.Constants;
+import model.context.Context;
+import model.context.ContextBuilder;
+import model.context.ContextHolder;
+import model.enums.PlayerType;
+import model.model.Player;
 
 /**
  * ServiceTemplateTest.
@@ -51,7 +51,7 @@ public class ServiceTemplateTest {
   @Before
   public void setUp() {
     try {
-      Readable fileReader = new FileReader("./res/world specification/mansion.txt");
+      Readable fileReader = new FileReader("./res/model specification/mansion.txt");
       ctx = ContextBuilder.build(fileReader);
 
       player = new BasePlayer(0, "humanPlayer", 0, PlayerType.HUMAN_CONTROLLED, 1);
@@ -344,7 +344,7 @@ public class ServiceTemplateTest {
         });
 
     Assert.assertFalse(result.isSuccess());
-    Assert.assertEquals("Space: [Spa Room] is not in the world.", result.getErrorMsg());
+    Assert.assertEquals("Space: [Spa Room] is not in the model.", result.getErrorMsg());
     Assert.assertEquals(0, ctx.getPet().getSpaceIndex());
     Assert.assertEquals(
         "Please input a space name from the spaces: [Armory, Billiard Room, Carriage House, "

@@ -1,4 +1,4 @@
-$ java -jar WorldDriver.jar "./world specification/mansion.txt" 2
+$ java -jar WorldDriver.jar "./model specification/mansion.txt" 2
 Please input the type of player to create:
         1. human-controlled
         2. computer-controlled

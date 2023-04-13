@@ -9,10 +9,10 @@ import java.util.Objects;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
-import world.World;
-import world.base.BaseWeapon;
-import world.constant.Constants;
-import world.context.Context;
+import model.World;
+import model.base.BaseWeapon;
+import model.constant.Constants;
+import model.context.Context;
 
 /**
  * InputEnricher.

@@ -5,10 +5,10 @@ import flowengine.context.FlowContext;
 import flowengine.request.BaseRequest;
 import flowengine.result.BaseResult;
 import org.springframework.stereotype.Component;
-import world.World;
-import world.context.Context;
-import world.model.Player;
-import world.model.Space;
+import model.World;
+import model.context.Context;
+import model.model.Player;
+import model.model.Space;
 
 /**
  * MovePlayerAction.

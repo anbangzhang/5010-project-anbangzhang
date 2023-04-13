@@ -1,5 +1,6 @@
 package controller.impl;
 
+import controller.gameengine.GameEngine;
 import flowengine.context.FlowContext;
 import flowengine.enums.Flow;
 import flowengine.process.BaseProcessCallBack;
@@ -12,30 +13,33 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
+
+import model.World;
+import model.base.BasePlayer;
+import model.base.BaseWeapon;
+import model.constant.Constants;
+import model.context.Context;
+import model.context.ContextBuilder;
+import model.context.ContextHolder;
+import model.enums.PlayerType;
+import model.exception.BusinessException;
+import model.model.Player;
+import model.model.Space;
+import model.model.Target;
 import org.springframework.stereotype.Component;
 import view.WorldGuiView;
 import view.WorldView;
 import view.listener.ButtonListener;
 import view.listener.KeyboardListener;
 import view.listener.MouseClickListener;
-import world.World;
-import world.base.BasePlayer;
-import world.base.BaseWeapon;
-import world.constant.Constants;
-import world.context.Context;
-import world.context.ContextBuilder;
-import world.context.ContextHolder;
-import world.enums.PlayerType;
-import world.exception.BusinessException;
-import world.model.Player;
-import world.model.Space;
-import world.model.Target;
 
 /**
  * WorldGuiController.
@@ -52,6 +56,8 @@ public class WorldGuiController extends AbstractWorldController {
 
   private List<String> logger;
 
+  private Timer timer;
+
   private Context context;
 
   private String filePath;
@@ -63,6 +69,10 @@ public class WorldGuiController extends AbstractWorldController {
     this.view = new WorldGuiView("Kill Doctor Lucky");
     this.mouseListener = new MouseClickListener();
     this.logger = new ArrayList<>();
+    this.timer = new Timer(Constants.TIMER_DELAY, e -> this.computerPlayerAction());
+    configureButtonListener();
+    configureKeyboardListener();
+    configureMouseClickListener();
   }
 
   /**
@@ -74,9 +84,7 @@ public class WorldGuiController extends AbstractWorldController {
   public void setUp(Context context, String filePath) {
     this.context = context;
     this.filePath = filePath;
-    configureButtonListener();
-    configureKeyboardListener();
-    configureMouseClickListener();
+    initGameEngine();
   }
 
   private void configureButtonListener() {
@@ -99,8 +107,8 @@ public class WorldGuiController extends AbstractWorldController {
     buttonClickedMap.put(Constants.ADD, this::addPlayer);
 
     buttonClickedMap.put(Constants.PLAY_GAME, () -> {
-      initGame();
-      this.displayBoard("Play Game");
+      this.timer.start();
+      displayBoard("Play Game");
     });
 
     ButtonListener buttonListener = new ButtonListener();
@@ -125,18 +133,18 @@ public class WorldGuiController extends AbstractWorldController {
 
     mouseClickedMap.put(MouseEvent.BUTTON1, (input) -> {
       if (World.getAllSpaces(this.context).contains(input)) {
-        this.executeMovePlayer(input);
-      } else if (context.getPlayers().stream().map(Player::getName).collect(Collectors.toList())
-          .contains(input)) {
-        this.showPlayerDetails(input);
+        executeMovePlayer(input);
+      } else if (this.context.getPlayers().stream().map(Player::getName)
+          .collect(Collectors.toList()).contains(input)) {
+        showPlayerDetails(input);
       } else {
-        this.showTargetDetails();
+        showTargetDetails();
       }
     });
 
     mouseClickedMap.put(MouseEvent.BUTTON3, (input) -> {
       if (World.getAllSpaces(this.context).contains(input)) {
-        this.executeMovePet(input);
+        executeMovePet(input);
       }
     });
     mouseListener.setMouseClickActionMap(mouseClickedMap);
@@ -166,6 +174,7 @@ public class WorldGuiController extends AbstractWorldController {
   private void newGame() {
     int choice = this.view.confirmScreen("Are you sure you want to start a new game?");
     if (choice == JOptionPane.YES_OPTION) {
+      this.timer.stop();
       this.view.setupScreen();
     }
   }
@@ -175,11 +184,13 @@ public class WorldGuiController extends AbstractWorldController {
     String[] inputs = this.view.getSetupInput();
     if (Objects.nonNull(inputs)) {
       try {
-        this.context = ContextBuilder.build(new FileReader(inputs[0]));
-        this.filePath = inputs[0];
+        Context context = ContextBuilder.build(new FileReader(inputs[0]));
+        String filePath = inputs[0];
         ContextHolder.set(this.context);
         setTurn(Integer.parseInt(inputs[1]));
         setMaxPlayerAmount(Integer.parseInt(inputs[2]));
+        setUp(context, filePath);
+
         this.logger = new ArrayList<>();
         this.view.displayInfo("New Game Created.");
         this.view.addPlayerScreen(World.getAllSpaces(this.context));
@@ -199,46 +210,41 @@ public class WorldGuiController extends AbstractWorldController {
         .confirmScreen("Are you sure you want to restart the game with the same settings?");
     if (choice == JOptionPane.YES_OPTION) {
       try {
+        this.timer.stop();
         Context context = ContextBuilder.build(new FileReader(this.filePath));
         ContextHolder.set(context);
-        this.context = context;
+        setUp(context, this.filePath);
 
         this.logger = new ArrayList<>();
-        this.view.restartGame(World.getAllSpaces(context));
+        this.view.restartGame(World.getAllSpaces(this.context));
       } catch (FileNotFoundException e) {
         this.view.displayError(e.getMessage());
       }
     }
   }
 
-  private void initGame() {
-    if (this.context.getPlayers().size() == 0) {
-      World.setCurrentPlayer(this.context, null);
-    } else {
-      World.setCurrentPlayer(this.context, this.context.getPlayers().get(0));
-    }
-
-    this.context.setCurrentTurn(0);
+  private void initGameEngine() {
+    this.gameEngine = new GameEngine(this.context, this.turn);
   }
 
   private void addPlayer() {
     String[] inputs = this.view.getPlayerInput();
     if (Objects.nonNull(inputs)) {
       try {
-        int size = context.getPlayers().size();
+        int size = this.context.getPlayers().size();
         if (Objects.equals(size, this.maxPlayerAmount)) {
           throw new IllegalStateException("Players Reached Maximum Amount.");
         }
-        Space space = World.getSpace(context, inputs[1]);
+        Space space = World.getSpace(this.context, inputs[1]);
         int weaponLimit = Integer.parseInt(inputs[2]);
         PlayerType type = Boolean.parseBoolean(inputs[3]) ? PlayerType.HUMAN_CONTROLLED
             : PlayerType.COMPUTER_CONTROLLED;
         Player player = new BasePlayer(size, inputs[0], space.getOrder(), type,
             weaponLimit == -1 ? null : weaponLimit);
-        if (!World.addPlayer(context, player)) {
+        if (!World.addPlayer(this.context, player)) {
           throw new IllegalArgumentException("Repeated Player Name.");
         }
-        this.view.setPlayerColor(World.getAllSpaces(context));
+        this.view.setPlayerColor(World.getAllSpaces(this.context));
       } catch (IllegalArgumentException | IllegalStateException exception) {
         this.view.displayError(exception.getMessage());
       }
@@ -246,8 +252,9 @@ public class WorldGuiController extends AbstractWorldController {
   }
 
   private void addPlayerScreen() {
-    if (!Objects.equals(Boolean.TRUE, context.getGameOver())) {
-      this.view.addPlayerScreen(World.getAllSpaces(context));
+    this.timer.stop();
+    if (!Objects.equals(Boolean.TRUE, gameEngine.gameOver())) {
+      this.view.addPlayerScreen(World.getAllSpaces(this.context));
     } else {
       this.view.displayError("Game is Over!");
     }
@@ -256,7 +263,8 @@ public class WorldGuiController extends AbstractWorldController {
   private void displayBoard(String message) {
     logger.add(message);
     try {
-      if (Boolean.TRUE.equals(context.getGameOver())) {
+      if (Boolean.TRUE.equals(gameEngine.gameOver())) {
+        timer.stop();
         if (Objects.isNull(context.get(Constants.WINNER))) {
           logger.add("Game Over. Target Escaped. Nobody wins!");
 
@@ -276,24 +284,40 @@ public class WorldGuiController extends AbstractWorldController {
         }
         buildMessage.append("</html>");
 
-        this.view.refreshBoard(context, World.getCurrentPlayer(context), context.getCurrentTurn(),
-            buildMessage.toString(), mouseListener);
+        this.view.refreshBoard(context, this.gameEngine.getCurrentPlayer(),
+            this.gameEngine.getTurn(), buildMessage.toString(), mouseListener);
       }
     } catch (BusinessException e) {
+      timer.stop();
+      this.view.displayError(e.getMessage());
+    }
+  }
+
+  private void computerPlayerAction() {
+    try {
+      Player player = this.gameEngine.getCurrentPlayer();
+      if (Objects.equals(PlayerType.COMPUTER_CONTROLLED, player.getType())) {
+        Flow flow = determineFlowForComputer(this.context, player);
+        ContextHolder.set(this.context);
+
+        executeFlow(flow, player, null, false, false);
+
+      }
+    } catch (IOException | BusinessException e) {
       this.view.displayError(e.getMessage());
     }
   }
 
   private void executePick() {
     try {
-      Player player = World.getCurrentPlayer(this.context);
+      Player player = this.gameEngine.getCurrentPlayer();
       if (Objects.equals(PlayerType.HUMAN_CONTROLLED, player.getType())) {
         Space space = World.getSpace(context, player.getSpaceIndex());
         ContextHolder.set(this.context);
 
         String weapon = this.view.displayWeapons(space.getWeapons());
         if (Objects.nonNull(weapon)) {
-          this.executeFlow(Flow.PICK_UP_WEAPON, player, weapon);
+          executeFlow(Flow.PICK_UP_WEAPON, player, weapon, false, true);
         }
       }
     } catch (IOException | BusinessException e) {
@@ -303,26 +327,12 @@ public class WorldGuiController extends AbstractWorldController {
 
   private void executeLook() {
     try {
-      Player player = World.getCurrentPlayer(this.context);
+      Player player = this.gameEngine.getCurrentPlayer();
       if (Objects.equals(PlayerType.HUMAN_CONTROLLED, player.getType())) {
-        String message = player.getName() + " tried to look around. Looked around Successfully.";
         ContextHolder.set(this.context);
 
-        BaseResult<String> baseResult = serviceTemplate.execute(
-            new BaseRequest(player, Boolean.FALSE), Flow.LOOK_AROUND.getDesc(),
-            new BaseProcessCallBack() {
-              @Override
-              public void enrichContext(BaseRequest request, FlowContext ctx) {
-                ctx.setContext(context);
-              }
+        executeFlow(Flow.LOOK_AROUND, player, null, true, false);
 
-              @Override
-              public BaseResult createDefaultResult() {
-                return BaseResult.newSuccessResult().build();
-              }
-            });
-        this.view.displayInfo(baseResult.getResult());
-        this.displayBoard(message);
       }
     } catch (IOException | BusinessException e) {
       this.view.displayError(e.getMessage());
@@ -331,14 +341,14 @@ public class WorldGuiController extends AbstractWorldController {
 
   private void executeAttack() {
     try {
-      Player player = World.getCurrentPlayer(this.context);
+      Player player = this.gameEngine.getCurrentPlayer();
       if (Objects.equals(PlayerType.HUMAN_CONTROLLED, player.getType())) {
         ContextHolder.set(this.context);
 
         if (player.getWeapons().isEmpty()) {
-          this.executeFlow(Flow.ATTACK_TARGET, player, Constants.NO_WEAPON);
+          executeFlow(Flow.ATTACK_TARGET, player, Constants.NO_WEAPON, true, true);
         } else {
-          this.executeFlow(Flow.ATTACK_TARGET, player, player.getWeapons().get(0).getName());
+          executeFlow(Flow.ATTACK_TARGET, player, player.getWeapons().get(0).getName(), true, true);
         }
       }
     } catch (IOException | BusinessException e) {
@@ -348,11 +358,12 @@ public class WorldGuiController extends AbstractWorldController {
 
   private void executeMovePlayer(String input) {
     try {
-      Player player = World.getCurrentPlayer(this.context);
+      Player player = this.gameEngine.getCurrentPlayer();
       if (Objects.equals(PlayerType.HUMAN_CONTROLLED, player.getType())) {
         ContextHolder.set(this.context);
 
-        executeFlow(Flow.MOVE_PLAYER, player, input);
+        executeFlow(Flow.MOVE_PLAYER, player, input, false, true);
+
       }
     } catch (IOException | BusinessException e) {
       this.view.displayError(e.getMessage());
@@ -361,18 +372,20 @@ public class WorldGuiController extends AbstractWorldController {
 
   private void executeMovePet(String input) {
     try {
-      Player player = World.getCurrentPlayer(this.context);
+      Player player = this.gameEngine.getCurrentPlayer();
       if (Objects.equals(PlayerType.HUMAN_CONTROLLED, player.getType())) {
         ContextHolder.set(this.context);
 
-        executeFlow(Flow.MOVE_PET, player, input);
+        executeFlow(Flow.MOVE_PET, player, input, false, true);
+
       }
     } catch (IOException | BusinessException e) {
       this.view.displayError(e.getMessage());
     }
   }
 
-  private void executeFlow(Flow flow, Player player, String input) throws IOException {
+  private void executeFlow(Flow flow, Player player, String input, Boolean displayInfo,
+      Boolean appendResult) throws IOException {
     StringBuilder sb = new StringBuilder();
     sb.append(player.getName()).append(" tried to ").append(flow.getAction());
     if (Objects.nonNull(input) && input.length() > 0) {
@@ -396,7 +409,15 @@ public class WorldGuiController extends AbstractWorldController {
           }
         });
     if (baseResult.isSuccess()) {
-      this.displayBoard(message + " " + baseResult.getResult());
+      updateGameState();
+      if (displayInfo) {
+        this.view.displayInfo(baseResult.getResult());
+      }
+      if (appendResult) {
+        displayBoard(message + " " + baseResult.getResult());
+      } else {
+        displayBoard(message);
+      }
     } else {
       this.view.displayError(baseResult.getErrorMsg());
     }
@@ -406,6 +427,7 @@ public class WorldGuiController extends AbstractWorldController {
     Player player = this.context.getPlayers().stream()
         .filter(item -> Objects.equals(item.getName(), playerName)).findFirst().orElse(null);
     Objects.requireNonNull(player);
+    ContextHolder.set(this.context);
 
     Space space = World.getSpace(this.context, player.getSpaceIndex());
     this.view.displayInfo(String.format(
@@ -420,10 +442,33 @@ public class WorldGuiController extends AbstractWorldController {
   private void showTargetDetails() {
     Target target = this.context.getTarget();
 
-    Space space = World.getSpace(context, target.getPosition());
+    Space space = World.getSpace(this.context, target.getPosition());
     this.view.displayInfo(
         String.format("Target Details:\nTarget Name = %s\nHealth = %s\nTarget Location = %s",
             target.getName(), target.getHealth(), space.getName()));
+  }
+
+  private void updateGameState() {
+    if (this.gameEngine.updateState()) {
+      context.setExposedSpaces(new HashSet<>());
+      World.moveTarget(this.context);
+      try {
+        serviceTemplate.execute(new BaseRequest(null), Flow.PET_DFS.getDesc(),
+            new BaseProcessCallBack() {
+              @Override
+              public void enrichContext(BaseRequest request, FlowContext context) {
+                context.setContext(ContextHolder.get());
+              }
+
+              @Override
+              public BaseResult createDefaultResult() {
+                return BaseResult.newSuccessResult().build();
+              }
+            });
+      } catch (IOException e) {
+        this.view.displayError(e.getMessage());
+      }
+    }
   }
 
 }

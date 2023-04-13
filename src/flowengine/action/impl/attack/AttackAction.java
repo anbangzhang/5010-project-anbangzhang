@@ -7,11 +7,11 @@ import flowengine.result.BaseResult;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.stereotype.Component;
-import world.World;
-import world.constant.Constants;
-import world.context.Context;
-import world.model.Player;
-import world.model.Space;
+import model.World;
+import model.constant.Constants;
+import model.context.Context;
+import model.model.Player;
+import model.model.Space;
 
 /**
  * AttackAction.
@@ -46,7 +46,6 @@ public class AttackAction implements Action {
 
     if (health == 0) {
       ctx.set(Constants.WINNER, player);
-      ctx.setGameOver(Boolean.TRUE);
     }
     context.setResult(buildSuccessResult());
   }

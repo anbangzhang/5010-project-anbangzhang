@@ -1,11 +1,12 @@
 package view.component;
 
 import java.util.Objects;
+
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import model.constant.Constants;
 import view.listener.ButtonListener;
-import world.constant.Constants;
 
 /**
  * GameMenu.

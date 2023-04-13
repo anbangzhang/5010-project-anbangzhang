@@ -11,12 +11,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import model.World;
+import model.base.BaseSpace;
+import model.context.Context;
+import model.model.Player;
 import view.listener.MouseClickListener;
-import world.World;
-import world.base.BaseSpace;
-import world.constant.Constants;
-import world.context.Context;
-import world.model.Player;
 
 /**
  * GamePlayPanel.
@@ -69,7 +68,7 @@ public class GamePlayPanel extends JScrollPane {
       roomPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
 
       // if not visible(pet in room)
-      if (Objects.equals(context.getTarget().getPosition(), space.getOrder())) {
+      if (Objects.equals(context.getPet().getSpaceIndex(), space.getOrder())) {
         roomPanel.setBackground(Color.GRAY);
       }
       JLabel roomInfo = new JLabel(space.getName());

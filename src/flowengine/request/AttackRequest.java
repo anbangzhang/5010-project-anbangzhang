@@ -1,7 +1,7 @@
 package flowengine.request;
 
-import world.base.BaseWeapon;
-import world.model.Player;
+import model.base.BaseWeapon;
+import model.model.Player;
 
 /**
  * AttackRequest.
