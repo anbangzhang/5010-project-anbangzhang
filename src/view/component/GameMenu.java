@@ -35,7 +35,7 @@ public class GameMenu extends JMenuBar {
    * Constructor.
    */
   public GameMenu() {
-    this.menu = new JMenu("Game");
+    this.menu = new JMenu("Menu");
 
     this.newGame = new JMenuItem(Constants.NEW_GAME);
     this.newGame.setActionCommand(Constants.NEW_GAME);

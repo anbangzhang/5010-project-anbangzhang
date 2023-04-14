@@ -6,6 +6,8 @@
 
  email: zhang.anb@northeastern.edu
  
+ ![image](./res/images/welcome_screen.jpg)
+ 
  # Project Introduction
 
  This project is the project of CS5010, and it's a board game that is loosely inspired by Doctor Lucky series of games.
@@ -42,19 +44,43 @@
      - the amount of damage the item could do if it was used to attack the target character
      - the name of the item
 
+ # Features
+ 
+ 1. Display information about a specified space on the view.
+ 2. Create a graphical representation of the world map and provide the ability to save the graphical representation to a file as a PNG file.
+ 3. Allow users to restart game or start game with new game settings.
+ 4. Add a human-controlled player to the game.
+ 5. Add a computer-controlled player to the game.
+ 6. Allow a player to Move. This represents a turn.
+ 7. Allow a player to pick up an weapon. This represents a turn.
+ 8. Allow a player to look around. This represents a turn.
+ 9. Allow a player to move the Pet to a different space. This represents a turn.
+ 10. Allow a player to attack the Target with/without a weapon. This represents a turn.
+ 11. Display a description of a specific player.
+ 12. Game ends when:
+     - the maximum number of turns is reached in which case the target character escapes and runs away to live another day and nobody wins.
+     - a player successfully kills the target character in which case they win the game.
+ 13. Automatically move the Target character around the world after every turn.
+ 14. Automatically move the Target character's pet around the world after every turn using DFS.
+ 15. Hints are displayed before every move.
+
+ ![image](./res/images/board.jpg)
+
  # How to Run
 
  The Jar file can be executed with the following instructions:
  1. Open the terminal line and navigate to the folder where the jar is located on your PC.
  2. Execute the following command:
 
-        java -jar WorldDriver.jar `input_file_name` `turn_amount`
+        java -jar WorldDriver.jar `input_file_name` `turn_amount` `maximum_players` `game_mode`
 
     Sample:
 
-        java -jar WorldDriver.jar "./world specification/mansion.txt" 2
+        java -jar WorldDriver.jar "./world specification/mansion.txt" 2 10 TEXT
 
- The above command is going to take `mansion.txt` file as input world specification, and specify that there are `2` rounds in the game.
+ The above command is going to take `mansion.txt` file as input world specification, specify that there are `2` rounds in the game, at most `10` players in the game, and run in `TEXT` mode.
+ 
+ The valid value for `game_mode` is `GUI` and `TEXT`.
 
  # Example Run
  
@@ -195,6 +221,8 @@
  * The game ends, the target escaped with health `3`, no winner, the pet position and evidences are displayed. Each player's detail is displayed.
  
  # Game Instructions
+ 
+ ## TEXT Mode
 
  The program is going to print some instructions to guide you
  
@@ -256,3 +284,48 @@
  Input the space name:
  
     Please input a space name from the spaces: [Armory, Billiard Room, Carriage House, Dining Hall, Drawing Room, Foyer, Green House, Hedge Maze, Kitchen, Lancaster Room, Library, Lilac Room, Master Suite, Nursery, Parlor, Piazza, Servants' Quarters, Tennessee Room, Trophy Room, Wine Cellar, Winter Garden]
+
+ ## GUI Mode
+ 
+ Upon program launch, the program creates a world instance based on the world specification file. Then the user is presented with welcome screen with 2 main menus:
+
+ **Menu**
+ 
+ 1.1 New Game - Allows user to create a new game with new world configuration:
+ 
+         Game setting example:
+         res/world specification/Mansion.txt - Name of the file with World Specification.
+         4 - Number of turns for the game.
+         10 - Maximum number of players allowed in the game.
+ 
+ 1.2 Restart Game - Allows user to start the game with the previous settings.
+ 
+ 1.3 Add Player - Allows user to add a player to the game.
+ 
+         Player setting example: 
+         Player Name:`AAA` 
+         Start Room:`Armory` 
+         Player's Weapon Limit: -1 for no limit of the capacity
+                                 5 maximum is 5 weapons
+         Type of Player: computer Player
+ 
+ 1.4 Quit Game - Allows user to quit the game.
+ 
+ **Help**
+ 
+ 1.1 About Game - Displays a brief introduction of the functions and features of the game.
+ 
+ 1.2 How to Play Game - Displays information on how to play the game.
+ 
+ Game Player Hot Keys:
+ 
+ 1. Press l  player can look around
+ 2. Press a  player can attack the target.
+ 3. Press p  player can pick up a weapon from the space.
+ 
+ Mouse Click:
+ 
+ 1. Click on a player's icon displays player's description.
+ 2. Click on target's icon displays target's information.
+ 3. Click on a neighbor room, the current player moves to that room.
+ 4. Right Click on a room, the current player moves the pet to that room. 

@@ -139,7 +139,7 @@ public class Constants {
       + "Press p  player can pick up a weapon from the space. <br/>" + "<br/>"
       + "<b>Mouse Click</b> <br/>" + "Click on a player's icon displays player's description.<br/>"
       + "Click on a neighbor room, the current player moves to that room. <br/> "
-      + "Right Click on a room, the pet moves to that room. <br/> " + "</html>";
+      + "Right Click on a room, the current player moves the pet to that room. <br/> " + "</html>";
   /**
    * ABOUT STRING.
    */
