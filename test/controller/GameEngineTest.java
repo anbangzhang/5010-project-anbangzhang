@@ -3,14 +3,12 @@ package controller;
 import controller.gameengine.GameEngine;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-
 import model.base.BasePlayer;
 import model.context.Context;
 import model.context.ContextBuilder;
 import model.context.ContextHolder;
 import model.enums.PlayerType;
 import model.exception.BusinessException;
-import model.model.Player;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
