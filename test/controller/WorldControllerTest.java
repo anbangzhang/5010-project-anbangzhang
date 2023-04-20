@@ -48,7 +48,7 @@ public class WorldControllerTest {
   private Context context;
 
   @Autowired
-  private WorldConsoleController controller;
+  private WorldConsoleController consoleController;
 
   /**
    * Set up model and mocks.
@@ -70,10 +70,10 @@ public class WorldControllerTest {
   public void testWithConcreteModelNoWinner() {
     StringReader input = new StringReader("1\nPlayer0\n0\n2\n2\nPlayer1\n1\n3\nq\n4\n5\n");
     StringBuilder log = new StringBuilder();
-    controller.setIn(input);
-    controller.setOut(log);
-    controller.setTurn(1);
-    controller.playGame(context);
+    consoleController.setIn(input);
+    consoleController.setOut(log);
+    consoleController.setTurn(1);
+    consoleController.playGame(context);
 
     Assert.assertEquals(
         "Please input the type of player to create:\n" + "\t1. human-controlled\n"
@@ -116,10 +116,10 @@ public class WorldControllerTest {
         "1\nPlayer0\n0\n2\n2\nPlayer1\n1\n3\n1\nPlayer2\n0\n1\nq\n4\n5\n2\n"
             + "Revolver\n3\n1\nDining Hall\n4\nDining Hall\n3\n");
     StringBuilder log = new StringBuilder();
-    controller.setIn(input);
-    controller.setOut(log);
-    controller.setTurn(3);
-    controller.playGame(context);
+    consoleController.setIn(input);
+    consoleController.setOut(log);
+    consoleController.setTurn(3);
+    consoleController.playGame(context);
 
     Assert.assertEquals("Please input the type of player to create:\n" + "\t1. human-controlled\n"
         + "\t2. computer-controlled\n" + "\tq. quit creating\n"
@@ -233,10 +233,10 @@ public class WorldControllerTest {
     StringReader input = new StringReader(
         "1\nPlayer0\n1\n2\n2\nPlayer1\n0\n3\nq\n4\n2\nBilliard Cue\n5\n");
     StringBuilder log = new StringBuilder();
-    controller.setIn(input);
-    controller.setOut(log);
-    controller.setTurn(2);
-    controller.playGame(context);
+    consoleController.setIn(input);
+    consoleController.setOut(log);
+    consoleController.setTurn(2);
+    consoleController.playGame(context);
 
     Assert.assertEquals("Please input the type of player to create:\n" + "\t1. human-controlled\n"
         + "\t2. computer-controlled\n" + "\tq. quit creating\n"
@@ -286,10 +286,10 @@ public class WorldControllerTest {
     StringReader input = new StringReader(
         "1\nPlayer0\n0\n2\n2\nPlayer1\n1\n3\nq\n4\n5\n2\nRevolver\n");
     StringBuilder log = new StringBuilder();
-    controller.setIn(input);
-    controller.setOut(log);
-    controller.setTurn(2);
-    controller.playGame(context);
+    consoleController.setIn(input);
+    consoleController.setOut(log);
+    consoleController.setTurn(2);
+    consoleController.playGame(context);
 
     Assert.assertEquals("Please input the type of player to create:\n" + "\t1. human-controlled\n"
         + "\t2. computer-controlled\n" + "\tq. quit creating\n"
@@ -401,10 +401,10 @@ public class WorldControllerTest {
     StringReader input = new StringReader("a\n1\nA\n0\n5\n2\nB\n1\n4\nq\n4\n5\n");
     StringBuilder log = new StringBuilder();
     ContextHolder.set(mockContext);
-    controller.setIn(input);
-    controller.setOut(log);
-    controller.setTurn(1);
-    controller.playGame(mockContext);
+    consoleController.setIn(input);
+    consoleController.setOut(log);
+    consoleController.setTurn(1);
+    consoleController.playGame(mockContext);
 
     mockStatic.close();
     Assert.assertEquals("Please input the type of player to create:\n" + "\t1. human-controlled\n"
@@ -438,5 +438,32 @@ public class WorldControllerTest {
         + "The target escaped with health: [10]. The pet is in space: [Space0]. "
         + "No winner. Evidences: []\n" + "Player: [A] is in space: [Space0], carrying weapons: []\n"
         + "Player: [B] is in space: [Space1], carrying weapons: []\n", log.toString());
+  }
+
+  @Test
+  public void testNewGame() {
+    try {
+      consoleController.createNewGame();
+    } catch (UnsupportedOperationException e) {
+      Assert.assertEquals("Unsupported method", e.getMessage());
+    }
+  }
+
+  @Test
+  public void testRestartGame() {
+    try {
+      consoleController.restartGame();
+    } catch (UnsupportedOperationException e) {
+      Assert.assertEquals("Unsupported method", e.getMessage());
+    }
+  }
+
+  @Test
+  public void testQuitGame() {
+    try {
+      consoleController.quitGame();
+    } catch (UnsupportedOperationException e) {
+      Assert.assertEquals("Unsupported method", e.getMessage());
+    }
   }
 }
